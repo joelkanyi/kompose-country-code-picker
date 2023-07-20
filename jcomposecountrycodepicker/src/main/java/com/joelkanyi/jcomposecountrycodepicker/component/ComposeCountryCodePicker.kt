@@ -4,9 +4,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,19 +43,19 @@ private var checkNumberState: Boolean by mutableStateOf(false)
 private var phoneNumberState: String by mutableStateOf("")
 private var countryCodeState: String by mutableStateOf("")
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ComposeCountryCodePicker(
     modifier: Modifier = Modifier,
     text: String,
     onValueChange: (String) -> Unit,
     shape: Shape = RoundedCornerShape(24.dp),
-    color: Color = MaterialTheme.colors.background,
+    color: Color = MaterialTheme.colorScheme.background,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
-    focusedBorderColor: Color = MaterialTheme.colors.primary,
-    unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
-    cursorColor: Color = MaterialTheme.colors.primary,
+    focusedBorderColor: Color = MaterialTheme.colorScheme.primary,
+    unfocusedBorderColor: Color = MaterialTheme.colorScheme.onSecondary,
+    cursorColor: Color = MaterialTheme.colorScheme.primary,
     bottomStyle: Boolean = false,
 ) {
     val context = LocalContext.current
@@ -139,7 +146,7 @@ fun ComposeCountryCodePicker(
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "Clear",
-                                tint = if (getErrorStatus()) Color.Red else MaterialTheme.colors.onSurface,
+                                tint = if (getErrorStatus()) Color.Red else MaterialTheme.colorScheme.onSurface,
                             )
                         }
                     },
@@ -148,8 +155,8 @@ fun ComposeCountryCodePicker(
             if (getErrorStatus()) {
                 Text(
                     text = stringResource(id = R.string.invalid_number),
-                    color = MaterialTheme.colors.error,
-                    style = MaterialTheme.typography.caption,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 0.8.dp),
                 )

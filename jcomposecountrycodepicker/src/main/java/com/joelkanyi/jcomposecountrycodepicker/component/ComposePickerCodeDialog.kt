@@ -13,6 +13,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,7 +93,7 @@ fun ComposePickerCodeDialog(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 6.dp),
                     fontSize = 18.sp,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
             }
@@ -97,7 +103,7 @@ fun ComposePickerCodeDialog(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 6.dp),
                     fontSize = 18.sp,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
             }
@@ -135,7 +141,7 @@ fun CountryDialog(
         onDismissRequest = onDismissRequest,
         content = {
             Surface(
-                color = MaterialTheme.colors.onSurface,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(25.dp)),
@@ -146,13 +152,13 @@ fun CountryDialog(
                         SearchTextField(
                             value = searchValue,
                             onValueChange = { searchValue = it },
-                            textColor = MaterialTheme.colors.onSurface,
+                            textColor = MaterialTheme.colorScheme.onSurface,
                             fontSize = 16.sp,
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.Filled.Search,
                                     contentDescription = "Search",
-                                    tint = MaterialTheme.colors.onSurface,
+                                    tint = MaterialTheme.colorScheme.onSurface,
                                     modifier = Modifier.padding(horizontal = 3.dp),
                                 )
                             },
@@ -215,7 +221,7 @@ private fun SearchTextField(
     textColor: Color = Color.Black,
     onValueChange: (String) -> Unit,
     hint: String = stringResource(id = R.string.search),
-    fontSize: TextUnit = MaterialTheme.typography.body2.fontSize,
+    fontSize: TextUnit = MaterialTheme.typography.bodyMedium.fontSize,
 ) {
     BasicTextField(
         modifier = modifier
@@ -224,7 +230,7 @@ private fun SearchTextField(
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
-        cursorBrush = SolidColor(MaterialTheme.colors.primary),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         textStyle = LocalTextStyle.current.copy(
             color = textColor,
             fontSize = fontSize,
