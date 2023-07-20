@@ -5,7 +5,6 @@ import android.telephony.TelephonyManager
 import androidx.compose.ui.text.intl.Locale
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
-import com.joelkanyi.ccp.data.utils.getLibCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
 
 fun getDefaultLangCode(context: Context): String {

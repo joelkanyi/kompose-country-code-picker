@@ -1,9 +1,9 @@
-package com.joelkanyi.ccp.data.utils
+package com.joelkanyi.jcomposecountrycodepicker.data.utils
 
 import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
 
 var getLibCountries: List<CountryData> = mutableListOf(
-    CountryData("ad", "+376", "Andorra"),
+    CountryData(cCodes = "ad", countryPhoneCode = "+376", cNames = "Andorra"),
     CountryData("ae", "+971", "United Arab Emirates (UAE)"),
     CountryData("af", "+93", "Afghanistan"),
     CountryData("ag", "+1", "Antigua and Barbuda"),

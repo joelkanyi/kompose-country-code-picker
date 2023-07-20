@@ -30,7 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.joelkanyi.ccp.data.utils.getLibCountries
+import com.joelkanyi.jcomposecountrycodepicker.data.utils.getLibCountries
 import com.joelkanyi.ccp.transformation.PhoneNumberTransformation
 import com.joelkanyi.jcomposecountrycodepicker.R
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.checkPhoneNumber
