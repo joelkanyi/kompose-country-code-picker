@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
-        applicationId "com.togitech.togii"
+        applicationId "com.joelkanyi.jcomposecountrycodepicker"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -36,7 +36,6 @@ android {
         compose true
     }
     composeOptions {
-        // https://androidx.dev/storage/compose-compiler/repository/
         kotlinCompilerExtensionVersion "$compose_compiler_version"
     }
     packagingOptions {
@@ -55,8 +54,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.activity:activity-compose:$activity_compose_version"
     implementation 'com.google.accompanist:accompanist-systemuicontroller:0.29.1-alpha'
+    implementation project(path: ':jcomposecountrycodepicker')
 
-    implementation project(path: ':ccp')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

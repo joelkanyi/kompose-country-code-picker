@@ -15,6 +15,6 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "Togii"
+rootProject.name = "JetpackComposeCountryCodePicker"
 include ':app'
-include ':ccp'
+include ':jcomposecountrycodepicker'

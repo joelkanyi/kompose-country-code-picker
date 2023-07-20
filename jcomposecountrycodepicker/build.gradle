@@ -1,0 +1,75 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
+
+group 'com.joelkanyi'
+version '0.0.1'
+
+
+android {
+    compileSdk 34
+    namespace = 'com.joelkanyi.jcomposecountrycodepicker'
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 34
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+    }
+    buildFeatures {
+        compose true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+    }
+    composeOptions {
+        // https://androidx.dev/storage/compose-compiler/repository/
+        kotlinCompilerExtensionVersion "$compose_compiler_version"
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    //noinspection GradleDependency
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.activity:activity-compose:$activity_compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.7'
+
+}
+
+afterEvaluate {
+    publishing {
+        publications( {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.joelkanyi'
+                artifactId = 'jcomposecountrycodepicker'
+                version = '0.0.1'
+            }
+        })
+    }
+}
