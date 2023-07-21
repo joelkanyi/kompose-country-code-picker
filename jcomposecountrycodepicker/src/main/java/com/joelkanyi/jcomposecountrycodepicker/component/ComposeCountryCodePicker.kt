@@ -1,18 +1,14 @@
 package com.joelkanyi.jcomposecountrycodepicker.component
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,15 +23,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.joelkanyi.jcomposecountrycodepicker.data.utils.getLibCountries
 import com.joelkanyi.ccp.transformation.PhoneNumberTransformation
-import com.joelkanyi.jcomposecountrycodepicker.R
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.checkPhoneNumber
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultLangCode
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultPhoneCode
+import com.joelkanyi.jcomposecountrycodepicker.data.utils.getLibCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getNumberHint
 
 private var fullNumberState: String by mutableStateOf("")
@@ -49,14 +43,15 @@ fun ComposeCountryCodePicker(
     modifier: Modifier = Modifier,
     text: String,
     onValueChange: (String) -> Unit,
-    shape: Shape = RoundedCornerShape(24.dp),
+    shape: Shape = MaterialTheme.shapes.medium,
     color: Color = MaterialTheme.colorScheme.background,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
-    focusedBorderColor: Color = MaterialTheme.colorScheme.primary,
-    unfocusedBorderColor: Color = MaterialTheme.colorScheme.onSecondary,
-    cursorColor: Color = MaterialTheme.colorScheme.primary,
-    bottomStyle: Boolean = false,
+    error: Boolean = false,
+    placeholder: @Composable ((defaultLang: String) -> Unit) = { defaultLang ->
+        Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())))
+    },
+    colors: TextFieldColors = TextFieldDefaults.colors(),
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -80,24 +75,12 @@ fun ComposeCountryCodePicker(
 
     Surface(color = color) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-            if (bottomStyle) {
-                ComposePickerCodeDialog(
-                    pickedCountry = {
-                        phoneCode = it.countryPhoneCode
-                        defaultLang = it.countryCode
-                    },
-                    defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
-                    showCountryCode = showCountryCode,
-                    showFlag = showCountryFlag,
-                    showCountryName = true,
-                )
-            }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
             ) {
                 OutlinedTextField(
-                    modifier = modifier.fillMaxWidth(),
+                    modifier = modifier,
                     shape = shape,
                     value = textFieldValue,
                     onValueChange = {
@@ -107,58 +90,36 @@ fun ComposeCountryCodePicker(
                         }
                     },
                     singleLine = true,
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = if (getErrorStatus()) Color.Red else focusedBorderColor,
-                        unfocusedBorderColor = if (getErrorStatus()) Color.Red else unfocusedBorderColor,
-                        cursorColor = cursorColor,
-                    ),
+                    colors = colors,
+                    isError = error,
                     visualTransformation = PhoneNumberTransformation(getLibCountries.single { it.countryCode == defaultLang }.countryCode.uppercase()),
-                    placeholder = { Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase()))) },
+                    placeholder = {
+                        placeholder(defaultLang)
+                    },
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.NumberPassword,
+                        keyboardType = KeyboardType.Phone,
                         autoCorrect = true,
                     ),
-                    keyboardActions = KeyboardActions(onDone = {
-                        keyboardController?.hide()
-                    }),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        },
+                    ),
                     leadingIcon = {
-                        if (!bottomStyle) {
-                            Row {
-                                Column {
-                                    ComposePickerCodeDialog(
-                                        pickedCountry = {
-                                            phoneCode = it.countryPhoneCode
-                                            defaultLang = it.countryCode
-                                        },
-                                        defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
-                                        showCountryCode = showCountryCode,
-                                        showFlag = showCountryFlag,
-                                    )
-                                }
+                        Row {
+                            Column {
+                                ComposePickerCodeDialog(
+                                    pickedCountry = {
+                                        phoneCode = it.countryPhoneCode
+                                        defaultLang = it.countryCode
+                                    },
+                                    defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
+                                    showCountryCode = showCountryCode,
+                                    showFlag = showCountryFlag,
+                                )
                             }
                         }
                     },
-                    trailingIcon = {
-                        IconButton(onClick = {
-                            textFieldValue = ""
-                            onValueChange("")
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.Clear,
-                                contentDescription = "Clear",
-                                tint = if (getErrorStatus()) Color.Red else MaterialTheme.colorScheme.onSurface,
-                            )
-                        }
-                    },
-                )
-            }
-            if (getErrorStatus()) {
-                Text(
-                    text = stringResource(id = R.string.invalid_number),
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 0.8.dp),
                 )
             }
         }
