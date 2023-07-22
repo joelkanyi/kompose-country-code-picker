@@ -1,10 +1,17 @@
 package com.joelkanyi.jcomposecountrycodepicker.component
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -22,11 +29,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -43,15 +57,13 @@ import com.joelkanyi.jcomposecountrycodepicker.data.utils.getLibCountries
 @Composable
 fun ComposePickerCodeDialog(
     modifier: Modifier = Modifier,
-    padding: Dp = 15.dp,
+    padding: Dp = 8.dp,
     defaultSelectedCountry: CountryData = getLibCountries.first(),
     showCountryCode: Boolean = true,
-    pickedCountry: (CountryData) -> Unit,
+    pickedCountry: (CountryData) -> Unit = {},
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
 ) {
-    val context = LocalContext.current
-
     val countryList: List<CountryData> = getLibCountries
     var isPickCountry by remember {
         mutableStateOf(defaultSelectedCountry)
@@ -112,7 +124,6 @@ fun ComposePickerCodeDialog(
             CountryDialog(
                 countryList = countryList,
                 onDismissRequest = { isOpenDialog = false },
-                context = context,
                 dialogStatus = isOpenDialog,
                 onSelected = { countryItem ->
                     pickedCountry(countryItem)
@@ -124,14 +135,13 @@ fun ComposePickerCodeDialog(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CountryDialog(
     modifier: Modifier = Modifier,
     countryList: List<CountryData>,
     onDismissRequest: () -> Unit,
     onSelected: (item: CountryData) -> Unit,
-    context: Context,
     dialogStatus: Boolean,
     properties: DialogProperties = DialogProperties(),
 ) {
@@ -160,29 +170,34 @@ fun CountryDialog(
             ) {
                 Scaffold(
                     topBar = {
+                        val focusRequester = remember { FocusRequester() }
+                        LaunchedEffect(isSearch) {
+                            if (isSearch) {
+                                focusRequester.requestFocus()
+                            }
+                        }
                         CenterAlignedTopAppBar(
                             title = {
                                 if (isSearch) {
                                     TextField(
-                                        modifier = Modifier,
+                                        modifier = Modifier.focusRequester(focusRequester),
                                         value = searchValue,
-                                        onValueChange = {
-                                            searchValue = it
-                                            filteredItems = countryList.filter { cData ->
-                                                cData.cNames.lowercase().contains(
-                                                    it,
-                                                    ignoreCase = true,
-                                                ) ||
-                                                    cData.countryPhoneCode.contains(
-                                                        it,
+                                        onValueChange = { searchStr ->
+                                            searchValue = searchStr
+                                            /**
+                                             * Search by searchValue
+                                             */
+                                            filteredItems = countryList.filter {
+                                                it.cNames.contains(searchStr, ignoreCase = true) ||
+                                                    it.countryPhoneCode.contains(
+                                                        searchStr,
                                                         ignoreCase = true,
                                                     ) ||
-                                                    cData.countryCode.lowercase().contains(
-                                                        it,
+                                                    it.countryCode.contains(
+                                                        searchStr,
                                                         ignoreCase = true,
                                                     )
                                             }.toMutableList()
-                                            // CountryData(cCodes = "ad", countryPhoneCode = "+376", cNames = "Andorra"),
                                         },
                                         placeholder = {
                                             Text(
@@ -233,47 +248,45 @@ fun CountryDialog(
                     },
                 ) { scaffold ->
                     scaffold.calculateBottomPadding()
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        val items = if (searchValue.isEmpty()) {
-                            countryList
-                        } else {
-                            filteredItems
-                        }
-                        LazyColumn {
-                            items(items) { countryItem ->
+                    val items = if (searchValue.isEmpty()) {
+                        countryList
+                    } else {
+                        filteredItems
+                    }
+                    LazyColumn(Modifier.fillMaxSize()) {
+                        items(items) { countryItem ->
+                            Row(
+                                Modifier
+                                    .padding(18.dp)
+                                    .fillMaxWidth()
+                                    .clickable(onClick = { onSelected(countryItem) }),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
                                 Row(
-                                    Modifier
-                                        .padding(18.dp)
-                                        .fillMaxWidth()
-                                        .clickable(onClick = { onSelected(countryItem) }),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    horizontalArrangement = Arrangement.Start,
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.Start,
-                                        verticalAlignment = Alignment.CenterVertically,
-                                    ) {
-                                        Image(
-                                            modifier = modifier.width(30.dp),
-                                            painter = painterResource(
-                                                id = getFlags(
-                                                    countryItem.countryCode,
-                                                ),
+                                    Image(
+                                        modifier = modifier.width(30.dp),
+                                        painter = painterResource(
+                                            id = getFlags(
+                                                countryItem.countryCode,
                                             ),
-                                            contentDescription = null,
-                                        )
-                                        Text(
-                                            stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
-                                            Modifier.padding(horizontal = 18.dp),
-                                            fontSize = 14.sp,
-                                            fontFamily = FontFamily.Serif,
-                                        )
-                                    }
-
+                                        ),
+                                        contentDescription = null,
+                                    )
                                     Text(
-                                        text = countryItem.countryPhoneCode,
+                                        stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
+                                        Modifier.padding(horizontal = 18.dp),
+                                        fontSize = 14.sp,
+                                        fontFamily = FontFamily.Serif,
                                     )
                                 }
+
+                                Text(
+                                    text = countryItem.countryPhoneCode,
+                                )
                             }
                         }
                     }

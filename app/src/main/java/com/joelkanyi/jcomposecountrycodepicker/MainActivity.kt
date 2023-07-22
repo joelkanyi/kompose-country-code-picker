@@ -263,15 +263,13 @@ fun CountryCodePick() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         val phoneNumber = rememberSaveable { mutableStateOf("") }
-        val fullPhoneNumber = rememberSaveable { mutableStateOf("") }
-        val onlyPhoneNumber = rememberSaveable { mutableStateOf("") }
 
         ComposeCountryCodePicker(
             modifier = Modifier
                 .fillMaxWidth(),
             text = phoneNumber.value,
             onValueChange = { phoneNumber.value = it },
-            // placeholder = { Text(text = "Phone Number") },
+            placeholder = { Text(text = "Phone Number") },
             shape = MaterialTheme.shapes.medium,
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.Transparent,

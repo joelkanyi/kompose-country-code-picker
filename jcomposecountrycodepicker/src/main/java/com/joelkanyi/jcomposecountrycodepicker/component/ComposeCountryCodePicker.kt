@@ -107,19 +107,15 @@ fun ComposeCountryCodePicker(
                         },
                     ),
                     leadingIcon = {
-                        Row {
-                            Column {
-                                ComposePickerCodeDialog(
-                                    pickedCountry = {
-                                        phoneCode = it.countryPhoneCode
-                                        defaultLang = it.countryCode
-                                    },
-                                    defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
-                                    showCountryCode = showCountryCode,
-                                    showFlag = showCountryFlag,
-                                )
-                            }
-                        }
+                        ComposePickerCodeDialog(
+                            pickedCountry = {
+                                phoneCode = it.countryPhoneCode
+                                defaultLang = it.countryCode
+                            },
+                            defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
+                            showCountryCode = showCountryCode,
+                            showFlag = showCountryFlag,
+                        )
                     },
                 )
             }
