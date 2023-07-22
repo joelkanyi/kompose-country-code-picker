@@ -179,3 +179,10 @@ fun isPhoneNumberValid(): Boolean {
 fun String.removeSpecialCharacters(): String {
     return this.replace("[^0-9]".toRegex(), "")
 }
+
+/**
+ * TODO: Add a functionality where you can specify the countries that you want in the list.
+ * TODO: Add capability to ony have the code picker without the text field.
+ * TODO: Document functions.
+ * TODO: Fix the search functionality.
+ */
