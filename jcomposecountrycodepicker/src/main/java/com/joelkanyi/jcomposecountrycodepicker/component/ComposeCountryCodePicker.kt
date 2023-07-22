@@ -185,4 +185,5 @@ fun String.removeSpecialCharacters(): String {
  * TODO: Add capability to ony have the code picker without the text field.
  * TODO: Document functions.
  * TODO: Fix the search functionality.
+ * TODO: Fix phone number validation for some countries like UK.
  */
