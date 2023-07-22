@@ -1,9 +1,10 @@
 package com.joelkanyi.jcomposecountrycodepicker.component
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -23,21 +24,21 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import com.joelkanyi.ccp.transformation.PhoneNumberTransformation
-import com.joelkanyi.jcomposecountrycodepicker.data.utils.checkPhoneNumber
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultLangCode
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultPhoneCode
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getLibCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getNumberHint
+import com.joelkanyi.jcomposecountrycodepicker.data.utils.isValid
+import java.util.Locale
 
 private var fullNumberState: String by mutableStateOf("")
-private var checkNumberState: Boolean by mutableStateOf(false)
 private var phoneNumberState: String by mutableStateOf("")
 private var countryCodeState: String by mutableStateOf("")
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ComposeCountryCodePicker(
     modifier: Modifier = Modifier,
@@ -74,7 +75,7 @@ fun ComposeCountryCodePicker(
     countryCodeState = defaultLang
 
     Surface(color = color) {
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
+        Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
@@ -126,24 +127,55 @@ fun ComposeCountryCodePicker(
     }
 }
 
-fun getFullPhoneNumber(): String {
-    return fullNumberState
+fun getCountryCodeWithoutPrefix(): String {
+    return countryCodeState
 }
 
-fun getOnlyPhoneNumber(): String {
-    return phoneNumberState
+fun getCountryName(): String {
+    return getLibCountries.single { it.countryCode == countryCodeState }.cNames.capitalize(Locale.getDefault())
 }
 
-fun getErrorStatus(): Boolean {
-    return !checkNumberState
+fun getCountryPhoneCode(): String {
+    return getLibCountries.single { it.countryCode == countryCodeState }.countryPhoneCode
 }
 
-fun isPhoneNumber(): Boolean {
-    val check = checkPhoneNumber(
-        phone = phoneNumberState,
-        fullPhoneNumber = fullNumberState,
-        countryCode = countryCodeState,
+fun getCountryPhoneCodeWithoutPrefix(): String {
+    return getLibCountries.single { it.countryCode == countryCodeState }.countryPhoneCode.removePrefix(
+        "+",
     )
-    checkNumberState = check
-    return check
+}
+
+fun getPhoneNumber(): String {
+    /**
+     * If it does not start with 0, it adds 0 to the beginning.
+     */
+    return if (phoneNumberState.startsWith("0")) {
+        phoneNumberState.removeSpecialCharacters()
+    } else {
+        "0${phoneNumberState.removeSpecialCharacters()}"
+    }
+}
+
+fun getPhoneNumberWithoutPrefix(): String {
+    return phoneNumberState.removeSpecialCharacters().removePrefix("0")
+}
+
+fun getFullPhoneNumberWithoutPrefix(): String {
+    return getCountryPhoneCodeWithoutPrefix() + phoneNumberState.removeSpecialCharacters()
+        .removePrefix("0")
+}
+
+fun getFullPhoneNumber(): String {
+    return getCountryPhoneCode() + phoneNumberState.removeSpecialCharacters()
+}
+
+fun isPhoneNumberValid(): Boolean {
+    return isValid(getFullPhoneNumber())
+}
+
+/**
+ * Remove spaces, parentheses, and dashes and any special characters from the phone number.
+ */
+fun String.removeSpecialCharacters(): String {
+    return this.replace("[^0-9]".toRegex(), "")
 }
