@@ -275,6 +275,7 @@ fun CountryCodePick() {
                 unfocusedContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
             ),
+            limitedCountries = listOf("+254", "+256", "+255", "+234", "Kenya", "Rwanda", "254"),
         )
     }
 }

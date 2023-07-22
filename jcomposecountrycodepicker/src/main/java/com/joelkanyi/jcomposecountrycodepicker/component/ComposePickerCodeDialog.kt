@@ -58,13 +58,22 @@ import com.joelkanyi.jcomposecountrycodepicker.data.utils.getLibCountries
 fun ComposePickerCodeDialog(
     modifier: Modifier = Modifier,
     padding: Dp = 8.dp,
+    limitedCountries: List<String>,
     defaultSelectedCountry: CountryData = getLibCountries.first(),
     showCountryCode: Boolean = true,
     pickedCountry: (CountryData) -> Unit = {},
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
 ) {
-    val countryList: List<CountryData> = getLibCountries
+    val countryList: List<CountryData> = if (limitedCountries.isEmpty()) {
+        getLibCountries
+    } else {
+        getLibCountries.filter {
+            limitedCountries.contains(it.countryCode) ||
+                limitedCountries.contains(it.countryPhoneCode) ||
+                limitedCountries.contains(it.cNames)
+        }
+    }
     var isPickCountry by remember {
         mutableStateOf(defaultSelectedCountry)
     }

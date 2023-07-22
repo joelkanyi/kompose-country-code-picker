@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.input.KeyboardType
 import com.joelkanyi.ccp.transformation.PhoneNumberTransformation
+import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultLangCode
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultPhoneCode
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getLibCountries
@@ -48,6 +49,7 @@ fun ComposeCountryCodePicker(
     color: Color = MaterialTheme.colorScheme.background,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
+    limitedCountries: List<String> = emptyList(),
     error: Boolean = false,
     placeholder: @Composable ((defaultLang: String) -> Unit) = { defaultLang ->
         Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())))
@@ -115,6 +117,7 @@ fun ComposeCountryCodePicker(
                             defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
                             showCountryCode = showCountryCode,
                             showFlag = showCountryFlag,
+                            limitedCountries = limitedCountries,
                         )
                     },
                 )
@@ -183,3 +186,8 @@ fun String.removeSpecialCharacters(): String {
  * TODO: Fix the search functionality.
  * TODO: Fix phone number validation for some countries like UK.
  */
+
+//  * TODO: Add a functionality where you can specify the countries that you want in the list.
+fun onlyCountries(countries: List<String>): List<CountryData> {
+    return getLibCountries.filter { countries.contains(it.countryCode) }
+}
