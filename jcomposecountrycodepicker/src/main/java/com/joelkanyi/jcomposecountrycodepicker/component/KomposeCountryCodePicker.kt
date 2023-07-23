@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import com.joelkanyi.ccp.transformation.PhoneNumberTransformation
+import com.joelkanyi.jcomposecountrycodepicker.transformation.PhoneNumberTransformation
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.allCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultLangCode
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultPhoneCode
@@ -106,7 +106,7 @@ fun KomposeCountryCodePicker(
                         },
                     ),
                     leadingIcon = {
-                        ComposePickerCodeDialog(
+                        KomposeCountryCodePickerDialog(
                             pickedCountry = {
                                 phoneCode = it.cCountryPhoneNoCode
                                 defaultLang = it.countryCode

@@ -4,10 +4,6 @@ plugins {
     id 'maven-publish'
 }
 
-group 'com.joelkanyi'
-version '0.0.1'
-
-
 android {
     compileSdk 34
     namespace = 'com.joelkanyi.jcomposecountrycodepicker'
@@ -68,8 +64,8 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.joelkanyi'
-                artifactId = 'jcomposecountrycodepicker'
-                version = '0.0.1'
+                artifactId = 'kompose-country-code-picker'
+                version = '1.0.0'
             }
         })
     }

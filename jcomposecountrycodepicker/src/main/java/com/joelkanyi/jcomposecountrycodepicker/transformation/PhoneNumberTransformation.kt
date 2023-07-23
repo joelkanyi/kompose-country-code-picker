@@ -1,4 +1,4 @@
-package com.joelkanyi.ccp.transformation
+package com.joelkanyi.jcomposecountrycodepicker.transformation
 
 import android.telephony.PhoneNumberUtils
 import android.text.Selection
@@ -33,9 +33,9 @@ class PhoneNumberTransformation(countryCode: String = Locale.getDefault().countr
                 override fun transformedToOriginal(offset: Int): Int {
                     return transformation.transformedToOriginal[offset]
                 }
-            })
+            },
+        )
     }
-
 
     private fun reformat(s: CharSequence, cursor: Int): Transformation {
         phoneNumberFormatter.clear()
@@ -89,6 +89,6 @@ class PhoneNumberTransformation(countryCode: String = Locale.getDefault().countr
     private data class Transformation(
         val formatted: String?,
         val originalToTransformed: List<Int>,
-        val transformedToOriginal: List<Int>
+        val transformedToOriginal: List<Int>,
     )
 }

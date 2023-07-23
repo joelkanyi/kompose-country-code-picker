@@ -23,6 +23,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -36,26 +37,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
+import com.joelkanyi.jcomposecountrycodepicker.data.utils.allCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getCountryName
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getFlags
-import com.joelkanyi.jcomposecountrycodepicker.data.utils.allCountries
 
 @Composable
-fun ComposePickerCodeDialog(
+fun KomposeCountryCodePickerDialog(
     modifier: Modifier = Modifier,
     padding: Dp = 8.dp,
     limitedCountries: List<String>,
@@ -77,7 +76,7 @@ fun ComposePickerCodeDialog(
     var isPickCountry by remember {
         mutableStateOf(defaultSelectedCountry)
     }
-    var isOpenDialog by remember { mutableStateOf(false) }
+    var openKomposeCountryDialog by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
 
     Column(
@@ -87,7 +86,7 @@ fun ComposePickerCodeDialog(
                 interactionSource = interactionSource,
                 indication = null,
             ) {
-                isOpenDialog = true
+                openKomposeCountryDialog = true
             },
     ) {
         Row(
@@ -129,24 +128,24 @@ fun ComposePickerCodeDialog(
             }
         }
 
-        if (isOpenDialog) {
-            CountryDialog(
+        if (openKomposeCountryDialog) {
+            KomposeCountryDialog(
                 countryList = countryList,
-                onDismissRequest = { isOpenDialog = false },
-                dialogStatus = isOpenDialog,
+                onDismissRequest = { openKomposeCountryDialog = false },
+                dialogStatus = openKomposeCountryDialog,
                 onSelected = { countryItem ->
                     pickedCountry(countryItem)
                     isPickCountry = countryItem
-                    isOpenDialog = false
+                    openKomposeCountryDialog = false
                 },
             )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CountryDialog(
+fun KomposeCountryDialog(
     modifier: Modifier = Modifier,
     countryList: List<CountryData>,
     onDismissRequest: () -> Unit,
@@ -193,11 +192,11 @@ fun CountryDialog(
                                         value = searchValue,
                                         onValueChange = { searchStr ->
                                             searchValue = searchStr
-                                            /**
-                                             * Search by searchValue
-                                             */
                                             filteredItems = countryList.filter {
-                                                it.cCountryName.contains(searchStr, ignoreCase = true) ||
+                                                it.cCountryName.contains(
+                                                    searchStr,
+                                                    ignoreCase = true,
+                                                ) ||
                                                     it.cCountryPhoneNoCode.contains(
                                                         searchStr,
                                                         ignoreCase = true,
@@ -255,8 +254,8 @@ fun CountryDialog(
                             },
                         )
                     },
-                ) { scaffold ->
-                    scaffold.calculateBottomPadding()
+                ) { paddingValues ->
+                    paddingValues.calculateBottomPadding()
                     val items = if (searchValue.isEmpty()) {
                         countryList
                     } else {
@@ -264,18 +263,13 @@ fun CountryDialog(
                     }
                     LazyColumn(Modifier.fillMaxSize()) {
                         items(items) { countryItem ->
-                            Row(
-                                Modifier
-                                    .padding(18.dp)
+                            ListItem(
+                                modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable(onClick = { onSelected(countryItem) }),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.Start,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
+                                    .clickable {
+                                        onSelected(countryItem)
+                                    },
+                                leadingContent = {
                                     Image(
                                         modifier = modifier.width(30.dp),
                                         painter = painterResource(
@@ -285,18 +279,20 @@ fun CountryDialog(
                                         ),
                                         contentDescription = null,
                                     )
+                                },
+                                trailingContent = {
+                                    Text(
+                                        text = countryItem.cCountryPhoneNoCode,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                    )
+                                },
+                                headlineContent = {
                                     Text(
                                         stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
-                                        Modifier.padding(horizontal = 18.dp),
-                                        fontSize = 14.sp,
-                                        fontFamily = FontFamily.Serif,
+                                        style = MaterialTheme.typography.bodyMedium,
                                     )
-                                }
-
-                                Text(
-                                    text = countryItem.cCountryPhoneNoCode,
-                                )
-                            }
+                                },
+                            )
                         }
                     }
                 }

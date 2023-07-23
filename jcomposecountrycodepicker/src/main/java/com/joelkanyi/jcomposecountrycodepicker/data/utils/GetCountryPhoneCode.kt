@@ -4,9 +4,17 @@ import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
 
 val allCountries = listOf(
     CountryData(cCountryCode = "ad", cCountryPhoneNoCode = "+376", cCountryName = "Andorra"),
-    CountryData(cCountryCode = "ae", cCountryPhoneNoCode = "+971", cCountryName = "United Arab Emirates (UAE)"),
+    CountryData(
+        cCountryCode = "ae",
+        cCountryPhoneNoCode = "+971",
+        cCountryName = "United Arab Emirates (UAE)",
+    ),
     CountryData(cCountryCode = "af", cCountryPhoneNoCode = "+93", cCountryName = "Afghanistan"),
-    CountryData(cCountryCode = "ag", cCountryPhoneNoCode = "+1", cCountryName = "Antigua and Barbuda"),
+    CountryData(
+        cCountryCode = "ag",
+        cCountryPhoneNoCode = "+1",
+        cCountryName = "Antigua and Barbuda",
+    ),
     CountryData(cCountryCode = "ai", cCountryPhoneNoCode = "+1", cCountryName = "Anguilla"),
     CountryData("al", "+355", "Albania"),
     CountryData("am", "+374", "Armenia"),
@@ -244,4 +252,4 @@ val allCountries = listOf(
     CountryData("za", "+27", "South Africa"),
     CountryData("zm", "+260", "Zambia"),
     CountryData("zw", "+263", "Zimbabwe"),
-)
+).sortedBy { it.cCountryName }

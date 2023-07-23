@@ -3,9 +3,12 @@ package com.joelkanyi.jcomposecountrycodepicker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -13,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -22,8 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
 import com.joelkanyi.jcomposecountrycodepicker.component.CountryCodePicker
+import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
 import com.joelkanyi.jcomposecountrycodepicker.ui.theme.ComposePickerTheme
 
 class MainActivity : ComponentActivity() {
@@ -48,8 +50,8 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             title = {
                                 Text(
-                                    text = "Jetpack Compose Country Code Picker",
-                                    style = MaterialTheme.typography.titleSmall,
+                                    text = "Kompose Country Code Picker",
+                                    style = MaterialTheme.typography.titleMedium,
                                 )
                             },
                             colors = TopAppBarDefaults.topAppBarColors(
@@ -65,23 +67,22 @@ class MainActivity : ComponentActivity() {
                             .padding(16.dp)
                             .fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        CountryCodePick()
+                        val phoneNumber = rememberSaveable { mutableStateOf("") }
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        /**
-                         * Call functions to get this values
-                         * +254
-                         * 254
-                         * 0706003891
-                         * 706003891
-                         * +254706003891
-                         * 254706003891
-                         * KE
-                         * Kenya
-                         */
+                        KomposeCountryCodePicker(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            text = phoneNumber.value,
+                            onValueChange = { phoneNumber.value = it },
+                            placeholder = { Text(text = "Phone Number") },
+                            shape = MaterialTheme.shapes.medium,
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent,
+                            ),
+                        )
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -240,31 +241,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun CountryCodePick() {
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        val phoneNumber = rememberSaveable { mutableStateOf("") }
-
-        KomposeCountryCodePicker(
-            modifier = Modifier
-                .fillMaxWidth(),
-            text = phoneNumber.value,
-            onValueChange = { phoneNumber.value = it },
-            placeholder = { Text(text = "Phone Number") },
-            shape = MaterialTheme.shapes.medium,
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-            ),
-        )
     }
 }

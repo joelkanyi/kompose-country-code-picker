@@ -47,6 +47,11 @@ KomposeCountryCodePicker(
 )
 ```
 
+## Preview
+Picker   |   Dialog
+-----------------   |   -----------------
+<img src="screenshot/kompose-picker-textfield.png" width="250"/>   |   <img src="screenshot/kompose-picker-dialog.png" width="250"/>
+
 ## KomposeCountryCodePicker Composable customizations
 Customization | Description
 ------------     |   -------------
