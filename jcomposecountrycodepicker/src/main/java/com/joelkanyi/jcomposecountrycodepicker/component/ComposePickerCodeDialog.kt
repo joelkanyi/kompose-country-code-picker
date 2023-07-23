@@ -52,26 +52,26 @@ import androidx.compose.ui.window.DialogProperties
 import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getCountryName
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getFlags
-import com.joelkanyi.jcomposecountrycodepicker.data.utils.getLibCountries
+import com.joelkanyi.jcomposecountrycodepicker.data.utils.allCountries
 
 @Composable
 fun ComposePickerCodeDialog(
     modifier: Modifier = Modifier,
     padding: Dp = 8.dp,
     limitedCountries: List<String>,
-    defaultSelectedCountry: CountryData = getLibCountries.first(),
+    defaultSelectedCountry: CountryData = allCountries.first(),
     showCountryCode: Boolean = true,
     pickedCountry: (CountryData) -> Unit = {},
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
 ) {
     val countryList: List<CountryData> = if (limitedCountries.isEmpty()) {
-        getLibCountries
+        allCountries
     } else {
-        getLibCountries.filter {
+        allCountries.filter {
             limitedCountries.contains(it.countryCode) ||
-                limitedCountries.contains(it.countryPhoneCode) ||
-                limitedCountries.contains(it.cNames)
+                limitedCountries.contains(it.cCountryPhoneNoCode) ||
+                limitedCountries.contains(it.cCountryName)
         }
     }
     var isPickCountry by remember {
@@ -109,7 +109,7 @@ fun ComposePickerCodeDialog(
             }
             if (showCountryCode) {
                 Text(
-                    text = isPickCountry.countryPhoneCode,
+                    text = isPickCountry.cCountryPhoneNoCode,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 4.dp),
                     fontSize = 18.sp,
@@ -197,8 +197,8 @@ fun CountryDialog(
                                              * Search by searchValue
                                              */
                                             filteredItems = countryList.filter {
-                                                it.cNames.contains(searchStr, ignoreCase = true) ||
-                                                    it.countryPhoneCode.contains(
+                                                it.cCountryName.contains(searchStr, ignoreCase = true) ||
+                                                    it.cCountryPhoneNoCode.contains(
                                                         searchStr,
                                                         ignoreCase = true,
                                                     ) ||
@@ -294,7 +294,7 @@ fun CountryDialog(
                                 }
 
                                 Text(
-                                    text = countryItem.countryPhoneCode,
+                                    text = countryItem.cCountryPhoneNoCode,
                                 )
                             }
                         }

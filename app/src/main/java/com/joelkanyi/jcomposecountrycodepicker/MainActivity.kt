@@ -19,20 +19,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.joelkanyi.jcomposecountrycodepicker.component.ComposeCountryCodePicker
-import com.joelkanyi.jcomposecountrycodepicker.component.getCountryCodeWithoutPrefix
-import com.joelkanyi.jcomposecountrycodepicker.component.getCountryName
-import com.joelkanyi.jcomposecountrycodepicker.component.getCountryPhoneCode
-import com.joelkanyi.jcomposecountrycodepicker.component.getCountryPhoneCodeWithoutPrefix
-import com.joelkanyi.jcomposecountrycodepicker.component.getFullPhoneNumber
-import com.joelkanyi.jcomposecountrycodepicker.component.getFullPhoneNumberWithoutPrefix
-import com.joelkanyi.jcomposecountrycodepicker.component.getPhoneNumber
-import com.joelkanyi.jcomposecountrycodepicker.component.getPhoneNumberWithoutPrefix
-import com.joelkanyi.jcomposecountrycodepicker.component.isPhoneNumberValid
+import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
+import com.joelkanyi.jcomposecountrycodepicker.component.CountryCodePicker
 import com.joelkanyi.jcomposecountrycodepicker.ui.theme.ComposePickerTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,8 +42,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.primary,
                     false,
                 )
-                val context = LocalContext.current
-
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
@@ -104,7 +93,7 @@ class MainActivity : ComponentActivity() {
                              */
                             Text(text = "Country Phone No Code: ")
                             Text(
-                                text = getCountryPhoneCodeWithoutPrefix(),
+                                text = CountryCodePicker.getCountryPhoneCodeWithoutPrefix(),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
@@ -120,7 +109,7 @@ class MainActivity : ComponentActivity() {
                              */
                             Text(text = "Prefixed Country Phone No Code: ")
                             Text(
-                                text = getCountryPhoneCode(),
+                                text = CountryCodePicker.getCountryPhoneCode(),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
@@ -137,7 +126,7 @@ class MainActivity : ComponentActivity() {
                              */
                             Text(text = "Country Name: ")
                             Text(
-                                text = getCountryName(),
+                                text = CountryCodePicker.getCountryName(),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
@@ -154,7 +143,8 @@ class MainActivity : ComponentActivity() {
                              */
                             Text(text = "Country Language Code: ")
                             Text(
-                                text = getCountryCodeWithoutPrefix().uppercase(),
+                                text = CountryCodePicker.getCountryCodeWithoutPrefix()
+                                    .uppercase(),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
@@ -171,7 +161,7 @@ class MainActivity : ComponentActivity() {
                              */
                             Text(text = "Phone Number: ")
                             Text(
-                                text = getPhoneNumber(),
+                                text = CountryCodePicker.getPhoneNumber(),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
@@ -188,7 +178,7 @@ class MainActivity : ComponentActivity() {
                              */
                             Text(text = "Phone Number Without Prefix: ")
                             Text(
-                                text = getPhoneNumberWithoutPrefix(),
+                                text = CountryCodePicker.getPhoneNumberWithoutPrefix(),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
@@ -205,7 +195,7 @@ class MainActivity : ComponentActivity() {
                              */
                             Text(text = "Full Phone Number: ")
                             Text(
-                                text = getFullPhoneNumber(),
+                                text = CountryCodePicker.getFullPhoneNumber(),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
@@ -222,7 +212,7 @@ class MainActivity : ComponentActivity() {
                              */
                             Text(text = "Full Phone Number Without Prefix: ")
                             Text(
-                                text = getFullPhoneNumberWithoutPrefix(),
+                                text = CountryCodePicker.getFullPhoneNumberWithoutPrefix(),
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
@@ -239,8 +229,8 @@ class MainActivity : ComponentActivity() {
                              */
                             Text(text = "Phone Number State: ")
                             Text(
-                                text = if (isPhoneNumberValid()) "Valid" else "Invalid",
-                                color = if (isPhoneNumberValid()) Color.Green else Color.Red,
+                                text = if (CountryCodePicker.isPhoneNumberValid()) "Valid" else "Invalid",
+                                color = if (CountryCodePicker.isPhoneNumberValid()) Color.Green else Color.Red,
                                 style = MaterialTheme.typography.titleSmall.copy(
                                     fontWeight = FontWeight.ExtraBold,
                                 ),
@@ -264,7 +254,7 @@ fun CountryCodePick() {
     ) {
         val phoneNumber = rememberSaveable { mutableStateOf("") }
 
-        ComposeCountryCodePicker(
+        KomposeCountryCodePicker(
             modifier = Modifier
                 .fillMaxWidth(),
             text = phoneNumber.value,
@@ -275,7 +265,6 @@ fun CountryCodePick() {
                 unfocusedContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
             ),
-            limitedCountries = listOf("+254", "+256", "+255", "+234", "Kenya", "Rwanda", "254"),
         )
     }
 }

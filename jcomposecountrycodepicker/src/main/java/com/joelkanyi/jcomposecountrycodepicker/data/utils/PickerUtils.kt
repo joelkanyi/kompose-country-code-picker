@@ -17,14 +17,8 @@ fun getDefaultLangCode(context: Context): String {
 
 fun getDefaultPhoneCode(context: Context): String {
     val defaultCountry = getDefaultLangCode(context)
-    val defaultCode: CountryData = getLibCountries.first { it.countryCode == defaultCountry }
-    return defaultCode.countryPhoneCode.ifBlank { "+90" }
-}
-
-fun getDefaultPhoneCodeWithoutPrefix(context: Context): String {
-    val defaultCountry = getDefaultLangCode(context)
-    val defaultCode: CountryData = getLibCountries.first { it.countryCode == defaultCountry }
-    return defaultCode.countryPhoneCode.ifBlank { "90" }.removePrefix("+")
+    val defaultCode: CountryData = allCountries.first { it.countryCode == defaultCountry }
+    return defaultCode.cCountryPhoneNoCode.ifBlank { "+90" }
 }
 
 fun isValid(phoneNumberStr: String): Boolean {
@@ -39,4 +33,8 @@ fun isValid(phoneNumberStr: String): Boolean {
         e.printStackTrace()
         false
     }
+}
+
+fun String.removeSpecialCharacters(): String {
+    return this.replace("[^0-9]".toRegex(), "")
 }

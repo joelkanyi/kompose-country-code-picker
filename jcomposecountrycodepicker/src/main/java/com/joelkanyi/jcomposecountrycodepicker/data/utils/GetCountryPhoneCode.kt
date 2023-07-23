@@ -2,12 +2,12 @@ package com.joelkanyi.jcomposecountrycodepicker.data.utils
 
 import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
 
-val getLibCountries = listOf(
-    CountryData(cCodes = "ad", countryPhoneCode = "+376", cNames = "Andorra"),
-    CountryData("ae", "+971", "United Arab Emirates (UAE)"),
-    CountryData("af", "+93", "Afghanistan"),
-    CountryData("ag", "+1", "Antigua and Barbuda"),
-    CountryData("ai", "+1", "Anguilla"),
+val allCountries = listOf(
+    CountryData(cCountryCode = "ad", cCountryPhoneNoCode = "+376", cCountryName = "Andorra"),
+    CountryData(cCountryCode = "ae", cCountryPhoneNoCode = "+971", cCountryName = "United Arab Emirates (UAE)"),
+    CountryData(cCountryCode = "af", cCountryPhoneNoCode = "+93", cCountryName = "Afghanistan"),
+    CountryData(cCountryCode = "ag", cCountryPhoneNoCode = "+1", cCountryName = "Antigua and Barbuda"),
+    CountryData(cCountryCode = "ai", cCountryPhoneNoCode = "+1", cCountryName = "Anguilla"),
     CountryData("al", "+355", "Albania"),
     CountryData("am", "+374", "Armenia"),
     CountryData("ao", "+244", "Angola"),

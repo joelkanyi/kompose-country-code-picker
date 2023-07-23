@@ -19,20 +19,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.input.KeyboardType
 import com.joelkanyi.ccp.transformation.PhoneNumberTransformation
-import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
+import com.joelkanyi.jcomposecountrycodepicker.data.utils.allCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultLangCode
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultPhoneCode
-import com.joelkanyi.jcomposecountrycodepicker.data.utils.getLibCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getNumberHint
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.isValid
+import com.joelkanyi.jcomposecountrycodepicker.data.utils.removeSpecialCharacters
 import java.util.Locale
 
 private var fullNumberState: String by mutableStateOf("")
@@ -41,18 +39,17 @@ private var countryCodeState: String by mutableStateOf("")
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ComposeCountryCodePicker(
+fun KomposeCountryCodePicker(
     modifier: Modifier = Modifier,
     text: String,
     onValueChange: (String) -> Unit,
     shape: Shape = MaterialTheme.shapes.medium,
-    color: Color = MaterialTheme.colorScheme.background,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
     limitedCountries: List<String> = emptyList(),
     error: Boolean = false,
     placeholder: @Composable ((defaultLang: String) -> Unit) = { defaultLang ->
-        Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())))
+        Text(text = stringResource(id = getNumberHint(allCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())))
     },
     colors: TextFieldColors = TextFieldDefaults.colors(),
 ) {
@@ -76,7 +73,7 @@ fun ComposeCountryCodePicker(
     phoneNumberState = textFieldValue
     countryCodeState = defaultLang
 
-    Surface(color = color) {
+    Surface {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -95,7 +92,7 @@ fun ComposeCountryCodePicker(
                     singleLine = true,
                     colors = colors,
                     isError = error,
-                    visualTransformation = PhoneNumberTransformation(getLibCountries.single { it.countryCode == defaultLang }.countryCode.uppercase()),
+                    visualTransformation = PhoneNumberTransformation(allCountries.single { it.countryCode == defaultLang }.countryCode.uppercase()),
                     placeholder = {
                         placeholder(defaultLang)
                     },
@@ -111,10 +108,10 @@ fun ComposeCountryCodePicker(
                     leadingIcon = {
                         ComposePickerCodeDialog(
                             pickedCountry = {
-                                phoneCode = it.countryPhoneCode
+                                phoneCode = it.cCountryPhoneNoCode
                                 defaultLang = it.countryCode
                             },
-                            defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
+                            defaultSelectedCountry = allCountries.single { it.countryCode == defaultLang },
                             showCountryCode = showCountryCode,
                             showFlag = showCountryFlag,
                             limitedCountries = limitedCountries,
@@ -126,68 +123,56 @@ fun ComposeCountryCodePicker(
     }
 }
 
-fun getCountryCodeWithoutPrefix(): String {
-    return countryCodeState
-}
+object CountryCodePicker {
+    fun getCountryCodeWithoutPrefix(): String {
+        return countryCodeState
+    }
 
-fun getCountryName(): String {
-    return getLibCountries.single { it.countryCode == countryCodeState }.cNames.capitalize(Locale.getDefault())
-}
+    fun getCountryName(): String {
+        return allCountries.single { it.countryCode == countryCodeState }.cCountryName.capitalize(
+            Locale.getDefault(),
+        )
+    }
 
-fun getCountryPhoneCode(): String {
-    return getLibCountries.single { it.countryCode == countryCodeState }.countryPhoneCode
-}
+    fun getCountryPhoneCode(): String {
+        return allCountries.single { it.countryCode == countryCodeState }.cCountryPhoneNoCode
+    }
 
-fun getCountryPhoneCodeWithoutPrefix(): String {
-    return getLibCountries.single { it.countryCode == countryCodeState }.countryPhoneCode.removePrefix(
-        "+",
-    )
-}
+    fun getCountryPhoneCodeWithoutPrefix(): String {
+        return allCountries.single { it.countryCode == countryCodeState }.cCountryPhoneNoCode.removePrefix(
+            "+",
+        )
+    }
 
-fun getPhoneNumber(): String {
-    /**
-     * If it does not start with 0, it adds 0 to the beginning.
-     */
-    return if (phoneNumberState.startsWith("0")) {
-        phoneNumberState.removeSpecialCharacters()
-    } else {
-        "0${phoneNumberState.removeSpecialCharacters()}"
+    fun getPhoneNumber(): String {
+        return if (phoneNumberState.startsWith("0")) {
+            phoneNumberState.removeSpecialCharacters()
+        } else {
+            "0${phoneNumberState.removeSpecialCharacters()}"
+        }
+    }
+
+    fun getPhoneNumberWithoutPrefix(): String {
+        return phoneNumberState.removeSpecialCharacters().removePrefix("0")
+    }
+
+    fun getFullPhoneNumberWithoutPrefix(): String {
+        return getCountryPhoneCodeWithoutPrefix() + phoneNumberState.removeSpecialCharacters()
+            .removePrefix("0")
+    }
+
+    fun getFullPhoneNumber(): String {
+        return getCountryPhoneCode() + phoneNumberState.removeSpecialCharacters()
+    }
+
+    fun isPhoneNumberValid(): Boolean {
+        return isValid(getFullPhoneNumber())
     }
 }
 
-fun getPhoneNumberWithoutPrefix(): String {
-    return phoneNumberState.removeSpecialCharacters().removePrefix("0")
-}
-
-fun getFullPhoneNumberWithoutPrefix(): String {
-    return getCountryPhoneCodeWithoutPrefix() + phoneNumberState.removeSpecialCharacters()
-        .removePrefix("0")
-}
-
-fun getFullPhoneNumber(): String {
-    return getCountryPhoneCode() + phoneNumberState.removeSpecialCharacters()
-}
-
-fun isPhoneNumberValid(): Boolean {
-    return isValid(getFullPhoneNumber())
-}
-
 /**
- * Remove spaces, parentheses, and dashes and any special characters from the phone number.
- */
-fun String.removeSpecialCharacters(): String {
-    return this.replace("[^0-9]".toRegex(), "")
-}
-
-/**
- * TODO: Add a functionality where you can specify the countries that you want in the list.
  * TODO: Add capability to ony have the code picker without the text field.
  * TODO: Document functions.
  * TODO: Fix the search functionality.
  * TODO: Fix phone number validation for some countries like UK.
  */
-
-//  * TODO: Add a functionality where you can specify the countries that you want in the list.
-fun onlyCountries(countries: List<String>): List<CountryData> {
-    return getLibCountries.filter { countries.contains(it.countryCode) }
-}

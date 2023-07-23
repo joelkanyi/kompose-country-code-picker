@@ -4,10 +4,10 @@ import com.joelkanyi.jcomposecountrycodepicker.R
 import java.util.*
 
 data class CountryData(
-    private var cCodes: String,
-    val countryPhoneCode: String = "+90",
-    val cNames: String = "tr",
-    val flagResID: Int = R.drawable.tr,
+    private var cCountryCode: String,
+    val cCountryPhoneNoCode: String,
+    val cCountryName: String,
+    val cCountryFlag: Int = R.drawable.tr,
 ) {
-    val countryCode = cCodes.lowercase(Locale.getDefault())
+    val countryCode = cCountryCode.lowercase(Locale.getDefault())
 }
