@@ -29,7 +29,7 @@ Add the following to your `build.gradle` dependencies:
 
 ```groovy
 dependencies {
-    implementation("com.joelkanyi:kompose-country-code-picker:<version>")
+    implementation("com.github.JoelKanyi:KomposeCountryCodePicker:<version>")
 }
 ```
 

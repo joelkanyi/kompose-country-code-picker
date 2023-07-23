@@ -15,6 +15,6 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "JetpackComposeCountryCodePicker"
+rootProject.name = "KomposeCountryCodePicker"
 include ':app'
 include ':jcomposecountrycodepicker'
