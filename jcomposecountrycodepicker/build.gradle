@@ -44,18 +44,8 @@ android {
 }
 
 dependencies {
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-
-    //noinspection GradleDependency
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.activity:activity-compose:$activity_compose_version"
     implementation("androidx.compose.material3:material3:1.1.1")
-    implementation("androidx.compose.material3:material3-window-size-class:1.1.1")
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.7'
-
 }
 
 afterEvaluate {
