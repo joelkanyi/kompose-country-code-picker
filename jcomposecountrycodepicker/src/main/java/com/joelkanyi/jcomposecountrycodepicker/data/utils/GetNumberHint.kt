@@ -2,6 +2,10 @@ package com.joelkanyi.jcomposecountrycodepicker.data.utils
 
 import com.joelkanyi.jcomposecountrycodepicker.R
 
+/**
+ * [getNumberHint] Returns the hint of the country.
+ * [countryName] The name of the country.
+ */
 fun getNumberHint(countryName: String): Int {
     return when (countryName) {
         "ad" -> R.string.andorra_hint

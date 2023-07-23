@@ -9,12 +9,20 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import java.util.*
 
+/**
+ * [PhoneNumberTransformation] is a visual transformation that formats the phone number.
+ * [countryCode] The country code of the phone number.
+ */
 class PhoneNumberTransformation(countryCode: String = Locale.getDefault().country) :
     VisualTransformation {
 
     private val phoneNumberFormatter =
         PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode)
 
+    /**
+     * [filter] Returns the formatted phone number.
+     * [text] The phone number.
+     */
     override fun filter(text: AnnotatedString): TransformedText {
         val transformation =
             reformat(text, Selection.getSelectionEnd(text))
@@ -37,6 +45,11 @@ class PhoneNumberTransformation(countryCode: String = Locale.getDefault().countr
         )
     }
 
+    /**
+     * [reformat] Returns the formatted phone number.
+     * [s] The phone number.
+     * [cursor] The cursor position.
+     */
     private fun reformat(s: CharSequence, cursor: Int): Transformation {
         phoneNumberFormatter.clear()
 
@@ -78,6 +91,11 @@ class PhoneNumberTransformation(countryCode: String = Locale.getDefault().countr
         return Transformation(formatted, originalToTransformed, transformedToOriginal)
     }
 
+    /**
+     * [getFormattedNumber] Returns the formatted phone number.
+     * [lastNonSeparator] The last non separator character of the phone number.
+     * [hasCursor] If true, the cursor is at the end of the phone number.
+     */
     private fun getFormattedNumber(lastNonSeparator: Char, hasCursor: Boolean): String? {
         return if (hasCursor) {
             phoneNumberFormatter.inputDigitAndRememberPosition(lastNonSeparator)
@@ -86,6 +104,9 @@ class PhoneNumberTransformation(countryCode: String = Locale.getDefault().countr
         }
     }
 
+    /**
+     * [Transformation] is a data class that holds the data of the formatted phone number.
+     */
     private data class Transformation(
         val formatted: String?,
         val originalToTransformed: List<Int>,

@@ -53,6 +53,17 @@ import com.joelkanyi.jcomposecountrycodepicker.data.utils.allCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getCountryName
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getFlags
 
+/**
+ * [KomposeCountryCodePickerDialog] is a composable that displays a dialog with a list of countries.
+ * [modifier] Modifier to be applied to the layout.
+ * [padding] The padding to be applied to the layout.
+ * [limitedCountries] If not empty, only the countries in the list will be shown in the dialog.
+ * [defaultSelectedCountry] The default selected country.
+ * [showCountryCode] If true, the country code will be shown in the text field.
+ * [pickedCountry] Called when the country is picked.
+ * [showFlag] If true, the country flag will be shown in the text field.
+ * [showCountryName] If true, the country name will be shown in the text field.
+ */
 @Composable
 fun KomposeCountryCodePickerDialog(
     modifier: Modifier = Modifier,
@@ -143,6 +154,15 @@ fun KomposeCountryCodePickerDialog(
     }
 }
 
+/**
+ * [KomposeCountryDialog] is a composable that displays a dialog with a list of countries.
+ * [modifier] Modifier to be applied to the layout.
+ * [countryList] The list of countries to be displayed in the dialog.
+ * [onDismissRequest] Called when the dialog is dismissed.
+ * [onSelected] Called when a country is selected.
+ * [dialogStatus] The status of the dialog.
+ * [properties] The properties of the dialog.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KomposeCountryDialog(

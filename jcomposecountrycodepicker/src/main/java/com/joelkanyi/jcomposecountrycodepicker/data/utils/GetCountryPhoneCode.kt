@@ -2,6 +2,9 @@ package com.joelkanyi.jcomposecountrycodepicker.data.utils
 
 import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
 
+/**
+ * [allCountries] is a list of all countries in the world sorted alphabetically.
+ */
 val allCountries = listOf(
     CountryData(cCountryCode = "ad", cCountryPhoneNoCode = "+376", cCountryName = "Andorra"),
     CountryData(

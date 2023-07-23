@@ -2,6 +2,10 @@ package com.joelkanyi.jcomposecountrycodepicker.data.utils
 
 import com.joelkanyi.jcomposecountrycodepicker.R
 
+/**
+ * [getCountryName] Returns the name of the country.
+ * [countryName] The name of the country.
+ */
 fun getCountryName(countryName: String): Int {
     return when (countryName) {
         "ad" -> R.string.andorra

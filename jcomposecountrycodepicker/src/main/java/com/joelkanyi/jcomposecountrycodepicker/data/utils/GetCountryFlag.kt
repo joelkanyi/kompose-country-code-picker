@@ -2,6 +2,10 @@ package com.joelkanyi.jcomposecountrycodepicker.data.utils
 
 import com.joelkanyi.jcomposecountrycodepicker.R
 
+/**
+ * [getFlags] Returns the flag of the country.
+ * [countryName] The name of the country.
+ */
 fun getFlags(countryName: String): Int {
     return when (countryName) {
         "ad" -> R.drawable.ad

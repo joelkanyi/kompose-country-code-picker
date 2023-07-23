@@ -24,19 +24,32 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import com.joelkanyi.jcomposecountrycodepicker.transformation.PhoneNumberTransformation
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.allCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultLangCode
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultPhoneCode
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getNumberHint
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.isValid
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.removeSpecialCharacters
+import com.joelkanyi.jcomposecountrycodepicker.transformation.PhoneNumberTransformation
 import java.util.Locale
 
 private var fullNumberState: String by mutableStateOf("")
 private var phoneNumberState: String by mutableStateOf("")
 private var countryCodeState: String by mutableStateOf("")
 
+/**
+ * [KomposeCountryCodePicker] is a composable that displays a text field with a country code picker dialog.
+ * [modifier] Modifier to be applied to the layout.
+ * [text] The text to be displayed in the text field.
+ * [onValueChange] Called when the value is changed.
+ * [shape] The shape of the text field's outline.
+ * [showCountryCode] If true, the country code will be shown in the text field.
+ * [showCountryFlag] If true, the country flag will be shown in the text field.
+ * [limitedCountries] If not empty, only the countries in the list will be shown in the dialog.
+ * [error] If true, the text field will be displayed in the error state.
+ * [placeholder] The placeholder to be displayed in the text field.
+ * [colors] The colors to be used to display the text field.
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun KomposeCountryCodePicker(
@@ -124,26 +137,42 @@ fun KomposeCountryCodePicker(
 }
 
 object CountryCodePicker {
+
+    /**
+     * Returns the selected country language code.
+     */
     fun getCountryCodeWithoutPrefix(): String {
         return countryCodeState
     }
 
+    /**
+     * Returns the selected country name.
+     */
     fun getCountryName(): String {
         return allCountries.single { it.countryCode == countryCodeState }.cCountryName.capitalize(
             Locale.getDefault(),
         )
     }
 
+    /**
+     * Returns the selected country phone code.
+     */
     fun getCountryPhoneCode(): String {
         return allCountries.single { it.countryCode == countryCodeState }.cCountryPhoneNoCode
     }
 
+    /**
+     * Returns the selected country phone code without the plus sign.
+     */
     fun getCountryPhoneCodeWithoutPrefix(): String {
         return allCountries.single { it.countryCode == countryCodeState }.cCountryPhoneNoCode.removePrefix(
             "+",
         )
     }
 
+    /**
+     * Returns phone number without the country phone code.
+     */
     fun getPhoneNumber(): String {
         return if (phoneNumberState.startsWith("0")) {
             phoneNumberState.removeSpecialCharacters()
@@ -152,27 +181,32 @@ object CountryCodePicker {
         }
     }
 
+    /**
+     * Returns phone number without the country phone code and without the zero prefix.
+     */
     fun getPhoneNumberWithoutPrefix(): String {
         return phoneNumberState.removeSpecialCharacters().removePrefix("0")
     }
 
+    /**
+     * Returns phone number with the country phone code without the + prefix.
+     */
     fun getFullPhoneNumberWithoutPrefix(): String {
         return getCountryPhoneCodeWithoutPrefix() + phoneNumberState.removeSpecialCharacters()
             .removePrefix("0")
     }
 
+    /**
+     * Returns phone number with the country phone code and with the + prefix.
+     */
     fun getFullPhoneNumber(): String {
         return getCountryPhoneCode() + phoneNumberState.removeSpecialCharacters()
     }
 
+    /**
+     * Returns if the phone number is valid or not.
+     */
     fun isPhoneNumberValid(): Boolean {
         return isValid(getFullPhoneNumber())
     }
 }
-
-/**
- * TODO: Add capability to ony have the code picker without the text field.
- * TODO: Document functions.
- * TODO: Fix the search functionality.
- * TODO: Fix phone number validation for some countries like UK.
- */
