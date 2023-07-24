@@ -1,7 +1,6 @@
 package com.joelkanyi.jcomposecountrycodepicker.component
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -49,16 +48,18 @@ private var countryCodeState: String by mutableStateOf("")
  * [error] If true, the text field will be displayed in the error state.
  * [placeholder] The placeholder to be displayed in the text field.
  * [colors] The colors to be used to display the text field.
+ * [showOnlyCountryCodePicker] If true, only the country code picker dialog will be shown.
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun KomposeCountryCodePicker(
     modifier: Modifier = Modifier,
-    text: String,
-    onValueChange: (String) -> Unit,
+    text: String = "",
+    onValueChange: (String) -> Unit = {},
     shape: Shape = MaterialTheme.shapes.medium,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
+    showOnlyCountryCodePicker: Boolean = false,
     limitedCountries: List<String> = emptyList(),
     error: Boolean = false,
     placeholder: @Composable ((defaultLang: String) -> Unit) = { defaultLang ->
@@ -87,7 +88,19 @@ fun KomposeCountryCodePicker(
     countryCodeState = defaultLang
 
     Surface {
-        Column {
+        if (showOnlyCountryCodePicker) {
+            KomposeCountryCodePickerDialog(
+                modifier = modifier,
+                pickedCountry = {
+                    phoneCode = it.cCountryPhoneNoCode
+                    defaultLang = it.countryCode
+                },
+                defaultSelectedCountry = allCountries.single { it.countryCode == defaultLang },
+                showCountryCode = showCountryCode,
+                showFlag = showCountryFlag,
+                limitedCountries = limitedCountries,
+            )
+        } else {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
@@ -206,7 +219,7 @@ object CountryCodePicker {
     /**
      * Returns if the phone number is valid or not.
      */
-    fun isPhoneNumberValid(): Boolean {
-        return isValid(getFullPhoneNumber())
+    fun isPhoneNumberValid(phoneNumber: String = getFullPhoneNumber()): Boolean {
+        return isValid(phoneNumber)
     }
 }

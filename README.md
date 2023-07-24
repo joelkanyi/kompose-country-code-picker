@@ -7,9 +7,9 @@
 Kompose Country Code Picker is a Jetpack Compose library based on Material 3 (M3) that provides a country code picker for Android apps.
 
 ## Preview
-Picker   |   Dialog
------------------   |   -----------------
-<img src="screenshot/kompose-picker-textfield.png" width="250"/>   |   <img src="screenshot/kompose-picker-dialog.png" width="250"/>
+Picker   |   Dialog | Picker Only
+-----------------   |   ----------------- | -----------------
+<img src="screenshot/kompose-picker-textfield.png" width="250"/>   |   <img src="screenshot/kompose-picker-dialog.png" width="250"/> | <img src="screenshot/kompose-picker-only.png" width="250"/>
 
 ## Requirements
 Jetpack compose material three dependency - `implementation("androidx.compose.material3:material3:1.1.1")`
@@ -53,6 +53,44 @@ KomposeCountryCodePicker(
 )
 ```
 
+## KomposeCountryCodePicker Composable without TextField
+With the `showOnlyCountryCodePicker` parameter set to `true`, the `KomposeCountryCodePicker` composable can be used without the `TextField` composable but you can't use all methods. You can only use  the following methods:
+- `CountryCodePicker.getCountryPhoneCodeWithoutPrefix()`
+- `CountryCodePicker.getCountryPhoneCode()`
+- `CountryCodePicker.isPhoneNumberValid(<combinedPhone>)` - You will need to manually combine the country code and phone number
+```kotlin
+KomposeCountryCodePicker(
+    modifier = Modifier,
+    showOnlyCountryCodePicker = true,
+    showCountryFlag = false,
+)
+```
+
+## Integration with TextField
+
+```kotlin
+val phoneNumber = rememberSaveable { mutableStateOf("") }
+
+TextField(
+    modifier = Modifier
+        .fillMaxWidth(),
+    value = phoneNumber.value,
+    onValueChange = { phoneNumber.value = it },
+    placeholder = { Text(text = "Phone Number") },
+    leadingIcon = {
+        KomposeCountryCodePicker(
+            modifier = Modifier,
+            showOnlyCountryCodePicker = true,
+            showCountryFlag = false,
+        )
+    },
+    colors = TextFieldDefaults.colors(
+        unfocusedContainerColor = Color.Transparent,
+        focusedContainerColor = Color.Transparent,
+    ),
+)
+```
+
 ## KomposeCountryCodePicker Composable customizations
 Customization | Description
 ------------     |   -------------
@@ -63,6 +101,7 @@ Customization | Description
 `showCountryFlag`  | Shows the country flag in the country code picker `TextField`
 `error`  | Sets the error state on the `TextField` for the country code picker
 `colors`  | Sets the colors for the country code picker `TextField`
+`showOnlyCountryCodePicker`  | Shows only the country code picker without the `TextField`
 
 
 ## Available methods
