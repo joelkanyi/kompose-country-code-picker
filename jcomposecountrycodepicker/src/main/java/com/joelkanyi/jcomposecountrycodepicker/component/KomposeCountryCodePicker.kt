@@ -49,6 +49,7 @@ private var countryCodeState: String by mutableStateOf("")
  * [placeholder] The placeholder to be displayed in the text field.
  * [colors] The colors to be used to display the text field.
  * [showOnlyCountryCodePicker] If true, only the country code picker dialog will be shown.
+ * [trailingIcon] The trailing icon to be displayed in the text field.
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -66,6 +67,7 @@ fun KomposeCountryCodePicker(
         Text(text = stringResource(id = getNumberHint(allCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())))
     },
     colors: TextFieldColors = TextFieldDefaults.colors(),
+    trailingIcon: @Composable (() -> Unit) = {},
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -143,6 +145,7 @@ fun KomposeCountryCodePicker(
                             limitedCountries = limitedCountries,
                         )
                     },
+                    trailingIcon = trailingIcon,
                 )
             }
         }
