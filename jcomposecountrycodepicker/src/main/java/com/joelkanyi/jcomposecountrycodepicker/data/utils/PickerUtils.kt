@@ -2,6 +2,7 @@ package com.joelkanyi.jcomposecountrycodepicker.data.utils
 
 import android.content.Context
 import android.telephony.TelephonyManager
+import android.util.Log
 import androidx.compose.ui.text.intl.Locale
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
@@ -12,11 +13,16 @@ import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
  * [context] The context of the activity or fragment.
  */
 fun getDefaultLangCode(context: Context): String {
-    val localeCode: TelephonyManager =
-        context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-    val countryCode = localeCode.networkCountryIso
-    val defaultLocale = Locale.current.language
-    return countryCode.ifBlank { defaultLocale }
+    return try {
+        val localeCode: TelephonyManager =
+            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val countryCode = localeCode.networkCountryIso
+        val defaultLocale = Locale.current.language
+        return countryCode ?: defaultLocale
+    } catch (e: Exception) {
+        Log.e("TAG", "getDefaultLangCode: ${e.message}")
+        "US"
+    }
 }
 
 /**
@@ -24,9 +30,15 @@ fun getDefaultLangCode(context: Context): String {
  * [context] The context of the activity or fragment.
  */
 fun getDefaultPhoneCode(context: Context): String {
-    val defaultCountry = getDefaultLangCode(context)
-    val defaultCode: CountryData = allCountries.first { it.countryCode == defaultCountry }
-    return defaultCode.cCountryPhoneNoCode.ifBlank { "+90" }
+    return try {
+        val defaultCountry = getDefaultLangCode(context)
+        val defaultCode: CountryData? =
+            allCountries.firstOrNull { it.countryCode == defaultCountry }
+        return defaultCode?.cCountryPhoneNoCode ?: "+1"
+    } catch (e: NumberParseException) {
+        Log.e("TAG", "getDefaultPhoneCode: ${e.message}")
+        "+1"
+    }
 }
 
 /**

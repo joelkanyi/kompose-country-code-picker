@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.joelkanyi.jcomposecountrycodepicker"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -46,6 +46,9 @@ android {
 }
 
 dependencies {
+    def activity_compose_version = '1.7.0'
+    def core_ktx_version = '1.10.0'
+    def lifecycle_version = '2.6.1'
 
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "androidx.compose.ui:ui:$compose_version"

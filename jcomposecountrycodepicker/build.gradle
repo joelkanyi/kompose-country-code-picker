@@ -33,7 +33,6 @@ android {
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
     }
     composeOptions {
-        // https://androidx.dev/storage/compose-compiler/repository/
         kotlinCompilerExtensionVersion "$compose_compiler_version"
     }
     packagingOptions {
@@ -55,7 +54,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.joelkanyi'
                 artifactId = 'kompose-country-code-picker'
-                version = '1.0.0'
+                version = '1.0.4'
             }
         })
     }
