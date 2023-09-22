@@ -76,7 +76,14 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxWidth(),
                             text = phoneNumber.value,
                             onValueChange = { phoneNumber.value = it },
-                            placeholder = { Text(text = "Phone Number") },
+                            placeholder = {
+                                Text(
+                                    text = "Phone Number",
+                                    style = MaterialTheme.typography.labelMedium.copy(
+                                        fontWeight = FontWeight.ExtraLight,
+                                    ),
+                                )
+                            },
                             shape = MaterialTheme.shapes.medium,
                             colors = TextFieldDefaults.colors(
                                 unfocusedContainerColor = Color.Transparent,

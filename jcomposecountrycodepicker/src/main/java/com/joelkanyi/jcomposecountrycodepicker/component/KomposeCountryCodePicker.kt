@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.allCountries
 import com.joelkanyi.jcomposecountrycodepicker.data.utils.getDefaultLangCode
@@ -64,7 +65,12 @@ fun KomposeCountryCodePicker(
     limitedCountries: List<String> = emptyList(),
     error: Boolean = false,
     placeholder: @Composable ((defaultLang: String) -> Unit) = { defaultLang ->
-        Text(text = stringResource(id = getNumberHint(allCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())))
+        Text(
+            text = stringResource(id = getNumberHint(allCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())),
+            style = MaterialTheme.typography.labelMedium.copy(
+                fontWeight = FontWeight.ExtraLight,
+            ),
+        )
     },
     colors: TextFieldColors = TextFieldDefaults.colors(),
     trailingIcon: @Composable (() -> Unit) = {},
