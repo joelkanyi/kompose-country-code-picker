@@ -171,9 +171,7 @@ object CountryCodePicker {
      * Returns the selected country name.
      */
     fun getCountryName(): String {
-        return allCountries.single { it.countryCode == countryCodeState }.cCountryName.capitalize(
-            Locale.getDefault(),
-        )
+        return allCountries.single { it.countryCode == countryCodeState }.cCountryName.replaceFirstChar { it.uppercase(Locale.getDefault()) }
     }
 
     /**
