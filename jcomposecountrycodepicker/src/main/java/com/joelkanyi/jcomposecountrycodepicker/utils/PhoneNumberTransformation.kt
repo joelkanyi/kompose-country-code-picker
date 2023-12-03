@@ -1,4 +1,19 @@
-package com.joelkanyi.jcomposecountrycodepicker.transformation
+/*
+ * Copyright 2023 Joel Kanyi.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.joelkanyi.jcomposecountrycodepicker.utils
 
 import android.telephony.PhoneNumberUtils
 import android.text.Selection
@@ -7,13 +22,13 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import java.util.*
+import com.joelkanyi.jcomposecountrycodepicker.data.Transformation
 
 /**
  * [PhoneNumberTransformation] is a visual transformation that formats the phone number.
  * [countryCode] The country code of the phone number.
  */
-class PhoneNumberTransformation(countryCode: String = Locale.getDefault().country) :
+internal class PhoneNumberTransformation(countryCode: String) :
     VisualTransformation {
 
     private val phoneNumberFormatter =
@@ -103,13 +118,4 @@ class PhoneNumberTransformation(countryCode: String = Locale.getDefault().countr
             phoneNumberFormatter.inputDigit(lastNonSeparator)
         }
     }
-
-    /**
-     * [Transformation] is a data class that holds the data of the formatted phone number.
-     */
-    private data class Transformation(
-        val formatted: String?,
-        val originalToTransformed: List<Int>,
-        val transformedToOriginal: List<Int>,
-    )
 }

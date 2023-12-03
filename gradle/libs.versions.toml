@@ -1,0 +1,23 @@
+[versions]
+agp = "7.4.2"
+kotlin = "1.9.10"
+accompanistSystemuicontroller = "0.30.1"
+activityCompose = "1.7.2"
+libphonenumber = "8.13.7"
+material3 = "1.1.2"
+composeCompiler = "1.5.3"
+ktx = "1.12.0"
+spotless = "5.17.1"
+
+[libraries]
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumber" }
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

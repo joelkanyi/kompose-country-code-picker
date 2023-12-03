@@ -13,4 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.joelkanyi.jcomposecountrycodepicker.ui.theme
+package com.joelkanyi.jcomposecountrycodepicker.data
+
+/**
+ * [Transformation] is a data class that holds the data of the formatted phone number.
+ */
+internal data class Transformation(
+    val formatted: String?,
+    val originalToTransformed: List<Int>,
+    val transformedToOriginal: List<Int>,
+)

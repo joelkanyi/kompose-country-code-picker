@@ -94,7 +94,7 @@ TextField(
 ## KomposeCountryCodePicker Composable customizations
 Customization | Description
 ------------     |   -------------
-`limitedCountries`   | Limits the list of countries to be displayed in the country code picker by specify the country codes, country names or country phone codes
+`limitedCountries`   | Limits the list of countries to be displayed in the country code picker by specify the country codes, country names or country phone codes i.e `listOf("KE", "UG", "TZ")`, `listOf("Kenya", "Uganda", "Tanzania")` or `listOf("+254", "+256", "+255")`
 `placeholder`   | Sets the placeholder `Composable` for the country code picker
 `shape`  | Sets the shape of the country code picker `TextField`
 `showCountryCode`  | Shows the country code in the country code picker `TextField`

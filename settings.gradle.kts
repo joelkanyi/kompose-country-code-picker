@@ -1,3 +1,4 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -10,11 +11,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url "https://androidx.dev/storage/compose-compiler/repository/"
-        }
+        maven(url = "https://androidx.dev/storage/compose-compiler/repository/")
     }
 }
 rootProject.name = "KomposeCountryCodePicker"
-include ':app'
-include ':jcomposecountrycodepicker'
+include(":app")
+include(":jcomposecountrycodepicker")

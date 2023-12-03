@@ -1,14 +1,24 @@
+/*
+ * Copyright 2023 Joel Kanyi.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.joelkanyi.jcomposecountrycodepicker.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -16,7 +26,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -36,160 +45,52 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
-import com.joelkanyi.jcomposecountrycodepicker.data.utils.allCountries
-import com.joelkanyi.jcomposecountrycodepicker.data.utils.getCountryName
-import com.joelkanyi.jcomposecountrycodepicker.data.utils.getFlags
+import com.joelkanyi.jcomposecountrycodepicker.utils.getCountryName
+import com.joelkanyi.jcomposecountrycodepicker.utils.getFlags
+import com.joelkanyi.jcomposecountrycodepicker.utils.searchForAnItem
 
 /**
- * [KomposeCountryCodePickerDialog] is a composable that displays a dialog with a list of countries.
- * [modifier] Modifier to be applied to the layout.
- * [padding] The padding to be applied to the layout.
- * [limitedCountries] If not empty, only the countries in the list will be shown in the dialog.
- * [defaultSelectedCountry] The default selected country.
- * [showCountryCode] If true, the country code will be shown in the text field.
- * [pickedCountry] Called when the country is picked.
- * [showFlag] If true, the country flag will be shown in the text field.
- * [showCountryName] If true, the country name will be shown in the text field.
- */
-@Composable
-fun KomposeCountryCodePickerDialog(
-    modifier: Modifier = Modifier,
-    padding: Dp = 8.dp,
-    limitedCountries: List<String>,
-    defaultSelectedCountry: CountryData = allCountries.first(),
-    showCountryCode: Boolean = true,
-    pickedCountry: (CountryData) -> Unit = {},
-    showFlag: Boolean = true,
-    showCountryName: Boolean = false,
-) {
-    val countryList: List<CountryData> = if (limitedCountries.isEmpty()) {
-        allCountries
-    } else {
-        allCountries.filter {
-            limitedCountries.contains(it.countryCode) ||
-                limitedCountries.contains(it.cCountryPhoneNoCode) ||
-                limitedCountries.contains(it.cCountryName)
-        }
-    }
-    var isPickCountry by remember {
-        mutableStateOf(defaultSelectedCountry)
-    }
-    var openKomposeCountryDialog by remember { mutableStateOf(false) }
-    val interactionSource = remember { MutableInteractionSource() }
-
-    Column(
-        modifier = modifier
-            .padding(padding)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-            ) {
-                openKomposeCountryDialog = true
-            },
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            if (showFlag) {
-                Image(
-                    modifier = modifier
-                        .width(28.dp)
-                        .height(18.dp),
-                    painter = painterResource(
-                        id = getFlags(
-                            isPickCountry.countryCode,
-                        ),
-                    ),
-                    contentDescription = null,
-                )
-            }
-            if (showCountryCode) {
-                Text(
-                    text = isPickCountry.cCountryPhoneNoCode,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(start = 4.dp),
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
-            }
-            if (showCountryName) {
-                Text(
-                    text = stringResource(id = getCountryName(isPickCountry.countryCode.lowercase())),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(start = 6.dp),
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
-            }
-        }
-
-        if (openKomposeCountryDialog) {
-            KomposeCountryDialog(
-                countryList = countryList,
-                onDismissRequest = { openKomposeCountryDialog = false },
-                dialogStatus = openKomposeCountryDialog,
-                onSelected = { countryItem ->
-                    pickedCountry(countryItem)
-                    isPickCountry = countryItem
-                    openKomposeCountryDialog = false
-                },
-            )
-        }
-    }
-}
-
-/**
- * [KomposeCountryDialog] is a composable that displays a dialog with a list of countries.
+ * [CountrySelectionDialog] is a composable that displays a dialog with a list of countries.
  * [modifier] Modifier to be applied to the layout.
  * [countryList] The list of countries to be displayed in the dialog.
  * [onDismissRequest] Called when the dialog is dismissed.
  * [onSelected] Called when a country is selected.
- * [dialogStatus] The status of the dialog.
  * [properties] The properties of the dialog.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun KomposeCountryDialog(
+fun CountrySelectionDialog(
     modifier: Modifier = Modifier,
     countryList: List<CountryData>,
     onDismissRequest: () -> Unit,
     onSelected: (item: CountryData) -> Unit,
-    dialogStatus: Boolean,
-    properties: DialogProperties = DialogProperties(),
+    properties: DialogProperties = DialogProperties().let {
+        DialogProperties(
+            dismissOnBackPress = it.dismissOnBackPress,
+            dismissOnClickOutside = it.dismissOnClickOutside,
+            securePolicy = it.securePolicy,
+            usePlatformDefaultWidth = false,
+        )
+    },
 ) {
     var searchValue by remember { mutableStateOf("") }
-    if (!dialogStatus) searchValue = ""
     var isSearch by remember { mutableStateOf(false) }
-    var filteredItems = mutableListOf<CountryData>()
+    var filteredItems by remember { mutableStateOf(countryList) }
 
     AlertDialog(
         modifier = Modifier
             .fillMaxSize(),
         onDismissRequest = onDismissRequest,
-        properties = properties.let {
-            DialogProperties(
-                dismissOnBackPress = it.dismissOnBackPress,
-                dismissOnClickOutside = it.dismissOnClickOutside,
-                securePolicy = it.securePolicy,
-                usePlatformDefaultWidth = false,
-            )
-        },
+        properties = properties,
         content = {
             Surface(
                 color = MaterialTheme.colorScheme.onSurface,
@@ -212,20 +113,7 @@ fun KomposeCountryDialog(
                                         value = searchValue,
                                         onValueChange = { searchStr ->
                                             searchValue = searchStr
-                                            filteredItems = countryList.filter {
-                                                it.cCountryName.contains(
-                                                    searchStr,
-                                                    ignoreCase = true,
-                                                ) ||
-                                                    it.cCountryPhoneNoCode.contains(
-                                                        searchStr,
-                                                        ignoreCase = true,
-                                                    ) ||
-                                                    it.countryCode.contains(
-                                                        searchStr,
-                                                        ignoreCase = true,
-                                                    )
-                                            }.toMutableList()
+                                            filteredItems = countryList.searchForAnItem(searchStr)
                                         },
                                         placeholder = {
                                             Text(
@@ -275,14 +163,20 @@ fun KomposeCountryDialog(
                         )
                     },
                 ) { paddingValues ->
-                    paddingValues.calculateBottomPadding()
-                    val items = if (searchValue.isEmpty()) {
-                        countryList
-                    } else {
-                        filteredItems
-                    }
-                    LazyColumn(Modifier.fillMaxSize()) {
-                        items(items) { countryItem ->
+                    LazyColumn(
+                        Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize(),
+                    ) {
+                        val countriesData =
+                            if (searchValue.isEmpty()) {
+                                countryList
+                            } else {
+                                filteredItems
+                            }
+
+                        items(countriesData) { countryItem ->
+                            println("CountrySelectionDialog: ${countryItem.cCountryName}")
                             ListItem(
                                 modifier = Modifier
                                     .fillMaxWidth()
