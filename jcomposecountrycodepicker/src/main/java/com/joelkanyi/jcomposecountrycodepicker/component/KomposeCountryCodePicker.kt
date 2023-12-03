@@ -82,6 +82,7 @@ internal var countryCodeState: String by mutableStateOf("")
  * [placeholder] The placeholder to be displayed in the text field.
  * [colors] The colors to be used to display the text field.
  * [trailingIcon] The trailing icon to be displayed in the text field.
+ * [defaultCountryCode] The default country code to be selected.
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -100,6 +101,7 @@ fun KomposeCountryCodePicker(
     },
     colors: TextFieldColors = TextFieldDefaults.colors(),
     trailingIcon: @Composable (() -> Unit) = {},
+    defaultCountryCode: String? = null,
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -113,7 +115,7 @@ fun KomposeCountryCodePicker(
     }
     var selectedLanguageCode by rememberSaveable {
         mutableStateOf(
-            getDefaultLangCode(context),
+            defaultCountryCode?.lowercase() ?: getDefaultLangCode(context),
         )
     }
     fullNumberState = phoneCode + textFieldValue
