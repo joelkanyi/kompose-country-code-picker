@@ -104,7 +104,6 @@ fun KomposeCountryCodePicker(
     defaultCountryCode: String? = null,
 ) {
     val context = LocalContext.current
-    var textFieldValue by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     var phoneCode by rememberSaveable {
         mutableStateOf(
@@ -118,8 +117,8 @@ fun KomposeCountryCodePicker(
             defaultCountryCode?.lowercase() ?: getDefaultLangCode(context),
         )
     }
-    fullNumberState = phoneCode + textFieldValue
-    phoneNumberState = textFieldValue
+    fullNumberState = phoneCode + text
+    phoneNumberState = text
     countryCodeState = selectedLanguageCode
 
     var openCountrySelectionDialog by remember { mutableStateOf(false) }
@@ -181,9 +180,8 @@ fun KomposeCountryCodePicker(
         OutlinedTextField(
             modifier = modifier,
             shape = shape,
-            value = textFieldValue,
+            value = text,
             onValueChange = {
-                textFieldValue = it
                 if (text != it) {
                     onValueChange(it)
                 }

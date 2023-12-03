@@ -58,11 +58,14 @@ With the `showOnlyCountryCodePicker` parameter set to `true`, the `KomposeCountr
 - `CountryCodePicker.getCountryPhoneCodeWithoutPrefix()`
 - `CountryCodePicker.getCountryPhoneCode()`
 - `CountryCodePicker.isPhoneNumberValid(<combinedPhone>)` - You will need to manually combine the country code and phone number
+
+
 ```kotlin
 KomposeCountryCodePicker(
     modifier = Modifier,
     showOnlyCountryCodePicker = true,
     showCountryFlag = false,
+    text = phoneNumber.value,
 )
 ```
 
@@ -82,6 +85,7 @@ TextField(
             modifier = Modifier,
             showOnlyCountryCodePicker = true,
             showCountryFlag = false,
+            text = phoneNumber.value,
         )
     },
     colors = TextFieldDefaults.colors(
