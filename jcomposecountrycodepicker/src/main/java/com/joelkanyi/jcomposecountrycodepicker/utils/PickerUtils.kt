@@ -18,7 +18,6 @@ package com.joelkanyi.jcomposecountrycodepicker.utils
 import android.content.Context
 import android.telephony.TelephonyManager
 import android.util.Log
-import androidx.compose.ui.text.intl.Locale
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.joelkanyi.jcomposecountrycodepicker.R
@@ -33,11 +32,11 @@ internal fun getDefaultLangCode(context: Context): String {
         val localeCode: TelephonyManager =
             context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val countryCode = localeCode.networkCountryIso
-        val defaultLocale = Locale.current.language
-        return countryCode ?: defaultLocale
+        countryCode.ifEmpty {
+            "us"
+        }
     } catch (e: Exception) {
-        Log.e("TAG", "getDefaultLangCode: ${e.message}")
-        "US"
+        "us"
     }
 }
 
