@@ -1,9 +1,9 @@
 [versions]
 agp = "8.2.0"
 kotlin = "1.9.20"
-accompanistSystemuicontroller = "0.30.1"
-activityCompose = "1.7.2"
-libphonenumber = "8.13.7"
+accompanistSystemuicontroller = "0.32.0"
+activityCompose = "1.8.2"
+libphonenumber = "8.13.27"
 material3 = "1.1.2"
 composeCompiler = "1.5.5"
 ktx = "1.12.0"
