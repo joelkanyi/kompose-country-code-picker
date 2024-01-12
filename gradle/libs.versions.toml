@@ -7,7 +7,7 @@ libphonenumber = "8.13.28"
 material3 = "1.1.2"
 composeCompiler = "1.5.8"
 ktx = "1.12.0"
-spotless = "5.17.1"
+spotless = "6.23.3"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
