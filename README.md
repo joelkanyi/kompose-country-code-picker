@@ -106,6 +106,7 @@ Customization | Description
 `error`  | Sets the error state on the `TextField` for the country code picker
 `colors`  | Sets the colors for the country code picker `TextField`
 `showOnlyCountryCodePicker`  | Shows only the country code picker without the `TextField`
+`defaultCountryCode` | The default country code to be selected. i.e "KE", "in", "UG", "tz" etc
 
 
 ## Available methods
