@@ -15,6 +15,7 @@
  */
 package com.joelkanyi.jcomposecountrycodepicker.component
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -85,7 +86,6 @@ internal var countryCodeState: String by mutableStateOf("")
  * [trailingIcon] The trailing icon to be displayed in the text field.
  * [defaultCountryCode] The default country code to be selected.
  */
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun KomposeCountryCodePicker(
     modifier: Modifier = Modifier,
@@ -237,6 +237,7 @@ private fun DefaultPlaceholder(defaultLang: String) {
  * [showFlag] If true, the country flag will be shown in the text field.
  * [showCountryName] If true, the country name will be shown in the text field.
  */
+@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun SelectedCountryComponent(
     modifier: Modifier = Modifier,

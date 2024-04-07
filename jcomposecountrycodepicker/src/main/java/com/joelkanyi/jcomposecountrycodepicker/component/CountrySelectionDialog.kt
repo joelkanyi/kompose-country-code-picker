@@ -93,7 +93,7 @@ fun CountrySelectionDialog(
         properties = properties,
         content = {
             Surface(
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.surface,
                 modifier = Modifier
                     .fillMaxWidth(),
             ) {

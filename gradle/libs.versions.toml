@@ -1,11 +1,11 @@
 [versions]
 agp = "8.3.1"
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 accompanistSystemuicontroller = "0.34.0"
 activityCompose = "1.8.2"
 libphonenumber = "8.13.34"
 material3 = "1.2.1"
-composeCompiler = "1.5.8"
+composeCompiler = "1.5.11"
 ktx = "1.12.0"
 spotless = "6.25.0"
 
