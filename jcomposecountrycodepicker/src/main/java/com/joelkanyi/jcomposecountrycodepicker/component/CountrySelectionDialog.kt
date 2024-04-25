@@ -17,6 +17,7 @@ package com.joelkanyi.jcomposecountrycodepicker.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -24,8 +25,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -33,12 +35,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -54,9 +57,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
-import com.joelkanyi.jcomposecountrycodepicker.utils.getCountryName
-import com.joelkanyi.jcomposecountrycodepicker.utils.getFlags
-import com.joelkanyi.jcomposecountrycodepicker.utils.searchForAnItem
+import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountryName
+import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getFlags
+import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
 
 /**
  * [CountrySelectionDialog] is a composable that displays a dialog with a list of countries.
@@ -81,88 +84,103 @@ fun CountrySelectionDialog(
             usePlatformDefaultWidth = false,
         )
     },
+    containerColor: Color,
+    contentColor: Color,
 ) {
     var searchValue by remember { mutableStateOf("") }
     var isSearch by remember { mutableStateOf(false) }
     var filteredItems by remember { mutableStateOf(countryList) }
 
     AlertDialog(
+        containerColor = containerColor,
+        tonalElevation = 0.dp,
         modifier = Modifier
             .fillMaxSize(),
+        shape = RoundedCornerShape(0),
         onDismissRequest = onDismissRequest,
         properties = properties,
-        content = {
-            Surface(
-                color = MaterialTheme.colorScheme.surface,
-                modifier = Modifier
-                    .fillMaxWidth(),
-            ) {
-                Scaffold(
-                    topBar = {
-                        val focusRequester = remember { FocusRequester() }
-                        LaunchedEffect(isSearch) {
-                            if (isSearch) {
-                                focusRequester.requestFocus()
-                            }
+        text = {
+           Scaffold(
+               containerColor = containerColor,
+                topBar = {
+                    val focusRequester = remember { FocusRequester() }
+                    LaunchedEffect(isSearch) {
+                        if (isSearch) {
+                            focusRequester.requestFocus()
                         }
-                        CenterAlignedTopAppBar(
-                            title = {
-                                if (isSearch) {
-                                    TextField(
-                                        modifier = Modifier.focusRequester(focusRequester),
-                                        value = searchValue,
-                                        onValueChange = { searchStr ->
-                                            searchValue = searchStr
-                                            filteredItems = countryList.searchForAnItem(searchStr)
-                                        },
-                                        placeholder = {
-                                            Text(
-                                                text = "Search...",
-                                                color = MaterialTheme.colorScheme.onSurface,
-                                            )
-                                        },
-                                        colors = TextFieldDefaults.colors(
-                                            disabledContainerColor = Color.Transparent,
-                                            focusedContainerColor = Color.Transparent,
-                                            unfocusedContainerColor = Color.Transparent,
-                                            disabledIndicatorColor = Color.Transparent,
-                                            focusedIndicatorColor = Color.Transparent,
-                                            unfocusedIndicatorColor = Color.Transparent,
-                                        ),
-                                        textStyle = MaterialTheme.typography.labelLarge,
-                                    )
-                                } else {
-                                    Text(
-                                        modifier = Modifier.offset(y = (-2).dp),
-                                        text = "Select Country",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                    )
-                                }
-                            },
-                            navigationIcon = {
-                                IconButton(onClick = {
-                                    onDismissRequest()
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Default.ArrowBack,
-                                        contentDescription = null,
-                                    )
-                                }
-                            },
-                            actions = {
-                                IconButton(onClick = {
-                                    isSearch = !isSearch
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Default.Search,
-                                        contentDescription = null,
-                                    )
-                                }
-                            },
+                    }
+                    CenterAlignedTopAppBar(
+                        title = {
+                            if (isSearch) {
+                                TextField(
+                                    modifier = Modifier.focusRequester(focusRequester),
+                                    value = searchValue,
+                                    onValueChange = { searchStr ->
+                                        searchValue = searchStr
+                                        filteredItems = countryList.searchForAnItem(searchStr)
+                                    },
+                                    placeholder = {
+                                        Text(
+                                            text = "Search...",
+                                            color = contentColor.copy(alpha = 0.5f),
+                                        )
+                                    },
+                                    colors = TextFieldDefaults.colors(
+                                        disabledContainerColor = Color.Transparent,
+                                        focusedContainerColor = Color.Transparent,
+                                        unfocusedContainerColor = Color.Transparent,
+                                        disabledIndicatorColor = Color.Transparent,
+                                        focusedIndicatorColor = Color.Transparent,
+                                        unfocusedIndicatorColor = Color.Transparent,
+                                        unfocusedTextColor = contentColor,
+                                        focusedTextColor = contentColor,
+                                        focusedPlaceholderColor = contentColor,
+                                        unfocusedPlaceholderColor = contentColor,
+                                        cursorColor = contentColor,
+                                    ),
+                                    textStyle = MaterialTheme.typography.labelLarge.copy(
+                                        color = contentColor,
+                                    ),
+                                )
+                            } else {
+                                Text(
+                                    modifier = Modifier.offset(y = (-2).dp),
+                                    text = "Select Country",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = contentColor,
+                                )
+                            }
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                onDismissRequest()
+                            }) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                    contentDescription = null,
+                                    tint = contentColor,
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = {
+                                isSearch = !isSearch
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = null,
+                                    tint = contentColor,
+                                )
+                            }
+                        },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                            containerColor = containerColor,
+                            titleContentColor = contentColor,
                         )
-                    },
-                ) { paddingValues ->
+                    )
+                },
+            ) { paddingValues ->
+                Column {
                     LazyColumn(
                         Modifier
                             .padding(paddingValues)
@@ -176,8 +194,12 @@ fun CountrySelectionDialog(
                             }
 
                         items(countriesData) { countryItem ->
-                            println("CountrySelectionDialog: ${countryItem.cCountryName}")
                             ListItem(
+                                colors = ListItemDefaults.colors(
+                                    containerColor = containerColor,
+                                    trailingIconColor = contentColor,
+                                    headlineColor = contentColor,
+                                ),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
@@ -212,5 +234,6 @@ fun CountrySelectionDialog(
                 }
             }
         },
+        confirmButton = {}
     )
 }

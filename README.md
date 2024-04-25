@@ -1,20 +1,26 @@
 # Kompose Country Code Picker
+
 [![platform](https://img.shields.io/badge/platform-Android-yellow.svg)](https://www.android.com)
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=plastic)](https://android-arsenal.com/api?level=21)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
 [![](https://jitpack.io/v/JoelKanyi/KomposeCountryCodePicker.svg)](https://jitpack.io/#JoelKanyi/KomposeCountryCodePicker)
 
-Kompose Country Code Picker is a Jetpack Compose library based on Material 3 (M3) that provides a country code picker for Android apps.
+Kompose Country Code Picker is a Jetpack Compose library based on Material 3 (M3) that provides a
+country code picker for Android apps.
 
 ## Preview
-Picker   |   Dialog | Picker Only
------------------   |   ----------------- | -----------------
-<img src="screenshot/kompose-picker-textfield.png" width="250"/>   |   <img src="screenshot/kompose-picker-dialog.png" width="250"/> | <img src="screenshot/kompose-picker-only.png" width="250"/>
+
+ Picker                                                           | Dialog                                                        | Picker Only                                                 
+------------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------
+ <img src="screenshot/kompose-picker-textfield.png" width="250"/> | <img src="screenshot/kompose-picker-dialog.png" width="250"/> | <img src="screenshot/kompose-picker-only.png" width="250"/> 
 
 ## Requirements
-Jetpack compose material three dependency - `implementation("androidx.compose.material3:material3:1.1.1")`
+
+Jetpack compose material three
+dependency - `implementation("androidx.compose.material3:material3:1.1.1")`
 
 ### Setup
+
 #### Add this in your root `build.gradle` file (**not** your module `build.gradle` file):
 
 ```groovy
@@ -26,6 +32,7 @@ allprojects {
 ```
 
 ### Dependency
+
 Add the following to your `build.gradle` dependencies:
 
 ```groovy
@@ -34,10 +41,35 @@ dependencies {
 }
 ```
 
+## KomposeCountryCodePicker State
+
+`val state = rememberKomposeCountryCodePickerState()`
+
+The `state` parameter is used to set and access different variables/methods that are available in the `KomposeCountryCodePicker` composable.
+
+```kotlin
+val state = rememberKomposeCountryCodePickerState(
+    limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS"),
+    showCountryCode = true,
+    showCountryFlag = true,
+    defaultCountryCode = "TZ",
+)
+```
+
+- `showCountryCode` - If `true`, the country code will be displayed in the country code picker `TextField`
+- `showCountryFlag` - If `true`, the country flag will be displayed in the country code picker `TextField`
+- `defaultCountryCode` - Sets the default country code to be displayed in the country code picker
+- `limitedCountries` - Limits the list of countries to be displayed in the country code picker by
+  specify the country codes, country names or country phone codes
+  i.e `listOf("KE", "UG", "TZ")`, `listOf("Kenya", "Uganda", "Tanzania")`
+  or `listOf("+254", "+256", "+255")`
+
+
 ## Usage
 
 ```kotlin
 val phoneNumber = rememberSaveable { mutableStateOf("") }
+val state = rememberKomposeCountryCodePickerState()
 
 KomposeCountryCodePicker(
     modifier = Modifier
@@ -50,22 +82,23 @@ KomposeCountryCodePicker(
         unfocusedContainerColor = Color.Transparent,
         focusedContainerColor = Color.Transparent,
     ),
+    state = state,
 )
 ```
 
 ## KomposeCountryCodePicker Composable without TextField
-With the `showOnlyCountryCodePicker` parameter set to `true`, the `KomposeCountryCodePicker` composable can be used without the `TextField` composable but you can't use all methods. You can only use  the following methods:
-- `CountryCodePicker.getCountryPhoneCodeWithoutPrefix()`
-- `CountryCodePicker.getCountryPhoneCode()`
-- `CountryCodePicker.isPhoneNumberValid(<combinedPhone>)` - You will need to manually combine the country code and phone number
 
+With the `showOnlyCountryCodePicker` parameter set to `true`, the `KomposeCountryCodePicker`
+composable can be used without the `TextField`.
 
 ```kotlin
+val state = rememberKomposeCountryCodePickerState()
+
 KomposeCountryCodePicker(
     modifier = Modifier,
     showOnlyCountryCodePicker = true,
-    showCountryFlag = false,
     text = phoneNumber.value,
+    state = state,
 )
 ```
 
@@ -73,6 +106,7 @@ KomposeCountryCodePicker(
 
 ```kotlin
 val phoneNumber = rememberSaveable { mutableStateOf("") }
+val state = rememberKomposeCountryCodePickerState()
 
 TextField(
     modifier = Modifier
@@ -84,8 +118,8 @@ TextField(
         KomposeCountryCodePicker(
             modifier = Modifier,
             showOnlyCountryCodePicker = true,
-            showCountryFlag = false,
             text = phoneNumber.value,
+            state = state,
         )
     },
     colors = TextFieldDefaults.colors(
@@ -95,38 +129,37 @@ TextField(
 )
 ```
 
-## KomposeCountryCodePicker Composable customizations
-Customization | Description
-------------     |   -------------
-`limitedCountries`   | Limits the list of countries to be displayed in the country code picker by specify the country codes, country names or country phone codes i.e `listOf("KE", "UG", "TZ")`, `listOf("Kenya", "Uganda", "Tanzania")` or `listOf("+254", "+256", "+255")`
-`placeholder`   | Sets the placeholder `Composable` for the country code picker
-`shape`  | Sets the shape of the country code picker `TextField`
-`showCountryCode`  | Shows the country code in the country code picker `TextField`
-`showCountryFlag`  | Shows the country flag in the country code picker `TextField`
-`error`  | Sets the error state on the `TextField` for the country code picker
-`colors`  | Sets the colors for the country code picker `TextField`
-`showOnlyCountryCodePicker`  | Shows only the country code picker without the `TextField`
-`defaultCountryCode` | The default country code to be selected. i.e "KE", "in", "UG", "tz" etc
+## KomposeCountryCodePicker Textfield Composable customizations
 
+ Customization                          | Description                                                         
+----------------------------------------|---------------------------------------------------------------------                      
+ `placeholder`                          | Sets the placeholder `Composable` for the country code picker       
+ `shape`                                | Sets the shape of the country code picker `TextField`               
+ `error`                                | Sets the error state on the `TextField` for the country code picker 
+ `colors`                               | Sets the colors for the country code picker `TextField`             
+ `showOnlyCountryCodePicker`            | Shows only the country code picker without the `TextField`          
+ `state`                                | The state of the country code picker                                
+ `countrySelectionDialogContainerColor` | The color of the country selection dialog container                 
+ `countrySelectionDialogContentColor`   | The color of the country selection dialog content                   
 
-## Available methods
-Description | Method
-------------     |   -------------
-Country Phone No Code    | `CountryCodePicker.getCountryPhoneCodeWithoutPrefix()`
-Prefixed Country Phone No Code    | `CountryCodePicker.getCountryPhoneCode()`
-Country Name    | `CountryCodePicker.getCountryName()`
-Country Language Code    | `CountryCodePicker.getCountryCodeWithoutPrefix()`
-Phone Number    | `CountryCodePicker.getPhoneNumber()`
-Phone Number Without Prefix    | `CountryCodePicker.getPhoneNumberWithoutPrefix()`
-Full Phone Number    | `CountryCodePicker.getFullPhoneNumber()`
-Full Phone Number Without Prefix    | `CountryCodePicker.getFullPhoneNumberWithoutPrefix()`
-Phone Number State    | `CountryCodePicker.isPhoneNumberValid()`
+## Available methods/variables
 
+Use the state that you defined (`val state = rememberKomposeCountryCodePickerState()`) to access the
+following methods/variables:
+
+ Description                      | Method                                     
+----------------------------------|--------------------------------------------
+ `countryCode`                    | Returns the country code for the selected country                   
+ `phoneNumber`                    | Returns the phone number entered by the user  
+ Country Phone No Code            | `state.getCountryPhoneCodeWithoutPrefix()` 
+ Country Name                     | `state.getCountryName()`                   
+ Country Language Code            | `state.getCountryCodeWithoutPrefix()`      
+ Phone Number Without Prefix      | `state.getPhoneNumberWithoutPrefix()`      
+ Full Phone Number                | `state.getFullPhoneNumber()`               
+ Full Phone Number Without Prefix | `state.getFullPhoneNumberWithoutPrefix()`  
+ Phone Number State               | `state.isPhoneNumberValid()`               
 
 ## Contributing
-
-Please fork this repository and contribute back using
-[pull requests](https://github.com/Shashank02051997/FancyWalkthrough-Android/pulls).
 
 Any contributions, large or small, major features, bug fixes, are welcomed and appreciated
 but will be thoroughly reviewed.
