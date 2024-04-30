@@ -140,7 +140,8 @@ TextField(
  `showOnlyCountryCodePicker`            | Shows only the country code picker without the `TextField`          
  `state`                                | The state of the country code picker                                
  `countrySelectionDialogContainerColor` | The color of the country selection dialog container                 
- `countrySelectionDialogContentColor`   | The color of the country selection dialog content                   
+ `countrySelectionDialogContentColor`   | The color of the country selection dialog content  
+ `pickerContentColor`                   | The color of the country code picker content i.e country name, code, and dropdown icon
 
 ## Available methods/variables
 
