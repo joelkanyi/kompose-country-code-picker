@@ -306,6 +306,7 @@ fun KomposeCountryCodePicker(
     state: CountryCodePicker,
     countrySelectionDialogContainerColor: Color = MaterialTheme.colorScheme.background,
     countrySelectionDialogContentColor: Color = MaterialTheme.colorScheme.onBackground,
+    pickerContentColor: Color = MaterialTheme.colorScheme.onBackground,
 ) {
     val localTextInputService = LocalTextInputService.current
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
@@ -338,6 +339,7 @@ fun KomposeCountryCodePicker(
             onClickSelectedCountry = {
                 openCountrySelectionDialog = true
             },
+            pickerContentColor = pickerContentColor,
         )
     } else {
         OutlinedTextField(
@@ -375,6 +377,7 @@ fun KomposeCountryCodePicker(
                     onClickSelectedCountry = {
                         openCountrySelectionDialog = true
                     },
+                    pickerContentColor = pickerContentColor,
                 )
             },
             trailingIcon = trailingIcon,
@@ -411,6 +414,7 @@ fun SelectedCountryComponent(
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
     onClickSelectedCountry: () -> Unit,
+    pickerContentColor: Color,
 ) {
     Row(
         modifier = modifier
@@ -443,7 +447,7 @@ fun SelectedCountryComponent(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 4.dp),
                 fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = pickerContentColor,
             )
         }
         if (showCountryName) {
@@ -452,9 +456,13 @@ fun SelectedCountryComponent(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 6.dp),
                 fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = pickerContentColor,
             )
         }
-        Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+        Icon(
+            imageVector = Icons.Default.ArrowDropDown,
+            contentDescription = null,
+            tint = pickerContentColor,
+        )
     }
 }
