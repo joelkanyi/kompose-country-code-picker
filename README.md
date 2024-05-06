@@ -83,6 +83,7 @@ KomposeCountryCodePicker(
         focusedContainerColor = Color.Transparent,
     ),
     state = state,
+    interactionSource = MutableInteractionSource(),
 )
 ```
 
@@ -142,6 +143,7 @@ TextField(
  `countrySelectionDialogContainerColor` | The color of the country selection dialog container                 
  `countrySelectionDialogContentColor`   | The color of the country selection dialog content  
  `pickerContentColor`                   | The color of the country code picker content i.e country name, code, and dropdown icon
+ `interactionSource`                    | The MutableInteractionSource representing the stream of Interactions for this text field.
 
 ## Available methods/variables
 
