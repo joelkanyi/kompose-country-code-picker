@@ -289,6 +289,8 @@ fun rememberKomposeCountryCodePickerState(
  * [placeholder] The placeholder to be displayed in the text field.
  * [colors] The colors to be used to display the text field.
  * [trailingIcon] The trailing icon to be displayed in the text field.
+ * [interactionSource] The MutableInteractionSource representing the stream of Interactions for this text field.
+ *
  */
 @Composable
 fun KomposeCountryCodePicker(
