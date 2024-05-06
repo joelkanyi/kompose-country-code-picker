@@ -307,6 +307,7 @@ fun KomposeCountryCodePicker(
     countrySelectionDialogContainerColor: Color = MaterialTheme.colorScheme.background,
     countrySelectionDialogContentColor: Color = MaterialTheme.colorScheme.onBackground,
     pickerContentColor: Color = MaterialTheme.colorScheme.onBackground,
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
     val localTextInputService = LocalTextInputService.current
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
@@ -381,6 +382,7 @@ fun KomposeCountryCodePicker(
                 )
             },
             trailingIcon = trailingIcon,
+            interactionSource = interactionSource
         )
     }
 }
