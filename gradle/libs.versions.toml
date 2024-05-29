@@ -8,6 +8,9 @@ material3 = "1.2.1"
 composeCompiler = "1.5.11"
 ktx = "1.13.0"
 spotless = "6.25.0"
+kotlin-compatibility = "0.14.0"
+dokka = "1.9.20"
+gradleMavenPublish = "0.28.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -21,3 +24,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+kotlin-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlin-compatibility" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+gradleMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "gradleMavenPublish" }
+nmcp = { id = "com.gradleup.nmcp", version = "0.0.4" }

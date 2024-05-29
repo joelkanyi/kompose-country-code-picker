@@ -3,7 +3,8 @@
 [![platform](https://img.shields.io/badge/platform-Android-yellow.svg)](https://www.android.com)
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=plastic)](https://android-arsenal.com/api?level=21)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
-[![](https://jitpack.io/v/JoelKanyi/KomposeCountryCodePicker.svg)](https://jitpack.io/#JoelKanyi/KomposeCountryCodePicker)
+![Build status](https://github.com/joelkanyi/KomposeCountryCodePicker/actions/workflows/build.yml/badge.svg)
+
 
 Kompose Country Code Picker is a Jetpack Compose library based on Material 3 (M3) that provides a
 country code picker for Android apps.
@@ -17,28 +18,34 @@ country code picker for Android apps.
 ## Requirements
 
 Jetpack compose material three
-dependency - `implementation("androidx.compose.material3:material3:1.1.1")`
+dependency - `implementation("androidx.compose.material3:material3:<version>")`
 
-### Setup
+> Note: The library is now hosted on Maven Central. If you were using the previous version hosted on Jitpack, please update your dependencies to the latest version.
+> The last version hosted on Jitpack was : `implementation("com.github.JoelKanyi:KomposeCountryCodePicker:1.1.2")`
 
-#### Add this in your root `build.gradle` file (**not** your module `build.gradle` file):
+### Including it in your project:
 
-```groovy
-allprojects {
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
+#### Add the Maven Central repository if it is not already there:
+```gradle
+repositories {
+    mavenCentral()
 }
 ```
 
-### Dependency
-
-Add the following to your `build.gradle` dependencies:
-
-```groovy
+#### Add the dependency to your dependencies block in your app's build.gradle file:
+```kotlin
 dependencies {
-    implementation("com.github.JoelKanyi:KomposeCountryCodePicker:<version>")
+    implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
 }
+```
+
+#### For those using Gradle Version Catalog, you can add the dependency as follows:
+```libs.version.toml
+[versions]
+komposecountrycodepicker = "<latest-version>"
+
+[libraries]
+komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
 ```
 
 ## KomposeCountryCodePicker State

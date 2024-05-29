@@ -46,7 +46,7 @@ android {
         jvmTarget = "1.8"
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
@@ -57,5 +57,5 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.material3)
     implementation(libs.accompanist.systemuicontroller)
-    implementation(projects.jcomposecountrycodepicker)
+    implementation(projects.komposecountrycodepicker)
 }
