@@ -60,13 +60,6 @@ jobs:
   build:
     name: 🔨 Build
     runs-on: ubuntu-latest
-    env:
-      MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-      MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-      ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_KEY_ID }}
-      ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_KEY_PASSWORD }}
-      ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -79,12 +72,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-          gpg-private-key: ${{ secrets.GPG_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_KEY_PASSWORD }}
           cache: gradle
 
       - name: Make gradle executable
         run: chmod +x ./gradlew
 
       - name: Build app
-        run: ./gradlew assemble --stacktrace
+        run: ./gradlew :app:assemble --no-daemon --stacktrace
