@@ -3,10 +3,10 @@ agp = "8.3.2"
 kotlin = "1.9.23"
 accompanistSystemuicontroller = "0.34.0"
 activityCompose = "1.9.0"
-libphonenumber = "8.13.35"
+libphonenumber = "8.13.37"
 material3 = "1.2.1"
 composeCompiler = "1.5.11"
-ktx = "1.13.0"
+ktx = "1.13.1"
 spotless = "6.25.0"
 kotlin-compatibility = "0.14.0"
 dokka = "1.9.20"
@@ -27,4 +27,4 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlin-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlin-compatibility" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 gradleMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "gradleMavenPublish" }
-nmcp = { id = "com.gradleup.nmcp", version = "0.0.4" }
+nmcp = { id = "com.gradleup.nmcp", version = "0.0.7" }
