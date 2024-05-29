@@ -55,7 +55,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: API Check
-        run:  ./gradlew apiCheck --stacktrace + ./gradlew apiCheck --stacktrace
+        run:  ./gradlew apiCheck --stacktrace
 
   build:
     name: 🔨 Build
@@ -80,7 +80,6 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           gpg-private-key: ${{ secrets.GPG_KEY }}
-          gpg-key-id: ${{ secrets.GPG_KEY_ID }}
           gpg-passphrase: ${{ secrets.GPG_KEY_PASSWORD }}
           cache: gradle
 
