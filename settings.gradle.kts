@@ -14,6 +14,6 @@ dependencyResolutionManagement {
         maven(url = "https://androidx.dev/storage/compose-compiler/repository/")
     }
 }
-rootProject.name = "KomposeCountryCodePicker"
+rootProject.name = "komposecodepicker"
 include(":app")
-include(":jcomposecountrycodepicker")
+include(":komposecountrycodepicker")
