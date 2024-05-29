@@ -55,7 +55,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: API Check
-        run: ./gradlew apiCheck --stacktrace
+        run:  ./gradlew apiCheck --stacktrace + ./gradlew apiCheck --stacktrace
 
   build:
     name: 🔨 Build
@@ -63,6 +63,10 @@ jobs:
     env:
       MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
       MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_KEY_ID }}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_KEY_PASSWORD }}
+      ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -75,6 +79,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
+          gpg-private-key: ${{ secrets.GPG_KEY }}
+          gpg-key-id: ${{ secrets.GPG_KEY_ID }}
+          gpg-passphrase: ${{ secrets.GPG_KEY_PASSWORD }}
           cache: gradle
 
       - name: Make gradle executable
