@@ -1,3 +1,6 @@
+public abstract interface annotation class com/joelkanyi/jcomposecountrycodepicker/annotation/RestrictedApi : java/lang/annotation/Annotation {
+}
+
 public final class com/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$CountrySelectionDialogKt {
 	public static final field INSTANCE Lcom/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$CountrySelectionDialogKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -8,29 +11,23 @@ public final class com/joelkanyi/jcomposecountrycodepicker/component/ComposableS
 public final class com/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$KomposeCountryCodePickerKt {
 	public static final field INSTANCE Lcom/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$KomposeCountryCodePickerKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$komposecountrycodepicker_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$komposecountrycodepicker_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract interface class com/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker {
-	public abstract fun getCountry ()Lcom/joelkanyi/jcomposecountrycodepicker/data/CountryData;
 	public abstract fun getCountryCode ()Ljava/lang/String;
 	public abstract fun getCountryList ()Ljava/util/List;
 	public abstract fun getCountryName ()Ljava/lang/String;
 	public abstract fun getCountryPhoneCode ()Ljava/lang/String;
 	public abstract fun getCountryPhoneCodeWithoutPrefix ()Ljava/lang/String;
-	public abstract fun getDefaultCountryCode ()Ljava/lang/String;
 	public abstract fun getFullPhoneNumber ()Ljava/lang/String;
 	public abstract fun getFullPhoneNumberWithoutPrefix ()Ljava/lang/String;
-	public abstract fun getLimitedCountries ()Ljava/util/List;
 	public abstract fun getPhoneNumber ()Ljava/lang/String;
 	public abstract fun getPhoneNumberWithoutPrefix ()Ljava/lang/String;
 	public abstract fun getShowCountryCode ()Z
 	public abstract fun getShowCountryFlag ()Z
 	public abstract fun isPhoneNumberValid (Ljava/lang/String;)Z
-	public abstract fun setCountry (Lcom/joelkanyi/jcomposecountrycodepicker/data/CountryData;)V
 	public abstract fun setCountryCode (Ljava/lang/String;)V
 	public abstract fun setPhoneNumber (Ljava/lang/String;)V
 }
@@ -40,7 +37,7 @@ public final class com/joelkanyi/jcomposecountrycodepicker/component/CountryCode
 }
 
 public final class com/joelkanyi/jcomposecountrycodepicker/component/CountrySelectionDialogKt {
-	public static final fun CountrySelectionDialog-WMdw5o4 (Landroidx/compose/ui/Modifier;Ljava/util/List;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/window/DialogProperties;JJLandroidx/compose/runtime/Composer;II)V
+	public static final fun CountrySelectionDialog-K2djEUw (Ljava/util/List;JJLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/window/DialogProperties;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/joelkanyi/jcomposecountrycodepicker/component/KomposeCountryCodePickerDefaults {
@@ -50,26 +47,25 @@ public final class com/joelkanyi/jcomposecountrycodepicker/component/KomposeCoun
 }
 
 public final class com/joelkanyi/jcomposecountrycodepicker/component/KomposeCountryCodePickerKt {
-	public static final fun KomposeCountryCodePicker-U7NiNzs (Landroidx/compose/ui/Modifier;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/graphics/Shape;ZLkotlin/jvm/functions/Function3;Landroidx/compose/material3/TextFieldColors;Lkotlin/jvm/functions/Function2;Lcom/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker;JJJLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
+	public static final fun KomposeCountryCodePicker-U7NiNzs (Lcom/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function3;Landroidx/compose/material3/TextFieldColors;Lkotlin/jvm/functions/Function2;JJJLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
 	public static final fun rememberKomposeCountryCodePickerState (Ljava/lang/String;Ljava/util/List;ZZLandroidx/compose/runtime/Composer;II)Lcom/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker;
 }
 
-public final class com/joelkanyi/jcomposecountrycodepicker/data/CountryData {
+public final class com/joelkanyi/jcomposecountrycodepicker/data/Country {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
 	public final fun component4 ()I
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lcom/joelkanyi/jcomposecountrycodepicker/data/CountryData;
-	public static synthetic fun copy$default (Lcom/joelkanyi/jcomposecountrycodepicker/data/CountryData;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IILjava/lang/Object;)Lcom/joelkanyi/jcomposecountrycodepicker/data/CountryData;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lcom/joelkanyi/jcomposecountrycodepicker/data/Country;
+	public static synthetic fun copy$default (Lcom/joelkanyi/jcomposecountrycodepicker/data/Country;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IILjava/lang/Object;)Lcom/joelkanyi/jcomposecountrycodepicker/data/Country;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getCCountryFlag ()I
-	public final fun getCCountryName ()Ljava/lang/String;
-	public final fun getCCountryPhoneNoCode ()Ljava/lang/String;
-	public final fun getCountryCode ()Ljava/lang/String;
+	public final fun getCode ()Ljava/lang/String;
+	public final fun getFlag ()I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPhoneNoCode ()Ljava/lang/String;
 	public fun hashCode ()I
-	public final fun setCountryCode (Ljava/lang/String;)V
 	public fun toString ()Ljava/lang/String;
 }
 

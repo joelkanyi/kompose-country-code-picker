@@ -56,26 +56,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
+import com.joelkanyi.jcomposecountrycodepicker.data.Country
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountryName
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getFlags
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
 
 /**
- * [CountrySelectionDialog] is a composable that displays a dialog with a list of countries.
- * [modifier] Modifier to be applied to the layout.
- * [countryList] The list of countries to be displayed in the dialog.
- * [onDismissRequest] Called when the dialog is dismissed.
- * [onSelected] Called when a country is selected.
- * [properties] The properties of the dialog.
+ * @param countryList The list of countries to be displayed in the dialog.
+ * @param containerColor The color of the dialog container.
+ * @param contentColor The color of the dialog content.
+ * @param onDismissRequest Called when the dialog is dismissed.
+ * @param onSelected Called when a country is selected.
+ * @param modifier Modifier to be applied to the layout.
+ * @param properties The properties of the dialog.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun CountrySelectionDialog(
-    modifier: Modifier = Modifier,
-    countryList: List<CountryData>,
+    countryList: List<Country>,
+    containerColor: Color,
+    contentColor: Color,
     onDismissRequest: () -> Unit,
-    onSelected: (item: CountryData) -> Unit,
+    onSelected: (item: Country) -> Unit,
+    modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties().let {
         DialogProperties(
             dismissOnBackPress = it.dismissOnBackPress,
@@ -84,24 +87,22 @@ public fun CountrySelectionDialog(
             usePlatformDefaultWidth = false,
         )
     },
-    containerColor: Color,
-    contentColor: Color,
 ) {
     var searchValue by remember { mutableStateOf("") }
     var isSearch by remember { mutableStateOf(false) }
     var filteredItems by remember { mutableStateOf(countryList) }
 
     AlertDialog(
+        modifier = modifier
+            .fillMaxSize(),
         containerColor = containerColor,
         tonalElevation = 0.dp,
-        modifier = Modifier
-            .fillMaxSize(),
         shape = RoundedCornerShape(0),
         onDismissRequest = onDismissRequest,
         properties = properties,
         text = {
-           Scaffold(
-               containerColor = containerColor,
+            Scaffold(
+                containerColor = containerColor,
                 topBar = {
                     val focusRequester = remember { FocusRequester() }
                     LaunchedEffect(isSearch) {
@@ -152,9 +153,11 @@ public fun CountrySelectionDialog(
                             }
                         },
                         navigationIcon = {
-                            IconButton(onClick = {
-                                onDismissRequest()
-                            }) {
+                            IconButton(
+                                onClick = {
+                                    onDismissRequest()
+                                },
+                            ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
                                     contentDescription = null,
@@ -163,9 +166,11 @@ public fun CountrySelectionDialog(
                             }
                         },
                         actions = {
-                            IconButton(onClick = {
-                                isSearch = !isSearch
-                            }) {
+                            IconButton(
+                                onClick = {
+                                    isSearch = !isSearch
+                                },
+                            ) {
                                 Icon(
                                     imageVector = Icons.Default.Search,
                                     contentDescription = null,
@@ -176,7 +181,7 @@ public fun CountrySelectionDialog(
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                             containerColor = containerColor,
                             titleContentColor = contentColor,
-                        )
+                        ),
                     )
                 },
             ) { paddingValues ->
@@ -207,10 +212,10 @@ public fun CountrySelectionDialog(
                                     },
                                 leadingContent = {
                                     Image(
-                                        modifier = modifier.width(30.dp),
+                                        modifier = Modifier.width(30.dp),
                                         painter = painterResource(
                                             id = getFlags(
-                                                countryItem.countryCode,
+                                                countryItem.code,
                                             ),
                                         ),
                                         contentDescription = null,
@@ -218,13 +223,13 @@ public fun CountrySelectionDialog(
                                 },
                                 trailingContent = {
                                     Text(
-                                        text = countryItem.cCountryPhoneNoCode,
+                                        text = countryItem.phoneNoCode,
                                         style = MaterialTheme.typography.bodyMedium,
                                     )
                                 },
                                 headlineContent = {
                                     Text(
-                                        stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
+                                        stringResource(id = getCountryName(countryItem.code.lowercase())),
                                         style = MaterialTheme.typography.bodyMedium,
                                     )
                                 },
@@ -234,6 +239,6 @@ public fun CountrySelectionDialog(
                 }
             }
         },
-        confirmButton = {}
+        confirmButton = {},
     )
 }
