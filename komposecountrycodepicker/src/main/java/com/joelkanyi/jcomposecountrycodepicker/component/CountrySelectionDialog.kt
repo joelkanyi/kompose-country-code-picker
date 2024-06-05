@@ -71,7 +71,7 @@ import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CountrySelectionDialog(
+public fun CountrySelectionDialog(
     modifier: Modifier = Modifier,
     countryList: List<CountryData>,
     onDismissRequest: () -> Unit,

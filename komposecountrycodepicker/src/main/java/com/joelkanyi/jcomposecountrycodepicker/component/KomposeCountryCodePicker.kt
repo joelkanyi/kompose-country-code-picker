@@ -64,51 +64,51 @@ import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.removeSpecialCh
  * [CountryCodePicker] is an interface that provides the different utilities for the country code picker.
  */
 @Stable
-interface CountryCodePicker {
+public interface CountryCodePicker {
     /** Returns the phone number.*/
-    var phoneNumber: String
+    public var phoneNumber: String
 
     /** Returns the country code e.g KE.*/
-    var countryCode: String
+    public var countryCode: String
 
     /** Returns the selected country.*/
-    var country: CountryData
+    public var country: CountryData
 
     /** Shows the country code in the text field if true.*/
-    val showCountryCode: Boolean
+    public val showCountryCode: Boolean
 
     /** Shows the country flag in the text field if true.*/
-    val showCountryFlag: Boolean
+    public val showCountryFlag: Boolean
 
     /** Receives the limited countries to be displayed in the country code picker dialog.*/
-    val limitedCountries: List<String>
+    public val limitedCountries: List<String>
 
     /** If not null, the default country code to be displayed in the text field.*/
-    val defaultCountryCode: String?
+    public val defaultCountryCode: String?
 
     /** Returns the list of countries to be displayed in the country code picker dialog.*/
-    val countryList: List<CountryData>
+    public val countryList: List<CountryData>
 
     /** Returns the country name. i.e Kenya.*/
-    fun getCountryName(): String
+    public fun getCountryName(): String
 
     /** Returns the phone number code of the country with a prefix. e.g +254.*/
-    fun getCountryPhoneCode(): String
+    public fun getCountryPhoneCode(): String
 
     /** Returns the phone number code of the country without a prefix. e.g 254.*/
-    fun getCountryPhoneCodeWithoutPrefix(): String
+    public fun getCountryPhoneCodeWithoutPrefix(): String
 
     /** Returns the phone number without the prefix. e.g 712345678.*/
-    fun getPhoneNumberWithoutPrefix(): String
+    public fun getPhoneNumberWithoutPrefix(): String
 
     /** Returns the full phone number without the prefix. e.g 254712345678.*/
-    fun getFullPhoneNumberWithoutPrefix(): String
+    public fun getFullPhoneNumberWithoutPrefix(): String
 
     /** Returns the full phone number with the prefix. e.g +254712345678.*/
-    fun getFullPhoneNumber(): String
+    public fun getFullPhoneNumber(): String
 
     /** Returns true if the phone number is valid.*/
-    fun isPhoneNumberValid(phoneNumber: String = getFullPhoneNumber()): Boolean
+    public fun isPhoneNumberValid(phoneNumber: String = getFullPhoneNumber()): Boolean
 }
 
 /**
@@ -239,10 +239,10 @@ internal class CountryCodePickerImpl(
     }
 }
 
-class KomposeCountryCodePickerDefaults(
+public class KomposeCountryCodePickerDefaults(
     context: Context,
 ) {
-    val selectedCountryCode: String = PickerUtils.getDefaultLangCode(context)
+    public val selectedCountryCode: String = PickerUtils.getDefaultLangCode(context)
 }
 
 /**
@@ -261,7 +261,7 @@ class KomposeCountryCodePickerDefaults(
  * @see CountryCodePicker.isPhoneNumberValid
  */
 @Composable
-fun rememberKomposeCountryCodePickerState(
+public fun rememberKomposeCountryCodePickerState(
     defaultCountryCode: String? = null,
     limitedCountries: List<String> = emptyList(),
     showCountryCode: Boolean = true,
@@ -293,7 +293,7 @@ fun rememberKomposeCountryCodePickerState(
  *
  */
 @Composable
-fun KomposeCountryCodePicker(
+public fun KomposeCountryCodePicker(
     modifier: Modifier = Modifier,
     text: String = "",
     showOnlyCountryCodePicker: Boolean = false,
@@ -410,7 +410,7 @@ private fun DefaultPlaceholder(defaultLang: String) {
  */
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
-fun SelectedCountryComponent(
+private fun SelectedCountryComponent(
     modifier: Modifier = Modifier,
     selectedCountry: CountryData,
     selectedCountryPadding: Dp = 8.dp,

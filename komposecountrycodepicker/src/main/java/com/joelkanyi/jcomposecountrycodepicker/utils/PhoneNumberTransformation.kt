@@ -28,7 +28,9 @@ import com.joelkanyi.jcomposecountrycodepicker.data.Transformation
  * [PhoneNumberTransformation] is a visual transformation that formats the phone number.
  * [countryCode] The country code of the phone number.
  */
-internal class PhoneNumberTransformation(countryCode: String) :
+internal class PhoneNumberTransformation(
+    private val countryCode: String
+) :
     VisualTransformation {
 
     private val phoneNumberFormatter =
