@@ -28,8 +28,8 @@ public abstract interface class com/joelkanyi/jcomposecountrycodepicker/componen
 	public abstract fun getShowCountryCode ()Z
 	public abstract fun getShowCountryFlag ()Z
 	public abstract fun isPhoneNumberValid (Ljava/lang/String;)Z
-	public abstract fun setCountryCode (Ljava/lang/String;)V
-	public abstract fun setPhoneNumber (Ljava/lang/String;)V
+	public abstract fun setCode (Ljava/lang/String;)V
+	public abstract fun setPhoneNo (Ljava/lang/String;)V
 }
 
 public final class com/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker$DefaultImpls {

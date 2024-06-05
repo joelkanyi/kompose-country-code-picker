@@ -14,9 +14,9 @@ class CountryCodePickerTest {
                 code = "KE",
                 phoneNoCode = "+254",
                 name = "Kenya",
-                flag = 0
-            )
-        )
+                flag = 0,
+            ),
+        ),
     )
 
     @Test
