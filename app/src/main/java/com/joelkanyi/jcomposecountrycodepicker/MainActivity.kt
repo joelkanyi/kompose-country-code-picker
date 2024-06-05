@@ -31,19 +31,21 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
@@ -70,7 +72,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,19 +101,19 @@ private fun PickerContent() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            val phoneNumber = rememberSaveable { mutableStateOf("") }
+            var phoneNumber by rememberSaveable { mutableStateOf("") }
             val state = rememberKomposeCountryCodePickerState(
-                limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS"),
+                // limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS"),
                 showCountryCode = true,
                 showCountryFlag = true,
-                // defaultCountryCode = "TZ",
+                // defaultCountryCode = "KE",
             )
 
             KomposeCountryCodePicker(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = phoneNumber.value,
-                onValueChange = { phoneNumber.value = it },
+                text = phoneNumber,
+                onValueChange = { phoneNumber = it },
                 placeholder = {
                     Text(
                         text = "Phone Number",
@@ -135,12 +136,12 @@ private fun PickerContent() {
                             if (it is PressInteraction.Release) {
                                 Log.e(
                                     "CountryCodePicker",
-                                    "clicked"
+                                    "clicked",
                                 )
                             }
                         }
                     }
-                }
+                },
             )
 
             /*TextField(
@@ -184,7 +185,6 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 /**
                  * Prefixed country code
                  */
@@ -202,7 +202,6 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 /**
                  * Get country name
                  */
@@ -220,7 +219,6 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 /**
                  * Get country language code
                  */
@@ -239,7 +237,6 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 /**
                  * Get phone number
                  */
@@ -257,7 +254,6 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 /**
                  * Get phone number without prefix
                  */
@@ -275,7 +271,6 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 /**
                  * Get full phone number
                  */
@@ -293,7 +288,6 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 /**
                  * Get full phone number without prefix
                  */
@@ -311,7 +305,6 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 /**
                  * Check if phone number is valid
                  */
@@ -328,10 +321,10 @@ private fun PickerContent() {
     }
 }
 
-/*@Preview
+@Preview
 @Composable
-fun Preview() {
+private fun Preview() {
     ComposePickerTheme {
         PickerContent()
     }
-}*/
+}

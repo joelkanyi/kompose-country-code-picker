@@ -62,6 +62,8 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.libphonenumber)
     implementation(libs.core.ktx)
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
 }
 
 group = "io.github.joelkanyi"

@@ -15,21 +15,16 @@
  */
 package com.joelkanyi.jcomposecountrycodepicker.data
 
-import com.joelkanyi.jcomposecountrycodepicker.R
-
 /**
- * [CountryData] is a data class that holds the data of a country.
- * [cCountryCode] The code of the country.
- * [cCountryPhoneNoCode] The phone number code of the country.
- * [cCountryName] The name of the country.
- * [cCountryFlag] The flag of the country.
- * [countryCode] The code of the country in lowercase.
+ * [Country] is a data class that holds the data of a country.
+ * [code] The code of the country.
+ * [phoneNoCode] The phone number code of the country.
+ * [name] The name of the country.
+ * [flag] The flag of the country.
  */
-public data class CountryData(
-    private var cCountryCode: String,
-    val cCountryPhoneNoCode: String,
-    val cCountryName: String,
-    val cCountryFlag: Int = R.drawable.ke,
-) {
-    var countryCode: String = cCountryCode.lowercase()
-}
+public data class Country(
+    val code: String,
+    val phoneNoCode: String,
+    val name: String,
+    val flag: Int,
+)

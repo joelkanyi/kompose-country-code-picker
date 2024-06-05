@@ -29,7 +29,7 @@ import com.joelkanyi.jcomposecountrycodepicker.data.Transformation
  * [countryCode] The country code of the phone number.
  */
 internal class PhoneNumberTransformation(
-    private val countryCode: String
+    private val countryCode: String,
 ) :
     VisualTransformation {
 

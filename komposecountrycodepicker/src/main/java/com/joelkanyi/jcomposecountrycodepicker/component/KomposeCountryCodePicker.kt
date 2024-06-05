@@ -39,7 +39,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -47,7 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -55,9 +56,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
+import com.joelkanyi.jcomposecountrycodepicker.annotation.RestrictedApi
+import com.joelkanyi.jcomposecountrycodepicker.data.Country
 import com.joelkanyi.jcomposecountrycodepicker.utils.PhoneNumberTransformation
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils
+import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountry
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.removeSpecialCharacters
 
 /**
@@ -66,13 +69,10 @@ import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.removeSpecialCh
 @Stable
 public interface CountryCodePicker {
     /** Returns the phone number.*/
-    public var phoneNumber: String
+    public val phoneNumber: String
 
     /** Returns the country code e.g KE.*/
-    public var countryCode: String
-
-    /** Returns the selected country.*/
-    public var country: CountryData
+    public val countryCode: String
 
     /** Shows the country code in the text field if true.*/
     public val showCountryCode: Boolean
@@ -80,14 +80,8 @@ public interface CountryCodePicker {
     /** Shows the country flag in the text field if true.*/
     public val showCountryFlag: Boolean
 
-    /** Receives the limited countries to be displayed in the country code picker dialog.*/
-    public val limitedCountries: List<String>
-
-    /** If not null, the default country code to be displayed in the text field.*/
-    public val defaultCountryCode: String?
-
     /** Returns the list of countries to be displayed in the country code picker dialog.*/
-    public val countryList: List<CountryData>
+    public val countryList: List<Country>
 
     /** Returns the country name. i.e Kenya.*/
     public fun getCountryName(): String
@@ -109,83 +103,56 @@ public interface CountryCodePicker {
 
     /** Returns true if the phone number is valid.*/
     public fun isPhoneNumberValid(phoneNumber: String = getFullPhoneNumber()): Boolean
+
+    /** Sets the phone number.*/
+    @RestrictedApi
+    public fun setPhoneNo(phoneNumber: String)
+
+    /** Sets the country code.*/
+    @RestrictedApi
+    public fun setCode(countryCode: String)
 }
 
 /**
  * [CountryCodePickerImpl] is a class that implements the [CountryCodePicker] interface.
  * @param defaultCountryCode The default country code to be displayed in the text field.
  * @param limitedCountries The list of countries to be displayed in the country code picker dialog.
- * @param showCountryCode If true, the country code will be shown in the text field.
- * @param showCountryFlag If true, the country flag will be shown in the text field.
- * @param context The context to be used to get the default country code.
+ * @param showCode If true, the country code will be shown in the text field.
+ * @param showFlag If true, the country flag will be shown in the text field.
  */
+@OptIn(RestrictedApi::class)
 @Stable
 internal class CountryCodePickerImpl(
-    defaultCountryCode: String?,
-    limitedCountries: List<String>,
-    showCountryCode: Boolean,
-    showCountryFlag: Boolean,
-    context: Context,
+    val defaultCountryCode: String,
+    val limitedCountries: List<String>,
+    val showCode: Boolean,
+    val showFlag: Boolean,
 ) : CountryCodePicker {
     /** A mutable state of [_phoneNumber] that holds the phone number.*/
     private val _phoneNumber = mutableStateOf("")
-    override var phoneNumber: String
+    override val phoneNumber: String
         get() = if (_phoneNumber.value.startsWith("0")) {
             _phoneNumber.value.removeSpecialCharacters()
         } else {
             "0${_phoneNumber.value.removeSpecialCharacters()}"
         }
-        set(value) {
-            _phoneNumber.value = value
-        }
-
 
     /** A mutable state of [_countryCode] that holds the country code.*/
     private val _countryCode = mutableStateOf(
-        defaultCountryCode ?: KomposeCountryCodePickerDefaults(context).selectedCountryCode
+        defaultCountryCode,
     )
-    override var countryCode: String
+    override val countryCode: String
         get() = _countryCode.value
-        set(value) {
-            _countryCode.value = value
-        }
-
-
-    /** A mutable state of [_selectedCountry] that holds the selected country.*/
-    private var _selectedCountry = mutableStateOf(
-        PickerUtils.allCountries.single { it.countryCode == countryCode }
-    )
-    override var country: CountryData
-        get() = _selectedCountry.value
-        set(value) {
-            _selectedCountry.value = value
-            _countryCode.value = value.countryCode
-        }
-
 
     /** A mutable state of [_showCountryCode] that holds the value of [showCountryCode].*/
-    private val _showCountryCode = mutableStateOf(showCountryCode)
+    private val _showCountryCode = mutableStateOf(showCode)
     override val showCountryCode: Boolean
         get() = _showCountryCode.value
 
-
     /** A mutable state of [_showCountryFlag] that holds the value of [showCountryFlag].*/
-    private val _showCountryFlag = mutableStateOf(showCountryFlag)
+    private val _showCountryFlag = mutableStateOf(showFlag)
     override val showCountryFlag: Boolean
         get() = _showCountryFlag.value
-
-
-    /** A mutable state of [_limitedCountries] that holds the value of [limitedCountries].*/
-    private val _limitedCountries = mutableStateOf(limitedCountries)
-    override val limitedCountries: List<String>
-        get() = _limitedCountries.value
-
-
-    /** A mutable state of [_defaultCountryCode] that holds the value of [defaultCountryCode].*/
-    private val _defaultCountryCode = mutableStateOf(defaultCountryCode)
-    override val defaultCountryCode: String?
-        get() = _defaultCountryCode.value
-
 
     /** A mutable state of [_countryList] that holds the list of countries to be displayed in the country code picker dialog.*/
     private val _countryList = mutableStateOf(
@@ -196,28 +163,27 @@ internal class CountryCodePickerImpl(
                 limitedCountries
                     .map { it.lowercase() }
                     .map { it.trim() }
-                    .contains(country.countryCode) ||
-                        limitedCountries.contains(country.cCountryPhoneNoCode) ||
-                        limitedCountries.contains(country.cCountryName)
+                    .contains(country.code) ||
+                    limitedCountries.contains(country.phoneNoCode) ||
+                    limitedCountries.contains(country.name)
             }
-        }
+        },
     )
-    override val countryList: List<CountryData>
+    override val countryList: List<Country>
         get() = _countryList.value
 
-
     override fun getCountryName(): String {
-        return country.cCountryName.replaceFirstChar {
+        return countryCode.getCountry().name.replaceFirstChar {
             it.uppercase()
         }
     }
 
     override fun getCountryPhoneCode(): String {
-        return country.cCountryPhoneNoCode
+        return countryCode.getCountry().phoneNoCode
     }
 
     override fun getCountryPhoneCodeWithoutPrefix(): String {
-        return country.cCountryPhoneNoCode.removePrefix("+")
+        return countryCode.getCountry().phoneNoCode.removePrefix("+")
     }
 
     override fun getPhoneNumberWithoutPrefix(): String {
@@ -237,8 +203,41 @@ internal class CountryCodePickerImpl(
     override fun isPhoneNumberValid(phoneNumber: String): Boolean {
         return PickerUtils.isValid(phoneNumber)
     }
+
+    override fun setPhoneNo(phoneNumber: String) {
+        _phoneNumber.value = phoneNumber
+    }
+
+    override fun setCode(countryCode: String) {
+        _countryCode.value = countryCode
+    }
+
+    companion object {
+        val Saver: Saver<CountryCodePickerImpl, *> = listSaver(
+            save = {
+                listOf(
+                    it.countryCode,
+                    it.limitedCountries,
+                    it.showCode,
+                    it.showFlag,
+                )
+            },
+            restore = {
+                CountryCodePickerImpl(
+                    defaultCountryCode = it[0] as String,
+                    limitedCountries = it[1] as List<String>,
+                    showCode = it[2] as Boolean,
+                    showFlag = it[3] as Boolean,
+                )
+            },
+        )
+    }
 }
 
+/**
+ * [KomposeCountryCodePickerDefaults] is a class that holds the default values for the country code picker.
+ * @param context The context to be used to get the default country code.
+ */
 public class KomposeCountryCodePickerDefaults(
     context: Context,
 ) {
@@ -268,53 +267,60 @@ public fun rememberKomposeCountryCodePickerState(
     showCountryFlag: Boolean = true,
 ): CountryCodePicker {
     val context = LocalContext.current
-    return remember {
+
+    return rememberSaveable(saver = CountryCodePickerImpl.Saver) {
+        val countryCode =
+            defaultCountryCode ?: KomposeCountryCodePickerDefaults(context).selectedCountryCode
         CountryCodePickerImpl(
-            defaultCountryCode = defaultCountryCode?.lowercase(),
+            defaultCountryCode = countryCode,
             limitedCountries = limitedCountries,
-            showCountryCode = showCountryCode,
-            showCountryFlag = showCountryFlag,
-            context = context,
+            showCode = showCountryCode,
+            showFlag = showCountryFlag,
         )
     }
 }
 
 /**
  * [KomposeCountryCodePicker] is a composable that displays a text field with a country code picker dialog.
- * [modifier] Modifier to be applied to the layout.
+ * [state] The state of the country code picker.
  * [text] The text to be displayed in the text field.
  * [onValueChange] Called when the value is changed.
- * [shape] The shape of the text field's outline.
+ * [modifier] Modifier to be applied to the layout.
  * [error] If true, the text field will be displayed in the error state.
+ * [showOnlyCountryCodePicker] If true, only the country code picker will be displayed.
+ * [shape] The shape of the text field's outline.
  * [placeholder] The placeholder to be displayed in the text field.
  * [colors] The colors to be used to display the text field.
  * [trailingIcon] The trailing icon to be displayed in the text field.
+ * [countrySelectionDialogContainerColor] The color to be used to display the country selection dialog container.
+ * [countrySelectionDialogContentColor] The color to be used to display the country selection dialog content.
+ * [pickerContentColor] The color to be used to display the text.
  * [interactionSource] The MutableInteractionSource representing the stream of Interactions for this text field.
- *
  */
+@OptIn(RestrictedApi::class)
 @Composable
 public fun KomposeCountryCodePicker(
+    state: CountryCodePicker,
+    text: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    text: String = "",
-    showOnlyCountryCodePicker: Boolean = false,
-    onValueChange: (String) -> Unit = {},
-    shape: Shape = MaterialTheme.shapes.medium,
     error: Boolean = false,
+    showOnlyCountryCodePicker: Boolean = false,
+    shape: Shape = MaterialTheme.shapes.medium,
     placeholder: @Composable ((defaultLang: String) -> Unit) = { defaultLang ->
         DefaultPlaceholder(defaultLang)
     },
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    trailingIcon: @Composable (() -> Unit) = {},
-    state: CountryCodePicker,
+    trailingIcon: @Composable (() -> Unit)? = null,
     countrySelectionDialogContainerColor: Color = MaterialTheme.colorScheme.background,
     countrySelectionDialogContentColor: Color = MaterialTheme.colorScheme.onBackground,
     pickerContentColor: Color = MaterialTheme.colorScheme.onBackground,
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
 ) {
-    val localTextInputService = LocalTextInputService.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
 
-    state.phoneNumber = text
+    state.setPhoneNo(text)
 
     if (openCountrySelectionDialog) {
         CountrySelectionDialog(
@@ -323,7 +329,7 @@ public fun KomposeCountryCodePicker(
                 openCountrySelectionDialog = false
             },
             onSelected = { countryItem ->
-                state.country = countryItem
+                state.setCode(countryItem.code)
                 openCountrySelectionDialog = false
             },
             containerColor = countrySelectionDialogContainerColor,
@@ -336,7 +342,7 @@ public fun KomposeCountryCodePicker(
      */
     if (showOnlyCountryCodePicker) {
         SelectedCountryComponent(
-            selectedCountry = state.country,
+            selectedCountry = state.countryCode.getCountry(),
             showCountryCode = state.showCountryCode,
             showFlag = state.showCountryFlag,
             onClickSelectedCountry = {
@@ -361,7 +367,7 @@ public fun KomposeCountryCodePicker(
             colors = colors,
             isError = error,
             visualTransformation = PhoneNumberTransformation(
-                state.country.countryCode.uppercase()
+                state.countryCode.uppercase(),
             ),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Phone,
@@ -369,12 +375,12 @@ public fun KomposeCountryCodePicker(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    localTextInputService?.hideSoftwareKeyboard()
+                    keyboardController?.hide()
                 },
             ),
             leadingIcon = {
                 SelectedCountryComponent(
-                    selectedCountry = state.country,
+                    selectedCountry = state.countryCode.getCountry(),
                     showCountryCode = state.showCountryCode,
                     showFlag = state.showCountryFlag,
                     onClickSelectedCountry = {
@@ -384,15 +390,24 @@ public fun KomposeCountryCodePicker(
                 )
             },
             trailingIcon = trailingIcon,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         )
     }
 }
 
+/**
+ * [DefaultPlaceholder] is a composable that displays the default placeholder.
+ * [defaultLang] The default language code.
+ * [modifier] Modifier to be applied to the layout.
+ */
 @Composable
-private fun DefaultPlaceholder(defaultLang: String) {
+private fun DefaultPlaceholder(
+    defaultLang: String,
+    modifier: Modifier = Modifier,
+) {
     Text(
-        text = stringResource(id = PickerUtils.getNumberHint(PickerUtils.allCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())),
+        modifier = modifier,
+        text = stringResource(id = PickerUtils.getNumberHint(PickerUtils.allCountries.single { it.code == defaultLang }.code.lowercase())),
         style = MaterialTheme.typography.labelMedium.copy(
             fontWeight = FontWeight.ExtraLight,
         ),
@@ -400,10 +415,12 @@ private fun DefaultPlaceholder(defaultLang: String) {
 }
 
 /**
- * [SelectedCountryComponent] is a composable that displays a dialog with a list of countries.
+ * [SelectedCountryComponent] is a composable that displays the selected country.
+ * [selectedCountry] The selected country.
+ * [pickerContentColor] The color to be used to display the text.
+ * [onClickSelectedCountry] Called when the selected country is clicked.
  * [modifier] Modifier to be applied to the layout.
  * [selectedCountryPadding] The padding to be applied to the selected country.
- * [selectedCountry] The selected country.
  * [showCountryCode] If true, the country code will be shown in the text field.
  * [showFlag] If true, the country flag will be shown in the text field.
  * [showCountryName] If true, the country name will be shown in the text field.
@@ -411,14 +428,14 @@ private fun DefaultPlaceholder(defaultLang: String) {
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 private fun SelectedCountryComponent(
+    selectedCountry: Country,
+    pickerContentColor: Color,
+    onClickSelectedCountry: () -> Unit,
     modifier: Modifier = Modifier,
-    selectedCountry: CountryData,
     selectedCountryPadding: Dp = 8.dp,
     showCountryCode: Boolean = true,
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
-    onClickSelectedCountry: () -> Unit,
-    pickerContentColor: Color,
 ) {
     Row(
         modifier = modifier
@@ -434,12 +451,12 @@ private fun SelectedCountryComponent(
     ) {
         if (showFlag) {
             Image(
-                modifier = modifier
+                modifier = Modifier
                     .width(28.dp)
                     .height(18.dp),
                 painter = painterResource(
                     id = PickerUtils.getFlags(
-                        selectedCountry.countryCode,
+                        selectedCountry.code,
                     ),
                 ),
                 contentDescription = null,
@@ -447,7 +464,7 @@ private fun SelectedCountryComponent(
         }
         if (showCountryCode) {
             Text(
-                text = selectedCountry.cCountryPhoneNoCode,
+                text = selectedCountry.phoneNoCode,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 4.dp),
                 fontSize = 18.sp,
@@ -456,7 +473,7 @@ private fun SelectedCountryComponent(
         }
         if (showCountryName) {
             Text(
-                text = stringResource(id = PickerUtils.getCountryName(selectedCountry.countryCode.lowercase())),
+                text = stringResource(id = PickerUtils.getCountryName(selectedCountry.code.lowercase())),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 6.dp),
                 fontSize = 18.sp,

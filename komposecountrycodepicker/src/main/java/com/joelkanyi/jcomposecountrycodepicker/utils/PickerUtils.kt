@@ -20,9 +20,22 @@ import android.telephony.TelephonyManager
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.joelkanyi.jcomposecountrycodepicker.R
-import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
+import com.joelkanyi.jcomposecountrycodepicker.data.Country
 
-internal object PickerUtils  {
+internal object PickerUtils {
+    /**
+     * [getCountry] Returns the country of the supplied country code.
+     * if the country code is empty, the default country is the United States.
+     */
+    fun String.getCountry(): Country {
+        val default = allCountries.first { it.code.lowercase() == "us" }
+        return if (this.isNotEmpty()) {
+            allCountries.find { it.code.lowercase() == this.lowercase() } ?: default
+        } else {
+            default
+        }
+    }
+
     /**
      * [getDefaultLangCode] Returns the default language code of the device.
      * [context] The context of the activity or fragment.
@@ -39,7 +52,6 @@ internal object PickerUtils  {
             "us"
         }
     }
-
 
     /**
      * [isValid] Returns true if the phone number is valid.
@@ -62,7 +74,7 @@ internal object PickerUtils  {
     /**
      * [removeSpecialCharacters] Returns the phone number without special characters.
      */
-    internal fun String.removeSpecialCharacters(): String {
+    fun String.removeSpecialCharacters(): String {
         return this.replace("[^0-9]".toRegex(), "")
     }
 
@@ -70,22 +82,22 @@ internal object PickerUtils  {
      * [searchForAnItem] Returns a list of items that match the search string.
      * [searchStr] The search string.
      */
-    fun List<CountryData>.searchForAnItem(
+    fun List<Country>.searchForAnItem(
         searchStr: String,
-    ): List<CountryData> {
+    ): List<Country> {
         val filteredItems = filter {
-            it.cCountryName.contains(
+            it.name.contains(
                 searchStr,
                 ignoreCase = true,
             ) ||
-                    it.cCountryPhoneNoCode.contains(
-                        searchStr,
-                        ignoreCase = true,
-                    ) ||
-                    it.countryCode.contains(
-                        searchStr,
-                        ignoreCase = true,
-                    )
+                it.phoneNoCode.contains(
+                    searchStr,
+                    ignoreCase = true,
+                ) ||
+                it.code.contains(
+                    searchStr,
+                    ignoreCase = true,
+                )
         }
         println(filteredItems)
         return filteredItems.toList()
@@ -95,7 +107,7 @@ internal object PickerUtils  {
      * [getFlags] Returns the flag of the country.
      * [countryName] The name of the country.
      */
-    internal fun getFlags(countryName: String): Int {
+    fun getFlags(countryName: String): Int {
         return when (countryName) {
             "ad" -> R.drawable.ad
             "ae" -> R.drawable.ae
@@ -347,7 +359,7 @@ internal object PickerUtils  {
      * [getCountryName] Returns the name of the country.
      * [countryName] The name of the country.
      */
-    internal fun getCountryName(countryName: String): Int {
+    fun getCountryName(countryName: String): Int {
         return when (countryName) {
             "ad" -> R.string.andorra
             "ae" -> R.string.united_arab_emirates
@@ -598,1233 +610,1461 @@ internal object PickerUtils  {
     /**
      * [allCountries] is a list of all countries in the world sorted alphabetically.
      */
-    internal val allCountries: List<CountryData>
+    val allCountries: List<Country>
         get() = listOf(
-            CountryData(
-                cCountryCode = "ad",
-                cCountryPhoneNoCode = "+376",
-                cCountryName = "Andorra",
-                cCountryFlag = R.drawable.ad,
+            Country(
+                code = "ad",
+                phoneNoCode = "+376",
+                name = "Andorra",
+                flag = R.drawable.ad,
             ),
-            CountryData(
-                cCountryCode = "ae",
-                cCountryPhoneNoCode = "+971",
-                cCountryName = "United Arab Emirates (UAE)",
-                cCountryFlag = R.drawable.ae,
+            Country(
+                code = "ae",
+                phoneNoCode = "+971",
+                name = "United Arab Emirates (UAE)",
+                flag = R.drawable.ae,
             ),
-            CountryData(
-                cCountryCode = "af",
-                cCountryPhoneNoCode = "+93",
-                cCountryName = "Afghanistan",
-                cCountryFlag = R.drawable.af,
+            Country(
+                code = "af",
+                phoneNoCode = "+93",
+                name = "Afghanistan",
+                flag = R.drawable.af,
             ),
-            CountryData(
-                cCountryCode = "ag",
-                cCountryPhoneNoCode = "+1",
-                cCountryName = "Antigua and Barbuda",
-                cCountryFlag = R.drawable.ag,
+            Country(
+                code = "ag",
+                phoneNoCode = "+1",
+                name = "Antigua and Barbuda",
+                flag = R.drawable.ag,
             ),
-            CountryData(
-                cCountryCode = "ai",
-                cCountryPhoneNoCode = "+1",
-                cCountryName = "Anguilla",
-                cCountryFlag = R.drawable.ai,
+            Country(
+                code = "ai",
+                phoneNoCode = "+1",
+                name = "Anguilla",
+                flag = R.drawable.ai,
             ),
-            CountryData(
+            Country(
                 "al",
                 "+355",
                 "Albania",
                 R.drawable.al,
             ),
-            CountryData(
+            Country(
                 "am",
                 "+374",
                 "Armenia",
                 R.drawable.am,
             ),
-            CountryData(
+            Country(
                 "ao",
                 "+244",
                 "Angola",
                 R.drawable.ao,
             ),
-            CountryData(
+            Country(
                 "aq",
                 "+672",
                 "Antarctica",
                 R.drawable.aq,
             ),
-            CountryData(
+            Country(
                 "ar",
                 "+54",
                 "Argentina",
                 R.drawable.ar,
             ),
-            CountryData(
+            Country(
                 "as",
                 "+1",
                 "American Samoa",
+                R.drawable.`as`,
             ),
-            CountryData(
+            Country(
                 "at",
                 "+43",
                 "Austria",
                 R.drawable.at,
             ),
-            CountryData(
+            Country(
                 "au",
                 "+61",
                 "Australia",
                 R.drawable.au,
             ),
-            CountryData(
+            Country(
                 "aw",
                 "+297",
                 "Aruba",
                 R.drawable.aw,
             ),
-            CountryData(
+            Country(
                 "ax",
                 "+358",
                 "Åland Islands",
+                R.drawable.ax,
             ),
-            CountryData(
+            Country(
                 "az",
                 "+994",
                 "Azerbaijan",
+                R.drawable.az,
             ),
-            CountryData(
+            Country(
                 "ba",
                 "+387",
                 "Bosnia And Herzegovina",
+                R.drawable.ba,
             ),
-            CountryData(
+            Country(
                 "bb",
                 "+1",
                 "Barbados",
+                R.drawable.bb,
             ),
-            CountryData(
+            Country(
                 "bd",
                 "+880",
                 "Bangladesh",
+                R.drawable.bd,
             ),
-            CountryData(
+            Country(
                 "be",
                 "+32",
                 "Belgium",
+                R.drawable.be,
             ),
-            CountryData(
+            Country(
                 "bf",
                 "+226",
                 "Burkina Faso",
+                R.drawable.bf,
             ),
-            CountryData(
+            Country(
                 "bg",
                 "+359",
                 "Bulgaria",
+                R.drawable.bg,
             ),
-            CountryData(
+            Country(
                 "bh",
                 "+973",
                 "Bahrain",
+                R.drawable.bh,
             ),
-            CountryData(
+            Country(
                 "bi",
                 "+257",
                 "Burundi",
+                R.drawable.bi,
             ),
-            CountryData(
+            Country(
                 "bj",
                 "+229",
                 "Benin",
+                R.drawable.bj,
             ),
-            CountryData(
+            Country(
                 "bl",
                 "+590",
                 "Saint Barthélemy",
+                R.drawable.bl,
             ),
-            CountryData(
+            Country(
                 "bm",
                 "+1",
                 "Bermuda",
+                R.drawable.bm,
             ),
-            CountryData(
+            Country(
                 "bn",
                 "+673",
                 "Brunei Darussalam",
+                R.drawable.bn,
             ),
-            CountryData(
+            Country(
                 "bo",
                 "+591",
                 "Bolivia, Plurinational State Of",
+                R.drawable.bo,
             ),
-            CountryData(
+            Country(
                 "br",
                 "+55",
                 "Brazil",
+                R.drawable.br,
             ),
-            CountryData(
+            Country(
                 "bs",
                 "+1",
                 "Bahamas",
+                R.drawable.bs,
             ),
-            CountryData(
+            Country(
                 "bt",
                 "+975",
                 "Bhutan",
+                R.drawable.bt,
             ),
-            CountryData(
+            Country(
                 "bw",
                 "+267",
                 "Botswana",
+                R.drawable.bw,
             ),
-            CountryData(
+            Country(
                 "by",
                 "+375",
                 "Belarus",
+                R.drawable.by,
             ),
-            CountryData(
+            Country(
                 "bz",
                 "+501",
                 "Belize",
+                R.drawable.bz,
             ),
-            CountryData(
+            Country(
                 "ca",
                 "+1",
                 "Canada",
+                R.drawable.ca,
             ),
-            CountryData(
+            Country(
                 "cc",
                 "+61",
                 "Cocos (keeling) Islands",
+                R.drawable.cc,
             ),
-            CountryData(
+            Country(
                 "cd",
                 "+243",
                 "Congo, The Democratic Republic Of The",
+                R.drawable.cd,
             ),
-            CountryData(
+            Country(
                 "cf",
                 "+236",
                 "Central African Republic",
+                R.drawable.cf,
             ),
-            CountryData(
+            Country(
                 "cg",
                 "+242",
                 "Congo",
+                R.drawable.cg,
             ),
-            CountryData(
+            Country(
                 "ch",
                 "+41",
                 "Switzerland",
+                R.drawable.ch,
             ),
-            CountryData(
+            Country(
                 "ci",
                 "+225",
                 "Côte D'ivoire",
+                R.drawable.ci,
             ),
-            CountryData(
+            Country(
                 "ck",
                 "+682",
                 "Cook Islands",
+                R.drawable.ck,
             ),
-            CountryData(
+            Country(
                 "cl",
                 "+56",
                 "Chile",
+                R.drawable.cl,
             ),
-            CountryData(
+            Country(
                 "cm",
                 "+237",
                 "Cameroon",
+                R.drawable.cm,
             ),
-            CountryData(
+            Country(
                 "cn",
                 "+86",
                 "China",
+                R.drawable.cn,
             ),
-            CountryData(
+            Country(
                 "co",
                 "+57",
                 "Colombia",
+                R.drawable.co,
             ),
-            CountryData(
+            Country(
                 "cr",
                 "+506",
                 "Costa Rica",
+                R.drawable.cr,
             ),
-            CountryData(
+            Country(
                 "cu",
                 "+53",
                 "Cuba",
+                R.drawable.cu,
             ),
-            CountryData(
+            Country(
                 "cv",
                 "+238",
                 "Cape Verde",
+                R.drawable.cv,
             ),
-            CountryData(
+            Country(
                 "cw",
                 "+599",
                 "Curaçao",
+                R.drawable.cw,
             ),
-            CountryData(
+            Country(
                 "cx",
                 "+61",
                 "Christmas Island",
+                R.drawable.cx,
             ),
-            CountryData(
+            Country(
                 "cy",
                 "+357",
                 "Cyprus",
+                R.drawable.cy,
             ),
-            CountryData(
+            Country(
                 "cz",
                 "+420",
                 "Czech Republic",
+                R.drawable.cz,
             ),
-            CountryData(
+            Country(
                 "de",
                 "+49",
                 "Germany",
+                R.drawable.de,
             ),
-            CountryData(
+            Country(
                 "dj",
                 "+253",
                 "Djibouti",
+                R.drawable.dj,
             ),
-            CountryData(
+            Country(
                 "dk",
                 "+45",
                 "Denmark",
+                R.drawable.dk,
             ),
-            CountryData(
+            Country(
                 "dm",
                 "+1",
                 "Dominica",
+                R.drawable.dm,
             ),
-            CountryData(
+            Country(
                 "do",
                 "+1",
                 "Dominican Republic",
+                R.drawable.ic_do,
             ),
-            CountryData(
+            Country(
                 "dz",
                 "+213",
                 "Algeria",
+                R.drawable.dz,
             ),
-            CountryData(
+            Country(
                 "ec",
                 "+593",
                 "Ecuador",
+                R.drawable.ec,
             ),
-            CountryData(
+            Country(
                 "ee",
                 "+372",
                 "Estonia",
+                R.drawable.ee,
             ),
-            CountryData(
+            Country(
                 "eg",
                 "+20",
                 "Egypt",
+                R.drawable.eg,
             ),
-            CountryData(
+            Country(
                 "er",
                 "+291",
                 "Eritrea",
+                R.drawable.er,
             ),
-            CountryData(
+            Country(
                 "es",
                 "+34",
                 "Spain",
+                R.drawable.es,
             ),
-            CountryData(
+            Country(
                 "et",
                 "+251",
                 "Ethiopia",
+                R.drawable.et,
             ),
-            CountryData(
+            Country(
                 "fi",
                 "+358",
                 "Finland",
+                R.drawable.fi,
             ),
-            CountryData(
+            Country(
                 "fj",
                 "+679",
                 "Fiji",
+                R.drawable.fj,
             ),
-            CountryData(
+            Country(
                 "fk",
                 "+500",
                 "Falkland Islands (malvinas)",
+                R.drawable.fk,
             ),
-            CountryData(
+            Country(
                 "fm",
                 "+691",
                 "Micronesia, Federated States Of",
+                R.drawable.fm,
             ),
-            CountryData(
+            Country(
                 "fo",
                 "+298",
                 "Faroe Islands",
+                R.drawable.fo,
             ),
-            CountryData(
+            Country(
                 "fr",
                 "+33",
                 "France",
+                R.drawable.fr,
             ),
-            CountryData(
+            Country(
                 "ga",
                 "+241",
                 "Gabon",
+                R.drawable.ga,
             ),
-            CountryData(
+            Country(
                 "gb",
                 "+44",
                 "United Kingdom",
+                R.drawable.gb,
             ),
-            CountryData(
+            Country(
                 "gd",
                 "+1",
                 "Grenada",
+                R.drawable.gd,
             ),
-            CountryData(
+            Country(
                 "ge",
                 "+995",
                 "Georgia",
+                R.drawable.ge,
             ),
-            CountryData(
+            Country(
                 "gf",
                 "+594",
                 "French Guyana",
+                R.drawable.gf,
             ),
-            CountryData(
+            Country(
                 "gh",
                 "+233",
                 "Ghana",
+                R.drawable.gh,
             ),
-            CountryData(
+            Country(
                 "gi",
                 "+350",
                 "Gibraltar",
+                R.drawable.gi,
             ),
-            CountryData(
+            Country(
                 "gl",
                 "+299",
                 "Greenland",
+                R.drawable.gl,
             ),
-            CountryData(
+            Country(
                 "gm",
                 "+220",
                 "Gambia",
+                R.drawable.gm,
             ),
-            CountryData(
+            Country(
                 "gn",
                 "+224",
                 "Guinea",
+                R.drawable.gn,
             ),
-            CountryData(
+            Country(
                 "gp",
                 "+450",
                 "Guadeloupe",
+                R.drawable.gp,
             ),
-            CountryData(
+            Country(
                 "gq",
                 "+240",
                 "Equatorial Guinea",
+                R.drawable.gq,
             ),
-            CountryData(
+            Country(
                 "gr",
                 "+30",
                 "Greece",
+                R.drawable.gr,
             ),
-            CountryData(
+            Country(
                 "gt",
                 "+502",
                 "Guatemala",
+                R.drawable.gt,
             ),
-            CountryData(
+            Country(
                 "gu",
                 "+1",
                 "Guam",
+                R.drawable.gu,
             ),
-            CountryData(
+            Country(
                 "gw",
                 "+245",
                 "Guinea-bissau",
+                R.drawable.gw,
             ),
-            CountryData(
+            Country(
                 "gy",
                 "+592",
                 "Guyana",
+                R.drawable.gy,
             ),
-            CountryData(
+            Country(
                 "hk",
                 "+852",
                 "Hong Kong",
+                R.drawable.hk,
             ),
-            CountryData(
+            Country(
                 "hn",
                 "+504",
                 "Honduras",
+                R.drawable.hn,
             ),
-            CountryData(
+            Country(
                 "hr",
                 "+385",
                 "Croatia",
+                R.drawable.hr,
             ),
-            CountryData(
+            Country(
                 "ht",
                 "+509",
                 "Haiti",
+                R.drawable.ht,
             ),
-            CountryData(
+            Country(
                 "hu",
                 "+36",
                 "Hungary",
+                R.drawable.hu,
             ),
-            CountryData(
+            Country(
                 "id",
                 "+62",
                 "Indonesia",
+                R.drawable.id,
             ),
-            CountryData(
+            Country(
                 "ie",
                 "+353",
                 "Ireland",
+                R.drawable.ie,
             ),
-            CountryData(
+            Country(
                 "il",
                 "+972",
                 "Israel",
+                R.drawable.il,
             ),
-            CountryData(
+            Country(
                 "im",
                 "+44",
                 "Isle Of Man",
+                R.drawable.im,
             ),
-            CountryData(
+            Country(
                 "is",
                 "+354",
                 "Iceland",
+                R.drawable.`is`,
             ),
-            CountryData(
+            Country(
                 "in",
                 "+91",
                 "India",
+                R.drawable.`in`,
             ),
-            CountryData(
+            Country(
                 "io",
                 "+246",
                 "British Indian Ocean Territory",
+                R.drawable.io,
             ),
-            CountryData(
+            Country(
                 "iq",
                 "+964",
                 "Iraq",
+                R.drawable.iq,
             ),
-            CountryData(
+            Country(
                 "ir",
                 "+98",
                 "Iran, Islamic Republic Of",
+                R.drawable.ir,
             ),
-            CountryData(
+            Country(
                 "it",
                 "+39",
                 "Italy",
+                R.drawable.it,
             ),
-            CountryData(
+            Country(
                 "je",
                 "+44",
                 "Jersey ",
+                R.drawable.je,
             ),
-            CountryData(
+            Country(
                 "jm",
                 "+1",
                 "Jamaica",
+                R.drawable.jm,
             ),
-            CountryData(
+            Country(
                 "jo",
                 "+962",
                 "Jordan",
+                R.drawable.jo,
             ),
-            CountryData(
+            Country(
                 "jp",
                 "+81",
                 "Japan",
+                R.drawable.jp,
             ),
-            CountryData(
+            Country(
                 "ke",
                 "+254",
                 "Kenya",
+                R.drawable.ke,
             ),
-            CountryData(
+            Country(
                 "kg",
                 "+996",
                 "Kyrgyzstan",
+                R.drawable.kg,
             ),
-            CountryData(
+            Country(
                 "kh",
                 "+855",
                 "Cambodia",
+                R.drawable.kh,
             ),
-            CountryData(
+            Country(
                 "ki",
                 "+686",
                 "Kiribati",
+                R.drawable.ki,
             ),
-            CountryData(
+            Country(
                 "km",
                 "+269",
                 "Comoros",
+                R.drawable.km,
             ),
-            CountryData(
+            Country(
                 "kn",
                 "+1",
                 "Saint Kitts and Nevis",
+                R.drawable.kn,
             ),
-            CountryData(
+            Country(
                 "kp",
                 "+850",
                 "North Korea",
+                R.drawable.kp,
             ),
-            CountryData(
+            Country(
                 "kr",
                 "+82",
                 "South Korea",
+                R.drawable.kr,
             ),
-            CountryData(
+            Country(
                 "kw",
                 "+965",
                 "Kuwait",
+                R.drawable.kw,
             ),
-            CountryData(
+            Country(
                 "ky",
                 "+1",
                 "Cayman Islands",
+                R.drawable.ky,
             ),
-            CountryData(
+            Country(
                 "kz",
                 "+7",
                 "Kazakhstan",
+                R.drawable.kz,
             ),
-            CountryData(
+            Country(
                 "la",
                 "+856",
                 "Lao People's Democratic Republic",
+                R.drawable.la,
             ),
-            CountryData(
+            Country(
                 "lb",
                 "+961",
                 "Lebanon",
+                R.drawable.lb,
             ),
-            CountryData(
+            Country(
                 "lc",
                 "+1",
                 "Saint Lucia",
+                R.drawable.lc,
             ),
-            CountryData(
+            Country(
                 "li",
                 "+423",
                 "Liechtenstein",
+                R.drawable.li,
             ),
-            CountryData(
+            Country(
                 "lk",
                 "+94",
                 "Sri Lanka",
+                R.drawable.lk,
             ),
-            CountryData(
+            Country(
                 "lr",
                 "+231",
                 "Liberia",
+                R.drawable.lr,
             ),
-            CountryData(
+            Country(
                 "ls",
                 "+266",
                 "Lesotho",
+                R.drawable.ls,
             ),
-            CountryData(
+            Country(
                 "lt",
                 "+370",
                 "Lithuania",
+                R.drawable.lt,
             ),
-            CountryData(
+            Country(
                 "lu",
                 "+352",
                 "Luxembourg",
+                R.drawable.lu,
             ),
-            CountryData(
+            Country(
                 "lv",
                 "+371",
                 "Latvia",
+                R.drawable.lv,
             ),
-            CountryData(
+            Country(
                 "ly",
                 "+218",
                 "Libya",
+                R.drawable.ly,
             ),
-            CountryData(
+            Country(
                 "ma",
                 "+212",
                 "Morocco",
+                R.drawable.ma,
             ),
-            CountryData(
+            Country(
                 "mc",
                 "+377",
                 "Monaco",
+                R.drawable.mc,
             ),
-            CountryData(
+            Country(
                 "md",
                 "+373",
                 "Moldova, Republic Of",
+                R.drawable.md,
             ),
-            CountryData(
+            Country(
                 "me",
                 "+382",
                 "Montenegro",
+                R.drawable.me,
             ),
-            CountryData(
+            Country(
                 "mf",
                 "+590",
                 "Saint Martin",
+                R.drawable.mf,
             ),
-            CountryData(
+            Country(
                 "mg",
                 "+261",
                 "Madagascar",
+                R.drawable.mg,
             ),
-            CountryData(
+            Country(
                 "mh",
                 "+692",
                 "Marshall Islands",
+                R.drawable.mh,
             ),
-            CountryData(
+            Country(
                 "mk",
                 "+389",
                 "Macedonia (FYROM)",
+                R.drawable.mk,
             ),
-            CountryData(
+            Country(
                 "ml",
                 "+223",
                 "Mali",
+                R.drawable.ml,
             ),
-            CountryData(
+            Country(
                 "mm",
                 "+95",
                 "Myanmar",
+                R.drawable.mm,
             ),
-            CountryData(
+            Country(
                 "mn",
                 "+976",
                 "Mongolia",
+                R.drawable.mn,
             ),
-            CountryData(
+            Country(
                 "mo",
                 "+853",
                 "Macau",
+                R.drawable.mo,
             ),
-            CountryData(
+            Country(
                 "mp",
                 "+1",
                 "Northern Mariana Islands",
+                R.drawable.mp,
             ),
-            CountryData(
+            Country(
                 "mq",
                 "+596",
                 "Martinique",
+                R.drawable.mq,
             ),
-            CountryData(
+            Country(
                 "mr",
                 "+222",
                 "Mauritania",
+                R.drawable.mr,
             ),
-            CountryData(
+            Country(
                 "ms",
                 "+1",
                 "Montserrat",
+                R.drawable.ms,
             ),
-            CountryData(
+            Country(
                 "mt",
                 "+356",
                 "Malta",
+                R.drawable.mt,
             ),
-            CountryData(
+            Country(
                 "mu",
                 "+230",
                 "Mauritius",
+                R.drawable.mu,
             ),
-            CountryData(
+            Country(
                 "mv",
                 "+960",
                 "Maldives",
+                R.drawable.mv,
             ),
-            CountryData(
+            Country(
                 "mw",
                 "+265",
                 "Malawi",
+                R.drawable.mw,
             ),
-            CountryData(
+            Country(
                 "mx",
                 "+52",
                 "Mexico",
+                R.drawable.mx,
             ),
-            CountryData(
+            Country(
                 "my",
                 "+60",
                 "Malaysia",
+                R.drawable.my,
             ),
-            CountryData(
+            Country(
                 "mz",
                 "+258",
                 "Mozambique",
+                R.drawable.mz,
             ),
-            CountryData(
+            Country(
                 "na",
                 "+264",
                 "Namibia",
+                R.drawable.na,
             ),
-            CountryData(
+            Country(
                 "nc",
                 "+687",
                 "New Caledonia",
+                R.drawable.nc,
             ),
-            CountryData(
+            Country(
                 "ne",
                 "+227",
                 "Niger",
+                R.drawable.ne,
             ),
-            CountryData(
+            Country(
                 "nf",
                 "+672",
                 "Norfolk Islands",
+                R.drawable.nf,
             ),
-            CountryData(
+            Country(
                 "ng",
                 "+234",
                 "Nigeria",
+                R.drawable.ng,
             ),
-            CountryData(
+            Country(
                 "ni",
                 "+505",
                 "Nicaragua",
+                R.drawable.ni,
             ),
-            CountryData(
+            Country(
                 "nl",
                 "+31",
                 "Netherlands",
+                R.drawable.nl,
             ),
-            CountryData(
+            Country(
                 "no",
                 "+47",
                 "Norway",
+                R.drawable.no,
             ),
-            CountryData(
+            Country(
                 "np",
                 "+977",
                 "Nepal",
+                R.drawable.np,
             ),
-            CountryData(
+            Country(
                 "nr",
                 "+674",
                 "Nauru",
+                R.drawable.nr,
             ),
-            CountryData(
+            Country(
                 "nu",
                 "+683",
                 "Niue",
+                R.drawable.nu,
             ),
-            CountryData(
+            Country(
                 "nz",
                 "+64",
                 "New Zealand",
+                R.drawable.nz,
             ),
-            CountryData(
+            Country(
                 "om",
                 "+968",
                 "Oman",
+                R.drawable.om,
             ),
-            CountryData(
+            Country(
                 "pa",
                 "+507",
                 "Panama",
+                R.drawable.pa,
             ),
-            CountryData(
+            Country(
                 "pe",
                 "+51",
                 "Peru",
+                R.drawable.pe,
             ),
-            CountryData(
+            Country(
                 "pf",
                 "+689",
                 "French Polynesia",
+                R.drawable.pf,
             ),
-            CountryData(
+            Country(
                 "pg",
                 "+675",
                 "Papua New Guinea",
+                R.drawable.pg,
             ),
-            CountryData(
+            Country(
                 "ph",
                 "+63",
                 "Philippines",
+                R.drawable.ph,
             ),
-            CountryData(
+            Country(
                 "pk",
                 "+92",
                 "Pakistan",
+                R.drawable.pk,
             ),
-            CountryData(
+            Country(
                 "pl",
                 "+48",
                 "Poland",
+                R.drawable.pl,
             ),
-            CountryData(
+            Country(
                 "pm",
                 "+508",
                 "Saint Pierre And Miquelon",
+                R.drawable.pm,
             ),
-            CountryData(
+            Country(
                 "pn",
                 "+870",
                 "Pitcairn Islands",
+                R.drawable.pn,
             ),
-            CountryData(
+            Country(
                 "pr",
                 "+1",
                 "Puerto Rico",
+                R.drawable.pr,
             ),
-            CountryData(
+            Country(
                 "ps",
                 "+970",
                 "Palestine",
+                R.drawable.ps,
             ),
-            CountryData(
+            Country(
                 "pt",
                 "+351",
                 "Portugal",
+                R.drawable.pt,
             ),
-            CountryData(
+            Country(
                 "pw",
                 "+680",
                 "Palau",
+                R.drawable.pw,
             ),
-            CountryData(
+            Country(
                 "py",
                 "+595",
                 "Paraguay",
+                R.drawable.py,
             ),
-            CountryData(
+            Country(
                 "qa",
                 "+974",
                 "Qatar",
+                R.drawable.qa,
             ),
-            CountryData(
+            Country(
                 "re",
                 "+262",
                 "Réunion",
+                R.drawable.re,
             ),
-            CountryData(
+            Country(
                 "ro",
                 "+40",
                 "Romania",
+                R.drawable.ro,
             ),
-            CountryData(
+            Country(
                 "rs",
                 "+381",
                 "Serbia",
+                R.drawable.rs,
             ),
-            CountryData(
+            Country(
                 "ru",
                 "+7",
                 "Russian Federation",
+                R.drawable.ru,
             ),
-            CountryData(
+            Country(
                 "rw",
                 "+250",
                 "Rwanda",
+                R.drawable.rw,
             ),
-            CountryData(
+            Country(
                 "sa",
                 "+966",
                 "Saudi Arabia",
+                R.drawable.sa,
             ),
-            CountryData(
+            Country(
                 "sb",
                 "+677",
                 "Solomon Islands",
+                R.drawable.sb,
             ),
-            CountryData(
+            Country(
                 "sc",
                 "+248",
                 "Seychelles",
+                R.drawable.sc,
             ),
-            CountryData(
+            Country(
                 "sd",
                 "+249",
                 "Sudan",
+                R.drawable.sd,
             ),
-            CountryData(
+            Country(
                 "se",
                 "+46",
                 "Sweden",
+                R.drawable.se,
             ),
-            CountryData(
+            Country(
                 "sg",
                 "+65",
                 "Singapore",
+                R.drawable.sg,
             ),
-            CountryData(
+            Country(
                 "sh",
                 "+290",
                 "Saint Helena, Ascension And Tristan Da Cunha",
+                R.drawable.sh,
             ),
-            CountryData(
+            Country(
                 "si",
                 "+386",
                 "Slovenia",
+                R.drawable.si,
             ),
-            CountryData(
+            Country(
                 "sk",
                 "+421",
                 "Slovakia",
+                R.drawable.sk,
             ),
-            CountryData(
+            Country(
                 "sl",
                 "+232",
                 "Sierra Leone",
+                R.drawable.sl,
             ),
-            CountryData(
+            Country(
                 "sm",
                 "+378",
                 "San Marino",
+                R.drawable.sm,
             ),
-            CountryData(
+            Country(
                 "sn",
                 "+221",
                 "Senegal",
+                R.drawable.sn,
             ),
-            CountryData(
+            Country(
                 "so",
                 "+252",
                 "Somalia",
+                R.drawable.so,
             ),
-            CountryData(
+            Country(
                 "sr",
                 "+597",
                 "Suriname",
+                R.drawable.sr,
             ),
-            CountryData(
+            Country(
                 "ss",
                 "+211",
                 "South Sudan",
+                R.drawable.ss,
             ),
-            CountryData(
+            Country(
                 "st",
                 "+239",
                 "Sao Tome And Principe",
+                R.drawable.st,
             ),
-            CountryData(
+            Country(
                 "sv",
                 "+503",
                 "El Salvador",
+                R.drawable.sv,
             ),
-            CountryData(
+            Country(
                 "sx",
                 "+1",
                 "Sint Maarten",
+                R.drawable.sx,
             ),
-            CountryData(
+            Country(
                 "sy",
                 "+963",
                 "Syrian Arab Republic",
+                R.drawable.sy,
             ),
-            CountryData(
+            Country(
                 "sz",
                 "+268",
                 "Swaziland",
+                R.drawable.sz,
             ),
-            CountryData(
+            Country(
                 "tc",
                 "+1",
                 "Turks and Caicos Islands",
+                R.drawable.tc,
             ),
-            CountryData(
+            Country(
                 "td",
                 "+235",
                 "Chad",
+                R.drawable.td,
             ),
-            CountryData(
+            Country(
                 "tg",
                 "+228",
                 "Togo",
+                R.drawable.tg,
             ),
-            CountryData(
+            Country(
                 "th",
                 "+66",
                 "Thailand",
+                R.drawable.th,
             ),
-            CountryData(
+            Country(
                 "tj",
                 "+992",
                 "Tajikistan",
+                R.drawable.tj,
             ),
-            CountryData(
+            Country(
                 "tk",
                 "+690",
                 "Tokelau",
+                R.drawable.tk,
             ),
-            CountryData(
+            Country(
                 "tl",
                 "+670",
                 "Timor-leste",
+                R.drawable.tl,
             ),
-            CountryData(
+            Country(
                 "tm",
                 "+993",
                 "Turkmenistan",
+                R.drawable.tm,
             ),
-            CountryData(
+            Country(
                 "tn",
                 "+216",
                 "Tunisia",
+                R.drawable.tn,
             ),
-            CountryData(
+            Country(
                 "to",
                 "+676",
                 "Tonga",
+                R.drawable.to,
             ),
-            CountryData(
+            Country(
                 "tr",
                 "+90",
                 "Turkey",
+                R.drawable.tr,
             ),
-            CountryData(
+            Country(
                 "tt",
                 "+1",
                 "Trinidad &amp; Tobago",
+                R.drawable.tt,
             ),
-            CountryData(
+            Country(
                 "tv",
                 "+688",
                 "Tuvalu",
+                R.drawable.tv,
             ),
-            CountryData(
+            Country(
                 "tw",
                 "+886",
                 "Taiwan",
+                R.drawable.tw,
             ),
-            CountryData(
+            Country(
                 "tz",
                 "+255",
                 "Tanzania, United Republic Of",
+                R.drawable.tz,
             ),
-            CountryData(
+            Country(
                 "ua",
                 "+380",
                 "Ukraine",
+                R.drawable.ua,
             ),
-            CountryData(
+            Country(
                 "ug",
                 "+256",
                 "Uganda",
+                R.drawable.ug,
             ),
-            CountryData(
+            Country(
                 "us",
                 "+1",
                 "United States",
+                R.drawable.us,
             ),
-            CountryData(
+            Country(
                 "uy",
                 "+598",
                 "Uruguay",
+                R.drawable.uy,
             ),
-            CountryData(
+            Country(
                 "uz",
                 "+998",
                 "Uzbekistan",
+                R.drawable.uz,
             ),
-            CountryData(
+            Country(
                 "va",
                 "+379",
                 "Holy See (vatican City State)",
+                R.drawable.va,
             ),
-            CountryData(
+            Country(
                 "vc",
                 "+1",
                 "Saint Vincent &amp; The Grenadines",
+                R.drawable.vc,
             ),
-            CountryData(
+            Country(
                 "ve",
                 "+58",
                 "Venezuela, Bolivarian Republic Of",
+                R.drawable.ve,
             ),
-            CountryData(
+            Country(
                 "vg",
                 "+1",
                 "British Virgin Islands",
+                R.drawable.vg,
             ),
-            CountryData(
+            Country(
                 "vi",
                 "+1",
                 "US Virgin Islands",
+                R.drawable.vi,
             ),
-            CountryData(
+            Country(
                 "vn",
                 "+84",
                 "Vietnam",
+                R.drawable.vn,
             ),
-            CountryData(
+            Country(
                 "vu",
                 "+678",
                 "Vanuatu",
+                R.drawable.vu,
             ),
-            CountryData(
+            Country(
                 "wf",
                 "+681",
                 "Wallis And Futuna",
+                R.drawable.wf,
             ),
-            CountryData(
+            Country(
                 "ws",
                 "4685",
                 "Samoa",
+                R.drawable.ws,
             ),
-            CountryData(
+            Country(
                 "xk",
                 "+383",
                 "Kosovo",
+                R.drawable.xk,
             ),
-            CountryData(
+            Country(
                 "ye",
                 "+967",
                 "Yemen",
+                R.drawable.ye,
             ),
-            CountryData(
+            Country(
                 "yt",
                 "+262",
                 "Mayotte",
+                R.drawable.yt,
             ),
-            CountryData(
+            Country(
                 "za",
                 "+27",
                 "South Africa",
+                R.drawable.za,
             ),
-            CountryData(
+            Country(
                 "zm",
                 "+260",
                 "Zambia",
+                R.drawable.zm,
             ),
-            CountryData(
+            Country(
                 "zw",
                 "+263",
                 "Zimbabwe",
+                R.drawable.zw,
             ),
-        ).sortedBy { it.cCountryName }
+        ).sortedBy { it.name }
 
     /**
      * [getNumberHint] Returns the hint of the country.
      * [countryName] The name of the country.
      */
-    internal fun getNumberHint(countryName: String): Int {
+    fun getNumberHint(countryName: String): Int {
         return when (countryName) {
             "ad" -> R.string.andorra_hint
             "ae" -> R.string.united_arab_emirates_hint
@@ -2072,4 +2312,1417 @@ internal object PickerUtils  {
         }
     }
 
+    /*
+    Country(
+            code = "ad",
+            name = R.string.andorra,
+            phoneNoCode = "+376",
+            flag = R.drawable.ad,
+            phoneNoHint = R.string.andorra_hint
+        )
+     */
+    /*private fun Context.allCountries(): List<Country> {
+        return listOf(
+            Country(
+                code = "af",
+                name = getString(R.string.afghanistan),
+                phoneNoCode = "+93",
+                flag = R.drawable.af,
+                phoneNoHint = getString(R.string.afganistan_hint)
+            ),
+            Country(
+                code = "al",
+                name = getString(R.string.albania),
+                phoneNoCode = "+355",
+                flag = R.drawable.al,
+                phoneNoHint = getString(R.string.albania_hint)
+            ),
+            Country(
+                code = "dz",
+                name = getString(R.string.algeria),
+                phoneNoCode = "+213",
+                flag = R.drawable.dz,
+                phoneNoHint = getString(R.string.algeria_hint)
+            ),
+            Country(
+                code = "as",
+                name = getString(R.string.american_samoa),
+                phoneNoCode = "+1",
+                flag = R.drawable.`as`,
+                phoneNoHint = getString(R.string.american_samoa_hint)
+            ),
+            Country(
+                code = "ad",
+                name = getString(R.string.andorra),
+                phoneNoCode = "+376",
+                flag = R.drawable.ad,
+                phoneNoHint = getString(R.string.andorra_hint)
+            ),
+            Country(
+                code = "ao",
+                name = getString(R.string.angola),
+                phoneNoCode = "+244",
+                flag = R.drawable.ao,
+                phoneNoHint = getString(R.string.angola_hint)
+            ),
+            Country(
+                code = "ai",
+                name = getString(R.string.anguilla),
+                phoneNoCode = "+1",
+                flag = R.drawable.ai,
+                phoneNoHint = getString(R.string.anguilla_hint)
+            ),
+            Country(
+                code = "ag",
+                name = getString(R.string.antigua_and_barbuda),
+                phoneNoCode = "+1",
+                flag = R.drawable.ag,
+                phoneNoHint = getString(R.string.antigua_and_barbuda_hint)
+            ),
+            Country(
+                code = "ar",
+                name = getString(R.string.argentina),
+                phoneNoCode = "+54",
+                flag = R.drawable.ar,
+                phoneNoHint = getString(R.string.argentina_hint)
+            ),
+            Country(
+                code = "am",
+                name = getString(R.string.armenia),
+                phoneNoCode = "+374",
+                flag = R.drawable.am,
+                phoneNoHint = getString(R.string.armenia_hint)
+            ),
+            Country(
+                code = "aw",
+                name = getString(R.string.aruba),
+                phoneNoCode = "+297",
+                flag = R.drawable.aw,
+                phoneNoHint = getString(R.string.aruba_hint)
+            ),
+            Country(
+                code = "au",
+                name = getString(R.string.australia),
+                phoneNoCode = "+61",
+                flag = R.drawable.au,
+                phoneNoHint = getString(R.string.australia_hint)
+            ),
+            Country(
+                code = "at",
+                name = getString(R.string.austria),
+                phoneNoCode = "+43",
+                flag = R.drawable.at,
+                phoneNoHint = getString(R.string.austria_hint)
+            ),
+            Country(
+                code = "az",
+                name = getString(R.string.azerbaijan),
+                phoneNoCode = "+994",
+                flag = R.drawable.az,
+                phoneNoHint = getString(R.string.azerbaijan_hint)
+            ),
+            Country(
+                code = "bs",
+                name = getString(R.string.bahamas),
+                phoneNoCode = "+1",
+                flag = R.drawable.bs,
+                phoneNoHint = getString(R.string.bahamas_hint)
+            ),
+            Country(
+                code = "bh",
+                name = getString(R.string.bahrain),
+                phoneNoCode = "+973",
+                flag = R.drawable.bh,
+                phoneNoHint = getString(R.string.bahrain_hint)
+            ),
+            Country(
+                code = "bd",
+                name = getString(R.string.bangladesh),
+                phoneNoCode = "+880",
+                flag = R.drawable.bd,
+                phoneNoHint = getString(R.string.bangladesh_hint)
+            ),
+            Country(
+                code = "bb",
+                name = getString(R.string.barbados),
+                phoneNoCode = "+1",
+                flag = R.drawable.bb,
+                phoneNoHint = getString(R.string.barbados_hint)
+            ),
+            Country(
+                code = "by",
+                name = getString(R.string.belarus),
+                phoneNoCode = "+375",
+                flag = R.drawable.by,
+                phoneNoHint = getString(R.string.belarus_hint)
+            ),
+            Country(
+                code = "be",
+                name = getString(R.string.belgium),
+                phoneNoCode = "+32",
+                flag = R.drawable.be,
+                phoneNoHint = getString(R.string.belgium_hint)
+            ),
+            Country(
+                code = "bz",
+                name = getString(R.string.belize),
+                phoneNoCode = "+501",
+                flag = R.drawable.bz,
+                phoneNoHint = getString(R.string.belize_hint)
+            ),
+            Country(
+                code = "bj",
+                name = getString(R.string.benin),
+                phoneNoCode = "+229",
+                flag = R.drawable.bj,
+                phoneNoHint = getString(R.string.benin_hint)
+            ),
+            Country(
+                code = "bm",
+                name = getString(R.string.bermuda),
+                phoneNoCode = "+1",
+                flag = R.drawable.bm,
+                phoneNoHint = getString(R.string.bermuda_hint)
+            ),
+            Country(
+                code = "bt",
+                name = getString(R.string.bhutan),
+                phoneNoCode = "+975",
+                flag = R.drawable.bt,
+                phoneNoHint = getString(R.string.bhutan_hint)
+            ),
+            Country(
+                code = "bo",
+                name = getString(R.string.bolivia),
+                phoneNoCode = "+591",
+                flag = R.drawable.bo,
+                phoneNoHint = getString(R.string.bolivia_hint)
+            ),
+            Country(
+                code = "ba",
+                name = getString(R.string.bosnia),
+                phoneNoCode = "+387",
+                flag = R.drawable.ba,
+                phoneNoHint = getString(R.string.bosnia_hint)
+            ),
+            Country(
+                code = "bw",
+                name = getString(R.string.botswana),
+                phoneNoCode = "+267",
+                flag = R.drawable.bw,
+                phoneNoHint = getString(R.string.botswana_hint)
+            ),
+            Country(
+                code = "br",
+                name = getString(R.string.brazil),
+                phoneNoCode = "+55",
+                flag = R.drawable.br,
+                phoneNoHint = getString(R.string.brazil_hint)
+            ),
+            Country(
+                code = "bn",
+                name = getString(R.string.brunei_darussalam),
+                phoneNoCode = "+673",
+                flag = R.drawable.bn,
+                phoneNoHint = getString(R.string.brunei_darussalam_hint)
+            ),
+            Country(
+                code = "bg",
+                name = getString(R.string.bulgaria),
+                phoneNoCode = "+359",
+                flag = R.drawable.bg,
+                phoneNoHint = getString(R.string.bulgaria_hint)
+            ),
+            Country(
+                code = "bf",
+                name = getString(R.string.burkina_faso),
+                phoneNoCode = "+226",
+                flag = R.drawable.bf,
+                phoneNoHint = getString(R.string.burkina_faso_hint)
+            ),
+            Country(
+                code = "bi",
+                name = getString(R.string.burundi),
+                phoneNoCode = "+257",
+                flag = R.drawable.bi,
+                phoneNoHint = getString(R.string.burundi_hint)
+            ),
+            Country(
+                code = "kh",
+                name = getString(R.string.cambodia),
+                phoneNoCode = "+855",
+                flag = R.drawable.kh,
+                phoneNoHint = getString(R.string.cambodia_hint)
+            ),
+            Country(
+                code = "cm",
+                name = getString(R.string.cameroon),
+                phoneNoCode = "+237",
+                flag = R.drawable.cm,
+                phoneNoHint = getString(R.string.cameroon_hint)
+            ),
+            Country(
+                code = "ca",
+                name = getString(R.string.canada),
+                phoneNoCode = "+1",
+                flag = R.drawable.ca,
+                phoneNoHint = getString(R.string.canada_hint)
+            ),
+            Country(
+                code = "cv",
+                name = getString(R.string.cape_verde),
+                phoneNoCode = "+238",
+                flag = R.drawable.cv,
+                phoneNoHint = getString(R.string.cape_verde_hint)
+            ),
+            Country(
+                code = "ky",
+                name = getString(R.string.cayman_islands),
+                phoneNoCode = "+1",
+                flag = R.drawable.ky,
+                phoneNoHint = getString(R.string.cayman_islands_hint)
+            ),
+            Country(
+                code = "cf",
+                name = getString(R.string.central_african),
+                phoneNoCode = "+236",
+                flag = R.drawable.cf,
+                phoneNoHint = getString(R.string.central_african_hint)
+            ),
+            Country(
+                code = "td",
+                name = getString(R.string.chad),
+                phoneNoCode = "+235",
+                flag = R.drawable.td,
+                phoneNoHint = getString(R.string.chad_hint)
+            ),
+            Country(
+                code = "cl",
+                name = getString(R.string.chile),
+                phoneNoCode = "+56",
+                flag = R.drawable.cl,
+                phoneNoHint = getString(R.string.chile_hint)
+            ),
+            Country(
+                code = "cn",
+                name = getString(R.string.china),
+                phoneNoCode = "+86",
+                flag = R.drawable.cn,
+                phoneNoHint = getString(R.string.china_hint)
+            ),
+            Country(
+                code = "co",
+                name = getString(R.string.colombia),
+                phoneNoCode = "+57",
+                flag = R.drawable.co,
+                phoneNoHint = getString(R.string.colombia_hint)
+            ),
+            Country(
+                code = "km",
+                name = getString(R.string.comoros),
+                phoneNoCode = "+269",
+                flag = R.drawable.km,
+                phoneNoHint = getString(R.string.comoros_hint)
+            ),
+            Country(
+                code = "cg",
+                name = getString(R.string.congo),
+                phoneNoCode = "+242",
+                flag = R.drawable.cg,
+                phoneNoHint = getString(R.string.congo)
+            ),
+            Country(
+                code = "cd",
+                name = getString(R.string.congo_democratic),
+                phoneNoCode = "+243",
+                flag = R.drawable.cd,
+                phoneNoHint = getString(R.string.congo_democratic_hint)
+            ),
+            Country(
+                code = "cr",
+                name = getString(R.string.costa_rica),
+                phoneNoCode = "+506",
+                flag = R.drawable.cr,
+                phoneNoHint = getString(R.string.costa_rica_hint)
+            ),
+            Country(
+                code = "ci",
+                name = getString(R.string.cote_dlvoire),
+                phoneNoCode = "+225",
+                flag = R.drawable.ci,
+                phoneNoHint = getString(R.string.cote_dlvoire_hint)
+            ),
+            Country(
+                code = "hr",
+                name = getString(R.string.croatia),
+                phoneNoCode = "+385",
+                flag = R.drawable.hr,
+                phoneNoHint = getString(R.string.croatia_hint)
+            ),
+            Country(
+                code = "cu",
+                name = getString(R.string.cuba),
+                phoneNoCode = "+53",
+                flag = R.drawable.cu,
+                phoneNoHint = getString(R.string.cuba_hint)
+            ),
+            Country(
+                code = "cy",
+                name = getString(R.string.cyprus),
+                phoneNoCode = "+357",
+                flag = R.drawable.cy,
+                phoneNoHint = getString(R.string.cyprus_hint)
+            ),
+            Country(
+                code = "cz",
+                name = getString(R.string.czech_republic),
+                phoneNoCode = "+420",
+                flag = R.drawable.cz,
+                phoneNoHint = getString(R.string.czech_republic_hint)
+            ),
+            Country(
+                code = "dk",
+                name = getString(R.string.denmark),
+                phoneNoCode = "+45",
+                flag = R.drawable.dk,
+                phoneNoHint = getString(R.string.denmark_hint)
+            ),
+            Country(
+                code = "dj",
+                name = getString(R.string.djibouti),
+                phoneNoCode = "+253",
+                flag = R.drawable.dj,
+                phoneNoHint = getString(R.string.djibouti_hint)
+            ),
+            Country(
+                code = "dm",
+                name = getString(R.string.dominica),
+                phoneNoCode = "+1",
+                flag = R.drawable.dm,
+                phoneNoHint = getString(R.string.dominica_hint)
+            ),
+            Country(
+                code = "do",
+                name = getString(R.string.dominician_republic),
+                phoneNoCode = "+1",
+                flag = R.drawable.ic_do,
+                phoneNoHint = getString(R.string.dominician_republic_hint)
+            ),
+            Country(
+                code = "ec",
+                name = getString(R.string.ecuador),
+                phoneNoCode = "+593",
+                flag = R.drawable.ec,
+                phoneNoHint = getString(R.string.ecuador_hint)
+            ),
+            Country(
+                code = "eg",
+                name = getString(R.string.egypt),
+                phoneNoCode = "+20",
+                flag = R.drawable.eg,
+                phoneNoHint = getString(R.string.egypt_hint)
+            ),
+            Country(
+                code = "sv",
+                name = getString(R.string.el_salvador),
+                phoneNoCode = "+503",
+                flag = R.drawable.sv,
+                phoneNoHint = getString(R.string.el_salvador_hint)
+            ),
+            Country(
+                code = "gq",
+                name = getString(R.string.equatorial_guinea),
+                phoneNoCode = "+240",
+                flag = R.drawable.gq,
+                phoneNoHint = getString(R.string.equatorial_guinea_hint)
+            ),
+            Country(
+                code = "er",
+                name = getString(R.string.eritrea),
+                phoneNoCode = "+291",
+                flag = R.drawable.er,
+                phoneNoHint = getString(R.string.eritrea_hint)
+            ),
+            Country(
+                code = "ee",
+                name = getString(R.string.estonia),
+                phoneNoCode = "+372",
+                flag = R.drawable.ee,
+                phoneNoHint = getString(R.string.estonia_hint)
+            ),
+            Country(
+                code = "et",
+                name = getString(R.string.ethiopia),
+                phoneNoCode = "+251",
+                flag = R.drawable.et,
+                phoneNoHint = getString(R.string.ethiopia_hint)
+            ),
+            Country(
+                code = "fj",
+                name = getString(R.string.fiji),
+                phoneNoCode = "+679",
+                flag = R.drawable.fj,
+                phoneNoHint = getString(R.string.fiji_hint)
+            ),
+            Country(
+                code = "fi",
+                name = getString(R.string.finland),
+                phoneNoCode = "+358",
+                flag = R.drawable.fi,
+                phoneNoHint = getString(R.string.finland_hint)
+            ),
+            Country(
+                code = "fr",
+                name = getString(R.string.france),
+                phoneNoCode = "+33",
+                flag = R.drawable.fr,
+                phoneNoHint = getString(R.string.france_hint)
+            ),
+            Country(
+                code = "ga",
+                name = getString(R.string.gabon),
+                phoneNoCode = "+241",
+                flag = R.drawable.ga,
+                phoneNoHint = getString(R.string.gabon_hint)
+            ),
+            Country(
+                code = "gm",
+                name = getString(R.string.gambia),
+                phoneNoCode = "+220",
+                flag = R.drawable.gm,
+                phoneNoHint = getString(R.string.gambia_hint)
+            ),
+            Country(
+                code = "ge",
+                name = getString(R.string.georgia),
+                phoneNoCode = "+995",
+                flag = R.drawable.ge,
+                phoneNoHint = getString(R.string.georgia_hint)
+            ),
+            Country(
+                code = "de",
+                name = getString(R.string.germany),
+                phoneNoCode = "+49",
+                flag = R.drawable.de,
+                phoneNoHint = getString(R.string.germany_hint)
+            ),
+            Country(
+                code = "gh",
+                name = getString(R.string.ghana),
+                phoneNoCode = "+233",
+                flag = R.drawable.gh,
+                phoneNoHint = getString(R.string.ghana_hint)
+            ),
+            Country(
+                code = "gr",
+                name = getString(R.string.greece),
+                phoneNoCode = "+30",
+                flag = R.drawable.gr,
+                phoneNoHint = getString(R.string.greece_hint)
+            ),
+            Country(
+                code = "gd",
+                name = getString(R.string.grenada),
+                phoneNoCode = "+1",
+                flag = R.drawable.gd,
+                phoneNoHint = getString(R.string.grenada_hint)
+            ),
+            Country(
+                code = "gt",
+                name = getString(R.string.guatemala),
+                phoneNoCode = "+502",
+                flag = R.drawable.gt,
+                phoneNoHint = getString(R.string.guatemala_hint)
+            ),
+            Country(
+                code = "gn",
+                name = getString(R.string.guinea),
+                phoneNoCode = "+224",
+                flag = R.drawable.gn,
+                phoneNoHint = getString(R.string.guinea_hint)
+            ),
+            Country(
+                code = "gw",
+                name = getString(R.string.guinea_bissau),
+                phoneNoCode = "+245",
+                flag = R.drawable.gw,
+                phoneNoHint = getString(R.string.guinea_bissau_hint)
+            ),
+            Country(
+                code = "gy",
+                name = getString(R.string.guyana),
+                phoneNoCode = "+592",
+                flag = R.drawable.gy,
+                phoneNoHint = getString(R.string.guyana_hint)
+            ),
+            Country(
+                code = "ht",
+                name = getString(R.string.haiti),
+                phoneNoCode = "+509",
+                flag = R.drawable.ht,
+                phoneNoHint = getString(R.string.haiti_hint)
+            ),
+            Country(
+                code = "hn",
+                name = getString(R.string.honduras),
+                phoneNoCode = "+504",
+                flag = R.drawable.hn,
+                phoneNoHint = getString(R.string.honduras_hint)
+            ),
+            Country(
+                code = "hk",
+                name = getString(R.string.hong_kong),
+                phoneNoCode = "+852",
+                flag = R.drawable.hk,
+                phoneNoHint = getString(R.string.hong_kong_hint)
+            ),
+            Country(
+                code = "hu",
+                name = getString(R.string.hungary),
+                phoneNoCode = "+36",
+                flag = R.drawable.hu,
+                phoneNoHint = getString(R.string.hungary_hint)
+            ),
+            Country(
+                code = "is",
+                name = getString(R.string.iceland),
+                phoneNoCode = "+354",
+                flag = R.drawable.`is`,
+                phoneNoHint = getString(R.string.iceland)
+            ),
+            Country(
+                code = "in",
+                name = getString(R.string.india),
+                phoneNoCode = "+91",
+                flag = R.drawable.`in`,
+                phoneNoHint = getString(R.string.india_hint)
+            ),
+            Country(
+                code = "id",
+                name = getString(R.string.indonesia),
+                phoneNoCode = "+62",
+                flag = R.drawable.id,
+                phoneNoHint = getString(R.string.indonesia_hint)
+            ),
+            Country(
+                code = "ir",
+                name = getString(R.string.iran),
+                phoneNoCode = "+98",
+                flag = R.drawable.ir,
+                phoneNoHint = getString(R.string.iran_hint)
+            ),
+            Country(
+                code = "iq",
+                name = getString(R.string.iraq),
+                phoneNoCode = "+964",
+                flag = R.drawable.iq,
+                phoneNoHint = getString(R.string.iraq_hint)
+            ),
+            Country(
+                code = "ie",
+                name = getString(R.string.ireland),
+                phoneNoCode = "+353",
+                flag = R.drawable.ie,
+                phoneNoHint = getString(R.string.ireland_hint)
+            ),
+            Country(
+                code = "il",
+                name = getString(R.string.israil),
+                phoneNoCode = "+972",
+                flag = R.drawable.il,
+                phoneNoHint = getString(R.string.israil_hint)
+            ),
+            Country(
+                code = "it",
+                name = getString(R.string.italia),
+                phoneNoCode = "+39",
+                flag = R.drawable.it,
+                phoneNoHint = getString(R.string.italia_hint)
+            ),
+            Country(
+                code = "jm",
+                name = getString(R.string.jamaica),
+                phoneNoCode = "+1",
+                flag = R.drawable.jm,
+                phoneNoHint = getString(R.string.jamaica_hint)
+            ),
+            Country(
+                code = "jp",
+                name = getString(R.string.japan),
+                phoneNoCode = "+81",
+                flag = R.drawable.jp,
+                phoneNoHint = getString(R.string.japan_hint)
+            ),
+            Country(
+                code = "jo",
+                name = getString(R.string.jordan),
+                phoneNoCode = "+962",
+                flag = R.drawable.jo,
+                phoneNoHint = getString(R.string.jordan_hint)
+            ),
+            Country(
+                code = "kz",
+                name = getString(R.string.kazakhstan),
+                phoneNoCode = "+7",
+                flag = R.drawable.kz,
+                phoneNoHint = getString(R.string.kazakhstan_hint)
+            ),
+            Country(
+                code = "ke",
+                name = getString(R.string.kenya),
+                phoneNoCode = "+254",
+                flag = R.drawable.ke,
+                phoneNoHint = getString(R.string.kenya_hint)
+            ),
+            Country(
+                code = "ki",
+                name = getString(R.string.kiribati),
+                phoneNoCode = "+686",
+                flag = R.drawable.ki,
+                phoneNoHint = getString(R.string.kiribati)
+            ),
+            Country(
+                code = "kp",
+                name = getString(R.string.north_korea),
+                phoneNoCode = "+850",
+                flag = R.drawable.kp,
+                phoneNoHint = getString(R.string.north_korea_hint)
+            ),
+            Country(
+                code = "kr",
+                name = getString(R.string.south_korea),
+                phoneNoCode = "+82",
+                flag = R.drawable.kr,
+                phoneNoHint = getString(R.string.south_korea_hint)
+            ),
+            Country(
+                code = "kw",
+                name = getString(R.string.kuwait),
+                phoneNoCode = "+965",
+                flag = R.drawable.kw,
+                phoneNoHint = getString(R.string.kuwait_hint)
+            ),
+            Country(
+                code = "kg",
+                name = getString(R.string.kyrgyzstan),
+                phoneNoCode = "+996",
+                flag = R.drawable.kg,
+                phoneNoHint = getString(R.string.kyrgyzstan_hint)
+            ),
+            Country(
+                code = "la",
+                name = getString(R.string.laos),
+                phoneNoCode = "+856",
+                flag = R.drawable.la,
+                phoneNoHint = getString(R.string.laos_hint)
+            ),
+            Country(
+                code = "lv",
+                name = getString(R.string.latvia),
+                phoneNoCode = "+371",
+                flag = R.drawable.lv,
+                phoneNoHint = getString(R.string.latvia_hint)
+            ),
+            Country(
+                code = "lb",
+                name = getString(R.string.lebanon),
+                phoneNoCode = "+961",
+                flag = R.drawable.lb,
+                phoneNoHint = getString(R.string.lebanon_hint)
+            ),
+            Country(
+                code = "ls",
+                name = getString(R.string.lesotho),
+                phoneNoCode = "+266",
+                flag = R.drawable.ls,
+                phoneNoHint = getString(R.string.lesotho_hint)
+            ),
+            Country(
+                code = "lr",
+                name = getString(R.string.liberia),
+                phoneNoCode = "+231",
+                flag = R.drawable.lr,
+                phoneNoHint = getString(R.string.liberia_hint)
+            ),
+            Country(
+                code = "ly",
+                name = getString(R.string.libya),
+                phoneNoCode = "+218",
+                flag = R.drawable.ly,
+                phoneNoHint = getString(R.string.libya_hint)
+            ),
+            Country(
+                code = "li",
+                name = getString(R.string.liechtenstein),
+                phoneNoCode = "+423",
+                flag = R.drawable.li,
+                phoneNoHint = getString(R.string.liechtenstein)
+            ),
+            Country(
+                code = "lt",
+                name = getString(R.string.lithuania),
+                phoneNoCode = "+370",
+                flag = R.drawable.lt,
+                phoneNoHint = getString(R.string.lithuania_hint)
+            ),
+            Country(
+                code = "lu",
+                name = getString(R.string.luxembourg),
+                phoneNoCode = "+352",
+                flag = R.drawable.lu,
+                phoneNoHint = getString(R.string.luxembourg_hint)
+            ),
+            Country(
+                code = "mo",
+                name = getString(R.string.macau),
+                phoneNoCode = "+853",
+                flag = R.drawable.mo,
+                phoneNoHint = getString(R.string.macau_hint)
+            ),
+            Country(
+                code = "mk",
+                name = getString(R.string.north_macedonia),
+                phoneNoCode = "+389",
+                flag = R.drawable.mk,
+                phoneNoHint = getString(R.string.north_macedonia_hint)
+            ),
+            Country(
+                code = "mg",
+                name = getString(R.string.madagascar),
+                phoneNoCode = "+261",
+                flag = R.drawable.mg,
+                phoneNoHint = getString(R.string.madagascar_hint)
+            ),
+            Country(
+                code = "mw",
+                name = getString(R.string.malawi),
+                phoneNoCode = "+265",
+                flag = R.drawable.mw,
+                phoneNoHint = getString(R.string.malawi_hint)
+            ),
+            Country(
+                code = "my",
+                name = getString(R.string.malaysia),
+                phoneNoCode = "+60",
+                flag = R.drawable.my,
+                phoneNoHint = getString(R.string.malaysia_hint)
+            ),
+            Country(
+                code = "mv",
+                name = getString(R.string.maldives),
+                phoneNoCode = "+960",
+                flag = R.drawable.mv,
+                phoneNoHint = getString(R.string.maldives_hint)
+            ),
+            Country(
+                code = "ml",
+                name = getString(R.string.mali),
+                phoneNoCode = "+223",
+                flag = R.drawable.ml,
+                phoneNoHint = getString(R.string.mali_hint)
+            ),
+            Country(
+                code = "mt",
+                name = getString(R.string.malta),
+                phoneNoCode = "+356",
+                flag = R.drawable.mt,
+                phoneNoHint = getString(R.string.malta_hint)
+            ),
+            Country(
+                code = "mh",
+                name = getString(R.string.marshall_islands),
+                phoneNoCode = "+692",
+                flag = R.drawable.mh,
+                phoneNoHint = getString(R.string.marshall_islands_hint)
+            ),
+            Country(
+                code = "mr",
+                name = getString(R.string.mauriatana),
+                phoneNoCode = "+222",
+                flag = R.drawable.mr,
+                phoneNoHint = getString(R.string.mauriatana_hint)
+            ),
+            Country(
+                code = "mu",
+                name = getString(R.string.mauritius),
+                phoneNoCode = "+230",
+                flag = R.drawable.mu,
+                phoneNoHint = getString(R.string.mauritius_hint)
+            ),
+            Country(
+                code = "mx",
+                name = getString(R.string.mexico),
+                phoneNoCode = "+52",
+                flag = R.drawable.mx,
+                phoneNoHint = getString(R.string.mexico_hint)
+            ),
+            Country(
+                code = "fm",
+                name = getString(R.string.micro),
+                phoneNoCode = "+691",
+                flag = R.drawable.fm,
+                phoneNoHint = getString(R.string.micro_hint)
+            ),
+            Country(
+                code = "md",
+                name = getString(R.string.moldova),
+                phoneNoCode = "+373",
+                flag = R.drawable.md,
+                phoneNoHint = getString(R.string.moldova_hint)
+            ),
+            Country(
+                code = "mc",
+                name = getString(R.string.monaco),
+                phoneNoCode = "+377",
+                flag = R.drawable.mc,
+                phoneNoHint = getString(R.string.monaco_hint)
+            ),
+            Country(
+                code = "mn",
+                name = getString(R.string.mongolia),
+                phoneNoCode = "+976",
+                flag = R.drawable.mn,
+                phoneNoHint = getString(R.string.mongolia_hint)
+            ),
+            Country(
+                code = "me",
+                name = getString(R.string.montenegro),
+                phoneNoCode = "+382",
+                flag = R.drawable.me,
+                phoneNoHint = getString(R.string.montenegro_hint)
+            ),
+            Country(
+                code = "ma",
+                name = getString(R.string.marocco),
+                phoneNoCode = "+212",
+                flag = R.drawable.ma,
+                phoneNoHint = getString(R.string.marocco_hint)
+            ),
+            Country(
+                code = "mz",
+                name = getString(R.string.mozambique),
+                phoneNoCode = "+258",
+                flag = R.drawable.mz,
+                phoneNoHint = getString(R.string.mozambique_hint)
+            ),
+            Country(
+                code = "mm",
+                name = getString(R.string.myanmar),
+                phoneNoCode = "+95",
+                flag = R.drawable.mm,
+                phoneNoHint = getString(R.string.myanmar_hint)
+            ),
+            Country(
+                code = "na",
+                name = getString(R.string.namibia),
+                phoneNoCode = "+264",
+                flag = R.drawable.na,
+                phoneNoHint = getString(R.string.namibia_hint)
+            ),
+            Country(
+                code = "nr",
+                name = getString(R.string.nauru),
+                phoneNoCode = "+674",
+                flag = R.drawable.nr,
+                phoneNoHint = getString(R.string.nauru_hint)
+            ),
+            Country(
+                code = "np",
+                name = getString(R.string.nepal),
+                phoneNoCode = "+977",
+                flag = R.drawable.np,
+                phoneNoHint = getString(R.string.nepal_hint)
+            ),
+            Country(
+                code = "nl",
+                name = getString(R.string.netherlands),
+                phoneNoCode = "+31",
+                flag = R.drawable.nl,
+                phoneNoHint = getString(R.string.netherlands_hint)
+            ),
+            Country(
+                code = "nz",
+                name = getString(R.string.new_zealand),
+                phoneNoCode = "+64",
+                flag = R.drawable.nz,
+                phoneNoHint = getString(R.string.new_zealand_hint)
+            ),
+            Country(
+                code = "ni",
+                name = getString(R.string.nicaragua),
+                phoneNoCode = "+505",
+                flag = R.drawable.ni,
+                phoneNoHint = getString(R.string.dominica_hint)
+            ),
+            Country(
+                code = "ne",
+                name = getString(R.string.niger),
+                phoneNoCode = "+227",
+                flag = R.drawable.ne,
+                phoneNoHint = getString(R.string.niger_hint)
+            ),
+            Country(
+                code = "ng",
+                name = getString(R.string.nigeria),
+                phoneNoCode = "+234",
+                flag = R.drawable.ng,
+                phoneNoHint = getString(R.string.nigeria_hint)
+            ),
+            Country(
+                code = "no",
+                name = getString(R.string.norway),
+                phoneNoCode = "+47",
+                flag = R.drawable.no,
+                phoneNoHint = getString(R.string.norway_hint)
+            ),
+            Country(
+                code = "om",
+                name = getString(R.string.oman),
+                phoneNoCode = "+968",
+                flag = R.drawable.om,
+                phoneNoHint = getString(R.string.oman_hint)
+            ),
+            Country(
+                code = "pk",
+                name = getString(R.string.pakistan),
+                phoneNoCode = "+92",
+                flag = R.drawable.pk,
+                phoneNoHint = getString(R.string.pakistan_hint)
+            ),
+            Country(
+                code = "pw",
+                name = getString(R.string.palau),
+                phoneNoCode = "+680",
+                flag = R.drawable.pw,
+                phoneNoHint = getString(R.string.palau_hint)
+            ),
+            Country(
+                code = "pa",
+                name = getString(R.string.panama),
+                phoneNoCode = "+507",
+                flag = R.drawable.pa,
+                phoneNoHint = getString(R.string.panama_hint)
+            ),
+            Country(
+                code = "pg",
+                name = getString(R.string.papua_new_guinea),
+                phoneNoCode = "+675",
+                flag = R.drawable.pg,
+                phoneNoHint = getString(R.string.papua_new_guinea_hint)
+            ),
+            Country(
+                code = "py",
+                name = getString(R.string.paraguay),
+                phoneNoCode = "+595",
+                flag = R.drawable.py,
+                phoneNoHint = getString(R.string.paraguay_hint)
+            ),
+            Country(
+                code = "pe",
+                name = getString(R.string.peru),
+                phoneNoCode = "+51",
+                flag = R.drawable.pe,
+                phoneNoHint = getString(R.string.peru_hint)
+            ),
+            Country(
+                code = "ph",
+                name = getString(R.string.philippinies),
+                phoneNoCode = "+63",
+                flag = R.drawable.ph,
+                phoneNoHint = getString(R.string.philippinies_hint)
+            ),
+            Country(
+                code = "pl",
+                name = getString(R.string.poland),
+                phoneNoCode = "+48",
+                flag = R.drawable.pl,
+                phoneNoHint = getString(R.string.poland_hint)
+            ),
+            Country(
+                code = "pt",
+                name = getString(R.string.portugal),
+                phoneNoCode = "+351",
+                flag = R.drawable.pt,
+                phoneNoHint = getString(R.string.portugal_hint)
+            ),
+            Country(
+                code = "qa",
+                name = getString(R.string.qatar),
+                phoneNoCode = "+974",
+                flag = R.drawable.qa,
+                phoneNoHint = getString(R.string.qatar_hint)
+            ),
+            Country(
+                code = "ro",
+                name = getString(R.string.romania),
+                phoneNoCode = "+40",
+                flag = R.drawable.ro,
+                phoneNoHint = getString(R.string.romania_hint)
+            ),
+            Country(
+                code = "ru",
+                name = getString(R.string.russia),
+                phoneNoCode = "+7",
+                flag = R.drawable.ru,
+                phoneNoHint = getString(R.string.russia_hint)
+            ),
+            Country(
+                code = "rw",
+                name = getString(R.string.rwanda),
+                phoneNoCode = "+250",
+                flag = R.drawable.rw,
+                phoneNoHint = getString(R.string.rwanda_hint)
+            ),
+            Country(
+                code = "kn",
+                name = getString(R.string.saint_kitts),
+                phoneNoCode = "+1",
+                flag = R.drawable.kn,
+                phoneNoHint = getString(R.string.saint_kitts_hint)
+            ),
+            Country(
+                code = "lc",
+                name = getString(R.string.saint_lucia),
+                phoneNoCode = "+1",
+                flag = R.drawable.lc,
+                phoneNoHint = getString(R.string.saint_lucia_hint)
+            ),
+            Country(
+                code = "vc",
+                name = getString(R.string.saint_vincent),
+                phoneNoCode = "+1",
+                flag = R.drawable.vc,
+                phoneNoHint = getString(R.string.saint_vincent_hint)
+            ),
+            Country(
+                code = "ws",
+                name = getString(R.string.samoa),
+                phoneNoCode = "+685",
+                flag = R.drawable.ws,
+                phoneNoHint = getString(R.string.samoa_hint)
+            ),
+            Country(
+                code = "sm",
+                name = getString(R.string.san_marino),
+                phoneNoCode = "+378",
+                flag = R.drawable.sm,
+                phoneNoHint = getString(R.string.san_marino_hint)
+            ),
+            Country(
+                code = "st",
+                name = getString(R.string.sao_tome),
+                phoneNoCode = "+239",
+                flag = R.drawable.st,
+                phoneNoHint = getString(R.string.sao_tome_hint)
+            ),
+            Country(
+                code = "sa",
+                name = getString(R.string.saudi_arabia),
+                phoneNoCode = "+966",
+                flag = R.drawable.sa,
+                phoneNoHint = getString(R.string.saudi_arabia_hint)
+            ),
+            Country(
+                code = "sn",
+                name = getString(R.string.senegal),
+                phoneNoCode = "+221",
+                flag = R.drawable.sn,
+                phoneNoHint = getString(R.string.senegal_hint)
+            ),
+            Country(
+                code = "rs",
+                name = getString(R.string.serbia),
+                phoneNoCode = "+381",
+                flag = R.drawable.rs,
+                phoneNoHint = getString(R.string.serbia_hint)
+            ),
+            Country(
+                code = "sc",
+                name = getString(R.string.seychelles),
+                phoneNoCode = "+248",
+                flag = R.drawable.sc,
+                phoneNoHint = getString(R.string.seychelles_hint)
+            ),
+            Country(
+                code = "sl",
+                name = getString(R.string.sierra_leone),
+                phoneNoCode = "+232",
+                flag = R.drawable.sl,
+                phoneNoHint = getString(R.string.sierra_leone_hint)
+            ),
+            Country(
+                code = "sg",
+                name = getString(R.string.singapore),
+                phoneNoCode = "+65",
+                flag = R.drawable.sg,
+                phoneNoHint = getString(R.string.singapore_hint)
+            ),
+            Country(
+                code = "sk",
+                name = getString(R.string.slovakia),
+                phoneNoCode = "+421",
+                flag = R.drawable.sk,
+                phoneNoHint = getString(R.string.slovakia_hint)
+            ),
+            Country(
+                code = "si",
+                name = getString(R.string.slovenia),
+                phoneNoCode = "+386",
+                flag = R.drawable.si,
+                phoneNoHint = getString(R.string.slovenia_hint)
+            ),
+            Country(
+                code = "sb",
+                name = getString(R.string.solomon_islands),
+                phoneNoCode = "+677",
+                flag = R.drawable.sb,
+                phoneNoHint = getString(R.string.solomon_islands_hint)
+            ),
+            Country(
+                code = "so",
+                name = getString(R.string.somali),
+                phoneNoCode = "+252",
+                flag = R.drawable.so,
+                phoneNoHint = getString(R.string.somali_hint)
+            ),
+            Country(
+                code = "za",
+                name = getString(R.string.south_africa),
+                phoneNoCode = "+27",
+                flag = R.drawable.za,
+                phoneNoHint = getString(R.string.south_africa_hint)
+            ),
+            Country(
+                code = "es",
+                name = getString(R.string.spain),
+                phoneNoCode = "+34",
+                flag = R.drawable.es,
+                phoneNoHint = getString(R.string.spain_hint)
+            ),
+            Country(
+                code = "lk",
+                name = getString(R.string.siri_lanka),
+                phoneNoCode = "+94",
+                flag = R.drawable.lk,
+                phoneNoHint = getString(R.string.siri_lanka_hint)
+            ),
+            Country(
+                code = "sd",
+                name = getString(R.string.sudan),
+                phoneNoCode = "+249",
+                flag = R.drawable.sd,
+                phoneNoHint = getString(R.string.sudan_hint)
+            ),
+            Country(
+                code = "sr",
+                name = getString(R.string.suriname),
+                phoneNoCode = "+597",
+                flag = R.drawable.sr,
+                phoneNoHint = getString(R.string.suriname_hint)
+            ),
+            Country(
+                code = "sz",
+                name = getString(R.string.swaziland),
+                phoneNoCode = "+268",
+                flag = R.drawable.sz,
+                phoneNoHint = getString(R.string.swaziland_hint)
+            ),
+            Country(
+                code = "se",
+                name = getString(R.string.sweden),
+                phoneNoCode = "+46",
+                flag = R.drawable.se,
+                phoneNoHint = getString(R.string.sweden_hint)
+            ),
+            Country(
+                code = "ch",
+                name = getString(R.string.switzerland),
+                phoneNoCode = "+41",
+                flag = R.drawable.ch,
+                phoneNoHint = getString(R.string.switzerland_hint)
+            ),
+            Country(
+                code = "sy",
+                name = getString(R.string.syrian),
+                phoneNoCode = "+963",
+                flag = R.drawable.sy,
+                phoneNoHint = getString(R.string.syrian_hint)
+            ),
+            Country(
+                code = "tj",
+                name = getString(R.string.taijikistan),
+                phoneNoCode = "+992",
+                flag = R.drawable.tj,
+                phoneNoHint = getString(R.string.taijikistan_hint)
+            ),
+            Country(
+                code = "tz",
+                name = getString(R.string.tazmania),
+                phoneNoCode = "+255",
+                flag = R.drawable.tz,
+                phoneNoHint = getString(R.string.tazmania_hint)
+            ),
+            Country(
+                code = "th",
+                name = getString(R.string.thailand),
+                phoneNoCode = "+66",
+                flag = R.drawable.th,
+                phoneNoHint = getString(R.string.thailand_hint)
+            ),
+            Country(
+                code = "tl",
+                name = getString(R.string.timor_leste),
+                phoneNoCode = "+670",
+                flag = R.drawable.tl,
+                phoneNoHint = getString(R.string.timor_leste_hint)
+            ),
+            Country(
+                code = "tg",
+                name = getString(R.string.togo),
+                phoneNoCode = "+228",
+                flag = R.drawable.tg,
+                phoneNoHint = getString(R.string.togo_hint)
+            ),
+            Country(
+                code = "to",
+                name = getString(R.string.tonga),
+                phoneNoCode = "+676",
+                flag = R.drawable.to,
+                phoneNoHint = getString(R.string.tonga_hint)
+            ),
+            Country(
+                code = "tt",
+                name = getString(R.string.trinidad_and_tobago),
+                phoneNoCode = "+1",
+                flag = R.drawable.tt,
+                phoneNoHint = getString(R.string.trinidad_and_tobago_hint)
+            ),
+            Country(
+                code = "tn",
+                name = getString(R.string.tunisia),
+                phoneNoCode = "+216",
+                flag = R.drawable.tn,
+                phoneNoHint = getString(R.string.tunisia_hint)
+            ),
+            Country(
+                code = "tr",
+                name = getString(R.string.turkey),
+                phoneNoCode = "+90",
+                flag = R.drawable.tr,
+                phoneNoHint = getString(R.string.turkey_hint)
+            ),
+            Country(
+                code = "tm",
+                name = getString(R.string.turkmenistan),
+                phoneNoCode = "+993",
+                flag = R.drawable.tm,
+                phoneNoHint = getString(R.string.turkmenistan_hint)
+            ),
+            Country(
+                code = "tv",
+                name = getString(R.string.tuvalu),
+                phoneNoCode = "+688",
+                flag = R.drawable.tv,
+                phoneNoHint = getString(R.string.tuvalu_hint)
+            ),
+            Country(
+                code = "ug",
+                name = getString(R.string.uganda),
+                phoneNoCode = "+256",
+                flag = R.drawable.ug,
+                phoneNoHint = getString(R.string.uganda_hint)
+            ),
+            Country(
+                code = "ua",
+                name = getString(R.string.ukraina),
+                phoneNoCode = "+380",
+                flag = R.drawable.ua,
+                phoneNoHint = getString(R.string.ukraina_hint)
+            ),
+            Country(
+                code = "ae",
+                name = getString(R.string.united_arab_emirates),
+                phoneNoCode = "+971",
+                flag = R.drawable.ae,
+                phoneNoHint = getString(R.string.united_arab_emirates_hint)
+            ),
+            Country(
+                code = "gb",
+                name = getString(R.string.united_kingdom),
+                phoneNoCode = "+44",
+                flag = R.drawable.gb,
+                phoneNoHint = getString(R.string.united_kingdom_hint)
+            ),
+            Country(
+                code = "us",
+                name = getString(R.string.united_states_america),
+                phoneNoCode = "+1",
+                flag = R.drawable.us,
+                phoneNoHint = getString(R.string.united_states_america_hint)
+            ),
+            Country(
+                code = "uy",
+                name = getString(R.string.uruguay),
+                phoneNoCode = "+598",
+                flag = R.drawable.uy,
+                phoneNoHint = getString(R.string.uruguay_hint)
+            ),
+            Country(
+                code = "uz",
+                name = getString(R.string.uzbekistan),
+                phoneNoCode = "+998",
+                flag = R.drawable.uz,
+                phoneNoHint = getString(R.string.uzbekistan_hint)
+            ),
+            Country(
+                code = "vu",
+                name = getString(R.string.vanuatu),
+                phoneNoCode = "+678",
+                flag = R.drawable.vu,
+                phoneNoHint = getString(R.string.vanuatu_hint)
+            ),
+            Country(
+                code = "va",
+                name = getString(R.string.holy_see),
+                phoneNoCode = "+379",
+                flag = R.drawable.va,
+                phoneNoHint = getString(R.string.holy_see)
+            ),
+            Country(
+                code = "ve",
+                name = getString(R.string.venezuela),
+                phoneNoCode = "+58",
+                flag = R.drawable.ve,
+                phoneNoHint = getString(R.string.venezuela_hint)
+            ),
+            Country(
+                code = "vn",
+                name = getString(R.string.vietnam),
+                phoneNoCode = "+84",
+                flag = R.drawable.vn,
+                phoneNoHint = getString(R.string.vietnam_hint)
+            ),
+            Country(
+                code = "ye",
+                name = getString(R.string.yemen),
+                phoneNoCode = "+967",
+                flag = R.drawable.ye,
+                phoneNoHint = getString(R.string.yemen_hint)
+            ),
+            Country(
+                code = "zm",
+                name = getString(R.string.zambia),
+                phoneNoCode = "+260",
+                flag = R.drawable.zm,
+                phoneNoHint = getString(R.string.zambia_hint)
+            ),
+            Country(
+                code = "zw",
+                name = getString(R.string.zimbabwe),
+                phoneNoCode = "+263",
+                flag = R.drawable.zw,
+                phoneNoHint = getString(R.string.zimbabwe_hint)
+            )
+        )
+    }*/
 }

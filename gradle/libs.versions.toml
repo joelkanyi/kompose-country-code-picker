@@ -3,7 +3,7 @@ agp = "8.4.1"
 kotlin = "1.9.24"
 accompanistSystemuicontroller = "0.34.0"
 activityCompose = "1.9.0"
-libphonenumber = "8.13.37"
+libphonenumber = "8.13.38"
 material3 = "1.2.1"
 composeCompiler = "1.5.14"
 ktx = "1.13.1"
@@ -11,7 +11,11 @@ spotless = "6.25.0"
 kotlin-compatibility = "0.14.0"
 dokka = "1.9.20"
 gradleMavenPublish = "0.28.0"
-nmcp = "0.0.7"
+nmcp = "0.0.8"
+compose = "1.6.7"
+junitVersion = "4.13.2"
+androidxJunit = "1.1.5"
+truth = "1.4.2"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -19,6 +23,14 @@ activity-compose = { module = "androidx.activity:activity-compose", version.ref 
 libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumber" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
+
+junit = { module = "junit:junit", version.ref = "junitVersion" }
+androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
