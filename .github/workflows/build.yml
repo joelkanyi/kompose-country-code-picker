@@ -34,6 +34,29 @@ jobs:
       - name: Lint app
         run: ./gradlew spotlessCheck --stacktrace
 
+  test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: gradle
+
+      - name: Make gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Test app
+        run: ./gradlew test --stacktrace
+
   api-check:
     name: 🕵️ API Check
     runs-on: ubuntu-latest
@@ -55,7 +78,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: API Check
-        run:  ./gradlew apiCheck --stacktrace
+        run: ./gradlew apiCheck --stacktrace
 
   build:
     name: 🔨 Build

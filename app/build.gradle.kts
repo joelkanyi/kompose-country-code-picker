@@ -58,4 +58,12 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.accompanist.systemuicontroller)
     implementation(projects.komposecountrycodepicker)
+
+    implementation(libs.androidx.ui)
+    implementation(libs.material3)
+    implementation(libs.androidx.ui.tooling.preview)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
 }
