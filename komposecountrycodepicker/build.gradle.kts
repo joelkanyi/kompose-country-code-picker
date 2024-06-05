@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
     alias(libs.plugins.android.library)
@@ -46,6 +47,14 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    kotlin {
+        // for strict mode
+        explicitApi = ExplicitApiMode.Strict
+
+        // for warning mode
+        explicitApi = ExplicitApiMode.Warning
     }
 }
 

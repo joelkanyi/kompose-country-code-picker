@@ -17,13 +17,12 @@ package com.joelkanyi.jcomposecountrycodepicker.utils
 
 import android.content.Context
 import android.telephony.TelephonyManager
-import android.util.Log
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.joelkanyi.jcomposecountrycodepicker.R
 import com.joelkanyi.jcomposecountrycodepicker.data.CountryData
 
-object PickerUtils  {
+internal object PickerUtils  {
     /**
      * [getDefaultLangCode] Returns the default language code of the device.
      * [context] The context of the activity or fragment.
@@ -41,21 +40,6 @@ object PickerUtils  {
         }
     }
 
-    /**
-     * [getDefaultPhoneCode] Returns the default phone code of the device.
-     * [context] The context of the activity or fragment.
-     */
-    fun getDefaultPhoneCode(context: Context): String {
-        return try {
-            val defaultCountry = getDefaultLangCode(context)
-            val defaultCode: CountryData? =
-                allCountries.firstOrNull { it.countryCode == defaultCountry }
-            return defaultCode?.cCountryPhoneNoCode ?: "+1"
-        } catch (e: NumberParseException) {
-            Log.e("TAG", "getDefaultPhoneCode: ${e.message}")
-            "+1"
-        }
-    }
 
     /**
      * [isValid] Returns true if the phone number is valid.

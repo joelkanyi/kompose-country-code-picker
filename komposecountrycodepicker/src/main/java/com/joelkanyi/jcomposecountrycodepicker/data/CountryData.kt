@@ -25,11 +25,11 @@ import com.joelkanyi.jcomposecountrycodepicker.R
  * [cCountryFlag] The flag of the country.
  * [countryCode] The code of the country in lowercase.
  */
-data class CountryData(
+public data class CountryData(
     private var cCountryCode: String,
     val cCountryPhoneNoCode: String,
     val cCountryName: String,
     val cCountryFlag: Int = R.drawable.ke,
 ) {
-    var countryCode = cCountryCode.lowercase()
+    var countryCode: String = cCountryCode.lowercase()
 }

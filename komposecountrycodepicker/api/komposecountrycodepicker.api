@@ -51,7 +51,6 @@ public final class com/joelkanyi/jcomposecountrycodepicker/component/KomposeCoun
 
 public final class com/joelkanyi/jcomposecountrycodepicker/component/KomposeCountryCodePickerKt {
 	public static final fun KomposeCountryCodePicker-U7NiNzs (Landroidx/compose/ui/Modifier;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/graphics/Shape;ZLkotlin/jvm/functions/Function3;Landroidx/compose/material3/TextFieldColors;Lkotlin/jvm/functions/Function2;Lcom/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker;JJJLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
-	public static final fun SelectedCountryComponent-CheSNh8 (Landroidx/compose/ui/Modifier;Lcom/joelkanyi/jcomposecountrycodepicker/data/CountryData;FZZZLkotlin/jvm/functions/Function0;JLandroidx/compose/runtime/Composer;II)V
 	public static final fun rememberKomposeCountryCodePickerState (Ljava/lang/String;Ljava/util/List;ZZLandroidx/compose/runtime/Composer;II)Lcom/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker;
 }
 
@@ -72,14 +71,5 @@ public final class com/joelkanyi/jcomposecountrycodepicker/data/CountryData {
 	public fun hashCode ()I
 	public final fun setCountryCode (Ljava/lang/String;)V
 	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/joelkanyi/jcomposecountrycodepicker/utils/PickerUtils {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/joelkanyi/jcomposecountrycodepicker/utils/PickerUtils;
-	public final fun getDefaultLangCode (Landroid/content/Context;)Ljava/lang/String;
-	public final fun getDefaultPhoneCode (Landroid/content/Context;)Ljava/lang/String;
-	public final fun isValid (Ljava/lang/String;)Z
-	public final fun searchForAnItem (Ljava/util/List;Ljava/lang/String;)Ljava/util/List;
 }
 
