@@ -3,12 +3,11 @@ country code picker for Android apps.
 
 ## Preview
 
- Picker                                                           | Dialog                                                        | Picker Only                                                 
-------------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------
- ![](./assets/picker.png){: style="height:350px;width:250px"} |  ![](./assets/dialog.png){: style="height:350px;width:250px"} |  ![](./assets/picker-only.png){: style="height:350px;width:250px"}
+ Picker                                                       | Dialog                                                        
+--------------------------------------------------------------|---------------------------------------------
+ ![](./assets/picker.png){: style="height:350px;width:250px"} | ![](./assets/dialog.png){: style="height:350px;width:250px"}       
 
-
-### Including it in your project:
+## Including it in your project:
 
 #### Add the Maven Central repository if it is not already there:
 ```gradle

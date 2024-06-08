@@ -5,14 +5,14 @@
 Kompose Country Code Picker is a Jetpack Compose library based on Material 3 (M3) that provides a
 country code picker for Android apps.
 
-See the [project's website](https://joelkanyi.github.io/kompose-country-code-picker/) for documentation.
+See the [project's website](https://joelkanyi.github.io/kompose-country-code-picker/) for
+documentation.
 
 ## Preview
 
- Picker                                                           | Dialog                                                        | Picker Only                                                 
-------------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------
- ![](./assets/picker.png){: style="height:350px;width:250px"} |  ![](./assets/dialog.png){: style="height:350px;width:250px"} |  ![](./assets/picker-only.png){: style="height:350px;width:250px"}
-
+ Picker                                          | Dialog                                          | Picker Only                                          
+-------------------------------------------------|-------------------------------------------------|------------------------------------------------------
+ <img src="docs/assets/picker.png" width="250"/> | <img src="docs/assets/dialog.png" width="250"/> | <img src="docs/assets/picker-only.png" width="250"/> 
 
 ## License
 
