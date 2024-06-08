@@ -1,0 +1,74 @@
+site_name: Kompose Country Code Picker
+site_description: "A Jetpack Compose library based on Material 3 (M3) that provides a country code picker for Android apps."
+site_author: "Joel Kanyi"
+site_url: "https://joelkanyi.github.io/kompose-country-code-picker/"
+repo_name: kompose-country-code-picker
+repo_url: "https://github.com/joelkanyi/kompose-country-code-picker"
+edit_uri: "tree/main/docs/"
+docs_dir: docs
+remote_branch: gh-pages
+
+nav:
+  - 'Overview': index.md
+  - 'Getting Started': get-started.md
+  - 'Usage': usage.md
+  - 'Customizations': customizations.md
+  - 'API Reference': kdoc/komposecountrycodepicker/index.html
+  - 'License': license.md
+
+theme:
+  name: 'material'
+  language: 'en'
+  features:
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - attr_list
+  - codehilite:
+      guess_lang: false
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.betterem
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+  - pymdownx.tilde
+
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/joelkanyi
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/_joelkanyi
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/joel-kanyi-037270174/
+
+copyright: |
+  &copy; 2024 <a href="https://github.com/joelkanyi"  target="_blank" rel="noopener">Joel Kanyi</a>

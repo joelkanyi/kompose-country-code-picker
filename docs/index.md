@@ -1,11 +1,5 @@
-[![Maven central](https://img.shields.io/maven-central/v/io.github.joelkanyi/komposecountrycodepicker.svg)](https://search.maven.org/artifact/io.github.joelkanyi/komposecountrycodepicker) ![Build status](https://github.com/joelkanyi/kompose-country-code-picker/actions/workflows/build.yml/badge.svg)
-
-# Kompose Country Code Picker
-
 Kompose Country Code Picker is a Jetpack Compose library based on Material 3 (M3) that provides a
 country code picker for Android apps.
-
-See the [project's website](https://joelkanyi.github.io/kompose-country-code-picker/) for documentation.
 
 ## Preview
 
@@ -13,6 +7,31 @@ See the [project's website](https://joelkanyi.github.io/kompose-country-code-pic
 ------------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------
  ![](./assets/picker.png){: style="height:350px;width:250px"} |  ![](./assets/dialog.png){: style="height:350px;width:250px"} |  ![](./assets/picker-only.png){: style="height:350px;width:250px"}
 
+
+### Including it in your project:
+
+#### Add the Maven Central repository if it is not already there:
+```gradle
+repositories {
+    mavenCentral()
+}
+```
+
+#### Add the dependency to your dependencies block in your app's build.gradle file:
+```kotlin
+dependencies {
+    implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+}
+```
+
+#### For those using Gradle Version Catalog, you can add the dependency as follows:
+```libs.version.toml
+[versions]
+komposecountrycodepicker = "<latest-version>"
+
+[libraries]
+komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
+```
 
 ## License
 
@@ -30,3 +49,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
