@@ -1,4 +1,5 @@
 >Note:
+
 >* You need Jetpack compose material three
 dependency - `implementation("androidx.compose.material3:material3:<version>")`.
 >* The library is now hosted on Maven Central. If you were using the previous version hosted on Jitpack, please update your dependencies to the latest version.
