@@ -272,7 +272,7 @@ public fun rememberKomposeCountryCodePickerState(
         val countryCode =
             defaultCountryCode ?: KomposeCountryCodePickerDefaults(context).selectedCountryCode
         CountryCodePickerImpl(
-            defaultCountryCode = countryCode,
+            defaultCountryCode = countryCode.lowercase(),
             limitedCountries = limitedCountries,
             showCode = showCountryCode,
             showFlag = showCountryFlag,

@@ -106,7 +106,7 @@ private fun PickerContent() {
                 // limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS"),
                 showCountryCode = true,
                 showCountryFlag = true,
-                // defaultCountryCode = "KE",
+                defaultCountryCode = "KE",
             )
 
             KomposeCountryCodePicker(
