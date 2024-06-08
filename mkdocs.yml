@@ -21,7 +21,6 @@ theme:
   language: 'en'
   features:
     - navigation.sections
-    - toc.integrate
     - navigation.top
     - search.suggest
     - search.highlight
@@ -53,8 +52,6 @@ markdown_extensions:
   - codehilite:
       guess_lang: false
   - footnotes
-  - toc:
-      permalink: true
   - pymdownx.betterem
   - pymdownx.superfences
   - pymdownx.tabbed
