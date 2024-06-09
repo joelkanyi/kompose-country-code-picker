@@ -2,9 +2,11 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "*" ]
+    paths-ignore:
+      - 'mkdocs.yml'
+      - 'docs/**'
   pull_request:
-    branches: [ main ]
 
 concurrency:
   group: build-${{ github.ref }}
