@@ -12,10 +12,10 @@ kotlin-compatibility = "0.14.0"
 dokka = "1.9.20"
 gradleMavenPublish = "0.28.0"
 nmcp = "0.0.8"
-compose = "1.6.7"
+compose = "1.6.8"
 junitVersion = "4.13.2"
 androidxJunit = "1.1.5"
-truth = "1.4.2"
+truth = "1.4.3"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
