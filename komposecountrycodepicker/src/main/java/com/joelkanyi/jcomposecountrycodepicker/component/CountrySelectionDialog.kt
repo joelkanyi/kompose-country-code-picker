@@ -66,7 +66,7 @@ import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
  * @param containerColor The color of the dialog container.
  * @param contentColor The color of the dialog content.
  * @param onDismissRequest Called when the dialog is dismissed.
- * @param onSelected Called when a country is selected.
+ * @param onSelect Called when a country is selected.
  * @param modifier Modifier to be applied to the layout.
  * @param properties The properties of the dialog.
  */
@@ -77,7 +77,7 @@ public fun CountrySelectionDialog(
     containerColor: Color,
     contentColor: Color,
     onDismissRequest: () -> Unit,
-    onSelected: (item: Country) -> Unit,
+    onSelect: (item: Country) -> Unit,
     modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties().let {
         DialogProperties(
@@ -208,7 +208,7 @@ public fun CountrySelectionDialog(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        onSelected(countryItem)
+                                        onSelect(countryItem)
                                     },
                                 leadingContent = {
                                     Image(

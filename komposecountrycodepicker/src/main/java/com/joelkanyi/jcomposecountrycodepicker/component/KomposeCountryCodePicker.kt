@@ -328,7 +328,7 @@ public fun KomposeCountryCodePicker(
             onDismissRequest = {
                 openCountrySelectionDialog = false
             },
-            onSelected = { countryItem ->
+            onSelect = { countryItem ->
                 state.setCode(countryItem.code)
                 openCountrySelectionDialog = false
             },

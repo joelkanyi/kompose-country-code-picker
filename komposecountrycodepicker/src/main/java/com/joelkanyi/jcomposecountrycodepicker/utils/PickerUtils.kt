@@ -40,6 +40,7 @@ internal object PickerUtils {
      * [getDefaultLangCode] Returns the default language code of the device.
      * [context] The context of the activity or fragment.
      */
+
     fun getDefaultLangCode(context: Context): String {
         return try {
             val localeCode: TelephonyManager =
