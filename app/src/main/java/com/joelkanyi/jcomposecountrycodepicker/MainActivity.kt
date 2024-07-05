@@ -169,10 +169,11 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                /**
-                 * Get country code
-                 */
-                Text(text = "Country Phone No Code: ")
+                /** Get country code */
+                Text(
+                    text = "Country Phone No Code: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Text(
                     text = state.getCountryPhoneCodeWithoutPrefix(),
                     style = MaterialTheme.typography.titleSmall.copy(
@@ -185,10 +186,11 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                /**
-                 * Prefixed country code
-                 */
-                Text(text = "Prefixed Country Phone No Code: ")
+                /** Prefixed country code */
+                Text(
+                    text = "Prefixed Country Phone No Code: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Text(
                     text = state.getCountryPhoneCode(),
                     style = MaterialTheme.typography.titleSmall.copy(
@@ -202,10 +204,11 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                /**
-                 * Get country name
-                 */
-                Text(text = "Country Name: ")
+                /** Get country name */
+                Text(
+                    text = "Country Name: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Text(
                     text = state.getCountryName(),
                     style = MaterialTheme.typography.titleSmall.copy(
@@ -219,10 +222,11 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                /**
-                 * Get country language code
-                 */
-                Text(text = "Country Language Code: ")
+                /** Get country language code */
+                Text(
+                    text = "Country Language Code: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Text(
                     text = state.countryCode
                         .uppercase(),
@@ -237,10 +241,11 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                /**
-                 * Get phone number
-                 */
-                Text(text = "Phone Number: ")
+                /** Get phone number */
+                Text(
+                    text = "Phone Number: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Text(
                     text = state.phoneNumber,
                     style = MaterialTheme.typography.titleSmall.copy(
@@ -254,10 +259,11 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                /**
-                 * Get phone number without prefix
-                 */
-                Text(text = "Phone Number Without Prefix: ")
+                /** Get phone number without prefix */
+                Text(
+                    text = "Phone Number Without Prefix: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Text(
                     text = state.getPhoneNumberWithoutPrefix(),
                     style = MaterialTheme.typography.titleSmall.copy(
@@ -271,10 +277,11 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                /**
-                 * Get full phone number
-                 */
-                Text(text = "Full Phone Number: ")
+                /** Get full phone number */
+                Text(
+                    text = "Full Phone Number: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Text(
                     text = state.getFullPhoneNumber(),
                     style = MaterialTheme.typography.titleSmall.copy(
@@ -288,10 +295,11 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                /**
-                 * Get full phone number without prefix
-                 */
-                Text(text = "Full Phone Number Without Prefix: ")
+                /** Get full phone number without prefix */
+                Text(
+                    text = "Full Phone Number Without Prefix: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Text(
                     text = state.getFullPhoneNumberWithoutPrefix(),
                     style = MaterialTheme.typography.titleSmall.copy(
@@ -305,10 +313,29 @@ private fun PickerContent() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                /**
-                 * Check if phone number is valid
-                 */
-                Text(text = "Phone Number State: ")
+                /** Get full phone number without prefix */
+                Text(
+                    text = "Fully Formatted Phone Number: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                Text(
+                    text = state.getFullyFormattedPhoneNumber(),
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                /** Check if phone number is valid */
+                Text(
+                    text = "Phone Number State: ",
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Text(
                     text = if (state.isPhoneNumberValid()) "Valid" else "Invalid",
                     color = if (state.isPhoneNumberValid()) Color.Green else Color.Red,

@@ -51,6 +51,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
@@ -103,6 +104,9 @@ public interface CountryCodePicker {
 
     /** Returns true if the phone number is valid.*/
     public fun isPhoneNumberValid(phoneNumber: String = getFullPhoneNumber()): Boolean
+
+    /** Returns fully formatted phone number.*/
+    public fun getFullyFormattedPhoneNumber(): String
 
     /** Sets the phone number.*/
     @RestrictedApi
@@ -202,6 +206,14 @@ internal class CountryCodePickerImpl(
 
     override fun isPhoneNumberValid(phoneNumber: String): Boolean {
         return PickerUtils.isValid(phoneNumber)
+    }
+
+    override fun getFullyFormattedPhoneNumber(): String {
+        return PhoneNumberTransformation(countryCode).filter(
+            buildAnnotatedString {
+                append(getFullPhoneNumber())
+            },
+        ).text.toString()
     }
 
     override fun setPhoneNo(phoneNumber: String) {
