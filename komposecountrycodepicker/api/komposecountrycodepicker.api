@@ -23,6 +23,7 @@ public abstract interface class com/joelkanyi/jcomposecountrycodepicker/componen
 	public abstract fun getCountryPhoneCodeWithoutPrefix ()Ljava/lang/String;
 	public abstract fun getFullPhoneNumber ()Ljava/lang/String;
 	public abstract fun getFullPhoneNumberWithoutPrefix ()Ljava/lang/String;
+	public abstract fun getFullyFormattedPhoneNumber ()Ljava/lang/String;
 	public abstract fun getPhoneNumber ()Ljava/lang/String;
 	public abstract fun getPhoneNumberWithoutPrefix ()Ljava/lang/String;
 	public abstract fun getShowCountryCode ()Z

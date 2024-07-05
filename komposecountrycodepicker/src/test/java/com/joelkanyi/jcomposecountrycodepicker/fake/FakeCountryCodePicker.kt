@@ -50,6 +50,10 @@ class FakeCountryCodePicker(
         return true
     }
 
+    override fun getFullyFormattedPhoneNumber(): String {
+        return getFullPhoneNumber()
+    }
+
     @RestrictedApi
     override fun setPhoneNo(phoneNumber: String) {
         TODO("Not yet implemented")

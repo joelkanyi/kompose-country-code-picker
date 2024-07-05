@@ -90,4 +90,16 @@ class CountryCodePickerTest {
         // Then
         assertThat(result).isEqualTo(expected)
     }
+
+    @Test
+    fun testGetFullyFormattedPhoneNumber() {
+        // Given
+        val expected = "+254712345678"
+
+        // When
+        val result = countryCodePicker.getFullyFormattedPhoneNumber()
+
+        // Then
+        assertThat(result).isEqualTo(expected)
+    }
 }
