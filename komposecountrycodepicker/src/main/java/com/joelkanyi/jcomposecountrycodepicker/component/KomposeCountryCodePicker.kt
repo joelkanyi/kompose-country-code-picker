@@ -30,6 +30,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -52,14 +53,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.joelkanyi.jcomposecountrycodepicker.annotation.RestrictedApi
 import com.joelkanyi.jcomposecountrycodepicker.data.Country
+import com.joelkanyi.jcomposecountrycodepicker.data.FlagSize
 import com.joelkanyi.jcomposecountrycodepicker.utils.PhoneNumberTransformation
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.extractCountryCodeAndPhoneNumber
@@ -336,9 +338,10 @@ public fun rememberKomposeCountryCodePickerState(
  * The color to be used to display the country selection dialog
  * container. [countrySelectionDialogContentColor] The color
  * to be used to display the country selection dialog content.
- * [pickerContentColor] The color to be used to display the
  * text. [interactionSource] The MutableInteractionSource
  * representing the stream of Interactions for this text field.
+ * [selectedCountryFlagSize] The size of the selected country flag (width and height in `.dp`).
+ * [textStyle] The style to be used for displaying text on the `TextField` and the selected country.
  */
 @OptIn(RestrictedApi::class)
 @Composable
@@ -357,8 +360,9 @@ public fun KomposeCountryCodePicker(
     trailingIcon: @Composable (() -> Unit)? = null,
     countrySelectionDialogContainerColor: Color = MaterialTheme.colorScheme.background,
     countrySelectionDialogContentColor: Color = MaterialTheme.colorScheme.onBackground,
-    pickerContentColor: Color = MaterialTheme.colorScheme.onBackground,
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    selectedCountryFlagSize: FlagSize = FlagSize(28.dp, 18.dp),
+    textStyle: TextStyle = LocalTextStyle.current,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
@@ -402,7 +406,8 @@ public fun KomposeCountryCodePicker(
             onClickSelectedCountry = {
                 openCountrySelectionDialog = true
             },
-            pickerContentColor = pickerContentColor,
+            selectedCountryFlagSize = selectedCountryFlagSize,
+            textStyle = textStyle,
         )
     } else {
         OutlinedTextField(
@@ -440,11 +445,13 @@ public fun KomposeCountryCodePicker(
                     onClickSelectedCountry = {
                         openCountrySelectionDialog = true
                     },
-                    pickerContentColor = pickerContentColor,
+                    selectedCountryFlagSize = selectedCountryFlagSize,
+                    textStyle = textStyle,
                 )
             },
             trailingIcon = trailingIcon,
             interactionSource = interactionSource,
+            textStyle = textStyle,
         )
     }
 }
@@ -469,21 +476,23 @@ private fun DefaultPlaceholder(
 }
 
 /**
- * [SelectedCountryComponent] is a composable that displays the selected
- * country. [selectedCountry] The selected country. [pickerContentColor]
- * The color to be used to display the text. [onClickSelectedCountry]
- * Called when the selected country is clicked. [modifier] Modifier to
- * be applied to the layout. [selectedCountryPadding] The padding to be
- * applied to the selected country. [showCountryCode] If true, the country
- * code will be shown in the text field. [showFlag] If true, the country
- * flag will be shown in the text field. [showCountryName] If true, the
- * country name will be shown in the text field.
+ * [SelectedCountryComponent] is a composable that displays the selected country.
+ * [selectedCountry] The selected country.
+ * [selectedCountryFlagSize] The size of the selected country flag.
+ * [textStyle] The style to be used to display the text.
+ * [onClickSelectedCountry] Called when the selected country is clicked.
+ * [modifier] Modifier to be applied to the layout.
+ * [selectedCountryPadding] The padding to be applied to the selected country.
+ * [showCountryCode] If true, the country code will be shown.
+ * [showFlag] If true, the country flag will be shown.
+ * [showCountryName] If true, the country name will be shown.
  */
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 private fun SelectedCountryComponent(
     selectedCountry: Country,
-    pickerContentColor: Color,
+    selectedCountryFlagSize: FlagSize,
+    textStyle: TextStyle,
     onClickSelectedCountry: () -> Unit,
     modifier: Modifier = Modifier,
     selectedCountryPadding: Dp = 8.dp,
@@ -506,14 +515,14 @@ private fun SelectedCountryComponent(
         if (showFlag) {
             Image(
                 modifier = Modifier
-                    .width(28.dp)
-                    .height(18.dp),
+                    .width(selectedCountryFlagSize.width)
+                    .height(selectedCountryFlagSize.height),
                 painter = painterResource(
                     id = PickerUtils.getFlags(
                         selectedCountry.code,
                     ),
                 ),
-                contentDescription = null,
+                contentDescription = selectedCountry.name,
             )
         }
         if (showCountryCode) {
@@ -521,8 +530,7 @@ private fun SelectedCountryComponent(
                 text = selectedCountry.phoneNoCode,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 4.dp),
-                fontSize = 18.sp,
-                color = pickerContentColor,
+                style = textStyle,
             )
         }
         if (showCountryName) {
@@ -530,14 +538,13 @@ private fun SelectedCountryComponent(
                 text = stringResource(id = PickerUtils.getCountryName(selectedCountry.code.lowercase())),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 6.dp),
-                fontSize = 18.sp,
-                color = pickerContentColor,
+                style = textStyle,
             )
         }
         Icon(
             imageVector = Icons.Default.ArrowDropDown,
             contentDescription = null,
-            tint = pickerContentColor,
+            tint = textStyle.color,
         )
     }
 }
