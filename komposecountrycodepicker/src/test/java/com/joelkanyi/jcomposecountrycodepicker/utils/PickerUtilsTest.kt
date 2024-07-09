@@ -71,4 +71,31 @@ class PickerUtilsTest {
         // Then
         assertThat(result).isEqualTo(correctResult)
     }
+
+    @Test
+    fun testReturnCountryCodeAndPhoneNumberCorrectly() {
+        // Given
+        val wholePhoneNumber = "+254712345678"
+        val expectedCountryCode = "ke"
+        val expectedPhoneNo = "712345678"
+
+        // When
+        val (countryCode, phoneNo) = PickerUtils.extractCountryCodeAndPhoneNumber(wholePhoneNumber)
+
+        // Then
+        assertThat(countryCode).isEqualTo(expectedCountryCode)
+        assertThat(phoneNo).isEqualTo(expectedPhoneNo)
+    }
+
+    @Test
+    fun testReturnCorrectPhoneNumberWhenCountryCodeIsNotPresent() {
+        // Given
+        val wholePhoneNumber = "712345678"
+
+        // When
+        val phoneNumber = PickerUtils.extractCountryCodeAndPhoneNumber(wholePhoneNumber).second
+
+        // Then
+        assertThat(phoneNumber).isEqualTo(wholePhoneNumber)
+    }
 }
