@@ -24,8 +24,8 @@ import com.joelkanyi.jcomposecountrycodepicker.data.Country
 
 internal object PickerUtils {
     /**
-     * [getCountry] Returns the country of the supplied country code.
-     * if the country code is empty, the default country is the United States.
+     * [getCountry] Returns the country of the supplied country code. if the
+     * country code is empty, the default country is the United States.
      */
     fun String.getCountry(): Country {
         val default = allCountries.first { it.code.lowercase() == "us" }
@@ -55,8 +55,8 @@ internal object PickerUtils {
     }
 
     /**
-     * [isValid] Returns true if the phone number is valid.
-     * [phoneNumberStr] The phone number to be checked.
+     * [isValid] Returns true if the phone number is valid. [phoneNumberStr]
+     * The phone number to be checked.
      */
     fun isValid(phoneNumberStr: String): Boolean {
         return try {
@@ -73,7 +73,8 @@ internal object PickerUtils {
     }
 
     /**
-     * [removeSpecialCharacters] Returns the phone number without special characters.
+     * [removeSpecialCharacters] Returns the phone number without special
+     * characters.
      */
     fun String.removeSpecialCharacters(): String {
         return this.replace("[^0-9]".toRegex(), "")
@@ -105,8 +106,31 @@ internal object PickerUtils {
     }
 
     /**
-     * [getFlags] Returns the flag of the country.
-     * [countryName] The name of the country.
+     * [extractCountryCodeAndPhoneNumber] Returns the country code and the
+     * phone e.g +254712345678 -> Pair("ke", "712345678")
+     */
+    fun extractCountryCodeAndPhoneNumber(wholePhoneNumber: String): Pair<String?, String> {
+        val country = allCountries.find { wholePhoneNumber.startsWith(it.phoneNoCode) }
+        return if (country != null) {
+            country.code to stripPhoneCode(
+                phoneCode = country.phoneNoCode,
+                phoneNo = wholePhoneNumber,
+            )
+        } else {
+            null to wholePhoneNumber
+        }
+    }
+
+    private fun stripPhoneCode(
+        phoneCode: String,
+        phoneNo: String,
+    ): String {
+        return phoneNo.replaceFirst(phoneCode, "")
+    }
+
+    /**
+     * [getFlags] Returns the flag of the country. [countryName] The name of
+     * the country.
      */
     fun getFlags(countryName: String): Int {
         return when (countryName) {
@@ -357,8 +381,8 @@ internal object PickerUtils {
     }
 
     /**
-     * [getCountryName] Returns the name of the country.
-     * [countryName] The name of the country.
+     * [getCountryName] Returns the name of the country. [countryName] The name
+     * of the country.
      */
     fun getCountryName(countryName: String): Int {
         return when (countryName) {
@@ -609,7 +633,8 @@ internal object PickerUtils {
     }
 
     /**
-     * [allCountries] is a list of all countries in the world sorted alphabetically.
+     * [allCountries] is a list of all countries in the world sorted
+     * alphabetically.
      */
     val allCountries: List<Country>
         get() = listOf(
@@ -2062,8 +2087,8 @@ internal object PickerUtils {
         ).sortedBy { it.name }
 
     /**
-     * [getNumberHint] Returns the hint of the country.
-     * [countryName] The name of the country.
+     * [getNumberHint] Returns the hint of the country. [countryName] The name
+     * of the country.
      */
     fun getNumberHint(countryName: String): Int {
         return when (countryName) {
