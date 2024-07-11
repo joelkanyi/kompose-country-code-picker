@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.0"
+agp = "8.5.1"
 kotlin = "1.9.24"
 accompanistSystemuicontroller = "0.34.0"
 activityCompose = "1.9.0"
