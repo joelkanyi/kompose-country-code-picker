@@ -15,7 +15,7 @@ nmcp = "0.0.8"
 compose = "1.6.8"
 junitVersion = "4.13.2"
 androidxJunit = "1.2.1"
-truth = "1.4.3"
+truth = "1.4.4"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
