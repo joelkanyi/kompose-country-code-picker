@@ -30,8 +30,7 @@ import com.joelkanyi.jcomposecountrycodepicker.data.Transformation
  */
 internal class PhoneNumberTransformation(
     private val countryCode: String,
-) :
-    VisualTransformation {
+) : VisualTransformation {
 
     private val phoneNumberFormatter =
         PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode)
@@ -41,22 +40,24 @@ internal class PhoneNumberTransformation(
      * [text] The phone number.
      */
     override fun filter(text: AnnotatedString): TransformedText {
-        val transformation =
+        val transformation = try {
             reformat(text, Selection.getSelectionEnd(text))
+        } catch (e: Exception) {
+            // Fallback to the original text if reformatting fails
+            Transformation(text.text, List(text.length) { it }, List(text.length) { it })
+        }
 
         return TransformedText(
-            AnnotatedString(transformation.formatted ?: ""),
+            AnnotatedString(transformation.formatted ?: text.text),
             object : OffsetMapping {
                 override fun originalToTransformed(offset: Int): Int {
-                    return try {
-                        transformation.originalToTransformed[offset]
-                    } catch (ex: Exception) {
-                        transformation.transformedToOriginal.lastIndex
+                    return transformation.originalToTransformed.getOrElse(offset) {
+                        offset // Return the original offset if out of bounds
                     }
                 }
 
                 override fun transformedToOriginal(offset: Int): Int {
-                    return transformation.transformedToOriginal[offset]
+                    return transformation.transformedToOriginal.getOrElse(offset) { -1 }
                 }
             },
         )
@@ -68,44 +69,56 @@ internal class PhoneNumberTransformation(
      * [cursor] The cursor position.
      */
     private fun reformat(s: CharSequence, cursor: Int): Transformation {
-        phoneNumberFormatter.clear()
+        return try {
+            phoneNumberFormatter.clear()
 
-        val curIndex = cursor - 1
-        var formatted: String? = null
-        var lastNonSeparator = 0.toChar()
-        var hasCursor = false
+            val curIndex = cursor - 1
+            var formatted: String? = null
+            var lastNonSeparator = 0.toChar()
+            var hasCursor = false
 
-        s.forEachIndexed { index, char ->
-            if (PhoneNumberUtils.isNonSeparator(char)) {
-                if (lastNonSeparator.code != 0) {
-                    formatted = getFormattedNumber(lastNonSeparator, hasCursor)
-                    hasCursor = false
+            s.forEachIndexed { index, char ->
+                if (PhoneNumberUtils.isNonSeparator(char)) {
+                    if (lastNonSeparator.code != 0) {
+                        formatted = getFormattedNumber(lastNonSeparator, hasCursor)
+                        hasCursor = false
+                    }
+                    lastNonSeparator = char
                 }
-                lastNonSeparator = char
+                if (index == curIndex) {
+                    hasCursor = true
+                }
             }
-            if (index == curIndex) {
-                hasCursor = true
-            }
-        }
 
-        if (lastNonSeparator.code != 0) {
-            formatted = getFormattedNumber(lastNonSeparator, hasCursor)
-        }
-        val originalToTransformed = mutableListOf<Int>()
-        val transformedToOriginal = mutableListOf<Int>()
-        var specialCharsCount = 0
-        formatted?.forEachIndexed { index, char ->
-            if (!PhoneNumberUtils.isNonSeparator(char)) {
-                specialCharsCount++
-            } else {
-                originalToTransformed.add(index)
+            if (lastNonSeparator.code != 0) {
+                formatted = getFormattedNumber(lastNonSeparator, hasCursor)
             }
-            transformedToOriginal.add(index - specialCharsCount)
-        }
-        originalToTransformed.add(originalToTransformed.maxOrNull()?.plus(1) ?: 0)
-        transformedToOriginal.add(transformedToOriginal.maxOrNull()?.plus(1) ?: 0)
 
-        return Transformation(formatted, originalToTransformed, transformedToOriginal)
+            val originalToTransformed = mutableListOf<Int>()
+            val transformedToOriginal = mutableListOf<Int>()
+            var specialCharsCount = 0
+
+            formatted?.forEachIndexed { index, char ->
+                if (!PhoneNumberUtils.isNonSeparator(char)) {
+                    specialCharsCount++
+                } else {
+                    originalToTransformed.add(index)
+                }
+                transformedToOriginal.add(index - specialCharsCount)
+            }
+
+            // Ensure both lists have a proper end boundary offset
+            val lastOriginalOffset = s.length
+            val lastTransformedOffset = formatted?.length ?: 0
+
+            originalToTransformed.add(lastTransformedOffset)
+            transformedToOriginal.add(lastOriginalOffset)
+
+            Transformation(formatted, originalToTransformed, transformedToOriginal)
+        } catch (e: Exception) {
+            // Fallback to the original text if reformatting fails
+            Transformation(s.toString(), List(s.length) { it }, List(s.length) { it })
+        }
     }
 
     /**
