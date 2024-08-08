@@ -42,7 +42,7 @@ jobs:
           python3 -m pip install mkdocs mkdocs-material mkdocs-video "mkdocs-material[imaging]"
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Generate Dokka documentation
         run: ./gradlew dokkaHtmlMultiModule
