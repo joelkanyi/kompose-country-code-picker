@@ -23,6 +23,7 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.nmcp)
     alias(libs.plugins.gradleMavenPublish)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -35,10 +36,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 
     compileOptions {
