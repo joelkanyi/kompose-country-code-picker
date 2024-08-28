@@ -8,6 +8,25 @@ country code picker for Android apps.
 See the [project's website](https://joelkanyi.github.io/kompose-country-code-picker/) for
 documentation.
 
+```kotlin
+var phoneNumber by rememberSaveable { mutableStateOf("") }
+val state = rememberKomposeCountryCodePickerState(
+    // limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS"),
+    showCountryCode = true,
+    showCountryFlag = true,
+    defaultCountryCode = "KE",
+)
+
+KomposeCountryCodePicker(
+    state = state,
+    modifier = Modifier.fillMaxWidth(),
+    text = phoneNumber,
+    onValueChange = {
+        phoneNumber = it
+    },
+)
+```
+
 ## Preview
 
  Picker                                          | Dialog                                          | Picker Only                                          
