@@ -8,6 +8,10 @@ country code picker for Android apps.
 See the [project's website](https://joelkanyi.github.io/kompose-country-code-picker/) for
 documentation.
 
+>Note:
+>* The library is now hosted on Maven Central. If you were using the previous version hosted on Jitpack, please update your dependencies to the latest version.
+>* The last version hosted on Jitpack was : `implementation("com.github.JoelKanyi:KomposeCountryCodePicker:1.1.2")`.
+
 ```kotlin
 var phoneNumber by rememberSaveable { mutableStateOf("") }
 val state = rememberKomposeCountryCodePickerState(
