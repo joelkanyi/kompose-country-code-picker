@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:Suppress("UNCHECKED_CAST")
+
 package com.joelkanyi.jcomposecountrycodepicker.component
 
 import android.annotation.SuppressLint
@@ -430,7 +432,6 @@ public fun KomposeCountryCodePicker(
             ),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Phone,
-                autoCorrect = true,
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
