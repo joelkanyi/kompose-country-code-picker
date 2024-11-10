@@ -56,16 +56,17 @@ Use the state you defined (`val state = rememberKomposeCountryCodePickerState()`
 
 
 ## KomposeCountryCodePicker Textfield Composable customizations
-| Customization                          | Description                                                                                |
-|----------------------------------------|--------------------------------------------------------------------------------------------|
-| **placeholder**                        | Sets the placeholder `Composable` for the country code picker.                             |
-| **shape**                              | Sets the shape of the country code picker `TextField`.                                     |
-| **error**                              | Sets the error state on the `TextField` for the country code picker.                       |
-| **colors**                             | Sets the colors for the country code picker `TextField`.                                   |
-| **showOnlyCountryCodePicker**          | Shows only the country code picker without the `TextField`.                                |
-| **state**                              | The state of the country code picker.                                                      |
+| Customization                            | Description                                                                                |
+|------------------------------------------|--------------------------------------------------------------------------------------------|
+| **placeholder**                          | Sets the placeholder `Composable` for the country code picker.                             |
+| **shape**                                | Sets the shape of the country code picker `TextField`.                                     |
+| **error**                                | Sets the error state on the `TextField` for the country code picker.                       |
+| **colors**                               | Sets the colors for the country code picker `TextField`.                                   |
+| **showOnlyCountryCodePicker**            | Shows only the country code picker without the `TextField`.                                |
+| **state**                                | The state of the country code picker.                                                      |
 | **countrySelectionDialogContainerColor** | The color of the country selection dialog container.                                       |
-| **countrySelectionDialogContentColor** | The color of the country selection dialog content.                                         |
-| **textStyle**                          | The style to be used for displaying text on the `TextField` and the selected country.       |
-| **interactionSource**                  | The `MutableInteractionSource` representing the stream of Interactions for this text field. |
-| **selectedCountryFlagSize**            | The size of the selected country flag (width and height in `.dp`).                         |
+| **countrySelectionDialogContentColor**   | The color of the country selection dialog content.                                         |
+| **textStyle**                            | The style to be used for displaying text on the `TextField` and the selected country.       |
+| **interactionSource**                    | The `MutableInteractionSource` representing the stream of Interactions for this text field. |
+| **selectedCountryFlagSize**              | The size of the selected country flag (width and height in `.dp`).                         |
+| **enabled**                              | Controls the enabled state of the country code picker.                                     |

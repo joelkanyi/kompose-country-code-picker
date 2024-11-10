@@ -344,6 +344,7 @@ public fun rememberKomposeCountryCodePickerState(
  * representing the stream of Interactions for this text field.
  * [selectedCountryFlagSize] The size of the selected country flag (width and height in `.dp`).
  * [textStyle] The style to be used for displaying text on the `TextField` and the selected country.
+ * [enabled] Controls the enabled state of the text field.
  */
 @OptIn(RestrictedApi::class)
 @Composable
@@ -365,6 +366,7 @@ public fun KomposeCountryCodePicker(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     selectedCountryFlagSize: FlagSize = FlagSize(28.dp, 18.dp),
     textStyle: TextStyle = LocalTextStyle.current,
+    enabled: Boolean = true,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
@@ -406,7 +408,9 @@ public fun KomposeCountryCodePicker(
             showCountryCode = state.showCountryCode,
             showFlag = state.showCountryFlag,
             onClickSelectedCountry = {
-                openCountrySelectionDialog = true
+                if (enabled) {
+                    openCountrySelectionDialog = true
+                }
             },
             selectedCountryFlagSize = selectedCountryFlagSize,
             textStyle = textStyle,
@@ -444,7 +448,9 @@ public fun KomposeCountryCodePicker(
                     showCountryCode = state.showCountryCode,
                     showFlag = state.showCountryFlag,
                     onClickSelectedCountry = {
-                        openCountrySelectionDialog = true
+                        if (enabled) {
+                            openCountrySelectionDialog = true
+                        }
                     },
                     selectedCountryFlagSize = selectedCountryFlagSize,
                     textStyle = textStyle,
@@ -453,6 +459,7 @@ public fun KomposeCountryCodePicker(
             trailingIcon = trailingIcon,
             interactionSource = interactionSource,
             textStyle = textStyle,
+            enabled = enabled,
         )
     }
 }

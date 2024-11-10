@@ -20,11 +20,11 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         namespace = "com.joelkanyi.jcomposecountrycodepicker.app"
         applicationId = "com.joelkanyi.jcomposecountrycodepicker.app"
-        targetSdk = 34
+        targetSdk = 35
         minSdk = 21
         versionCode = 1
         versionName = "1.0"
