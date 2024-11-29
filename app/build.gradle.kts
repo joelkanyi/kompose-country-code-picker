@@ -53,7 +53,6 @@ android {
 dependencies {
     implementation(libs.activity.compose)
     implementation(libs.material3)
-    implementation(libs.accompanist.systemuicontroller)
     implementation(projects.komposecountrycodepicker)
 
     implementation(libs.androidx.ui)
