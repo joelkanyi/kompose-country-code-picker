@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
@@ -47,7 +48,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
 import com.joelkanyi.jcomposecountrycodepicker.component.rememberKomposeCountryCodePickerState
 import com.joelkanyi.jcomposecountrycodepicker.ui.theme.ComposePickerTheme
@@ -55,18 +55,10 @@ import com.joelkanyi.jcomposecountrycodepicker.ui.theme.ComposePickerTheme
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             ComposePickerTheme {
-                val systemUiController = rememberSystemUiController()
-                systemUiController.setStatusBarColor(
-                    color = MaterialTheme.colorScheme.primary,
-                    false,
-                )
-                systemUiController.setSystemBarsColor(
-                    color = MaterialTheme.colorScheme.primary,
-                    false,
-                )
                 PickerContent()
             }
         }

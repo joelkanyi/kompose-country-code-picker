@@ -1,7 +1,6 @@
 [versions]
 agp = "8.7.2"
-kotlin = "2.0.21"
-accompanistSystemuicontroller = "0.36.0"
+kotlin = "2.1.0"
 activityCompose = "1.9.3"
 libphonenumber = "8.13.50"
 material3 = "1.3.1"
@@ -17,7 +16,6 @@ androidxJunit = "1.2.1"
 truth = "1.4.4"
 
 [libraries]
-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumber" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
