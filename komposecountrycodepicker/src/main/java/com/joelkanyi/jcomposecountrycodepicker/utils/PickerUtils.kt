@@ -628,7 +628,7 @@ internal object PickerUtils {
             "za" -> R.string.south_africa
             "zm" -> R.string.zambia
             "zw" -> R.string.zimbabwe
-            else -> R.string.unkown
+            else -> R.string.unknown
         }
     }
 
@@ -2171,7 +2171,7 @@ internal object PickerUtils {
             "gf" -> R.string.french_guyana_hint
             "gg" -> R.string.guernsey_hint
             "gh" -> R.string.ghana_hint
-            "gi" -> R.string.unkown
+            "gi" -> R.string.unknown
             "gl" -> R.string.greenland_hint
             "gm" -> R.string.gambia_hint
             "gn" -> R.string.guinea_hint
@@ -2334,7 +2334,7 @@ internal object PickerUtils {
             "za" -> R.string.south_africa_hint
             "zm" -> R.string.zambia_hint
             "zw" -> R.string.zimbabwe_hint
-            else -> R.string.unkown
+            else -> R.string.unknown
         }
     }
 

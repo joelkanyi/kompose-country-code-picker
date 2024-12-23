@@ -243,8 +243,7 @@
     <string name="south_africa">दक्षिण अफ्रीका</string>
     <string name="zambia">जाम्बिया</string>
     <string name="zimbabwe">ज़िम्बाब्वे</string>
-    <string name="unkown">अज्ञात</string>
-    <string name="search">खोजें...</string>
+    <string name="unknown">अज्ञात</string>
     <string name="afganistan_hint" translatable="false">70 123 4567</string>
     <string name="algeria_hint" translatable="false">551 23 45 67</string>
     <string name="american_samoa_hint" translatable="false">684-733-1234</string>
@@ -477,7 +476,7 @@
     <string name="jamaica_hint" translatable="false">(876) 123-4567</string>
     <string name="iraq_hint" translatable="false">0777 123 4567</string>
     <string name="slovenia_hint" translatable="false">070 123 456</string>
+    <string name="search_country">खोजें...</string>
     <string name="select_country">देश चुनें</string>
-    <string name="invalid_number">अवैध फोन नंबर</string>
-
+    <string name="invalid_number">अमान्य फोन नंबर</string>
 </resources>

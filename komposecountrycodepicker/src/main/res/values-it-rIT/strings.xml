@@ -243,10 +243,8 @@
     <string name="south_africa">Sud Africa</string>
     <string name="zambia">Zambia</string>
     <string name="zimbabwe">Zimbabwe </string>
-    <string name="unkown">Sconosciuto</string>
-    <string name="search">Ricerca...</string>
-    <string name="select_country">Seleziona il paese</string>
-    <string name="invalid_number">Numero di telefono sbagliato</string>
-
-
+    <string name="unknown">Sconosciuto</string>
+    <string name="search_country">Cerca...</string>
+    <string name="select_country">Seleziona paese</string>
+    <string name="invalid_number">Numero di telefono non valido</string>
 </resources>

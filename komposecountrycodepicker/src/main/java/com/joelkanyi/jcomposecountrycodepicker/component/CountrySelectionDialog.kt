@@ -56,6 +56,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import com.joelkanyi.jcomposecountrycodepicker.R
 import com.joelkanyi.jcomposecountrycodepicker.data.Country
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountryName
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getFlags
@@ -122,7 +123,7 @@ public fun CountrySelectionDialog(
                                     },
                                     placeholder = {
                                         Text(
-                                            text = "Search...",
+                                            text = stringResource(R.string.search_country),
                                             color = contentColor.copy(alpha = 0.5f),
                                         )
                                     },
@@ -146,7 +147,7 @@ public fun CountrySelectionDialog(
                             } else {
                                 Text(
                                     modifier = Modifier.offset(y = (-2).dp),
-                                    text = "Select Country",
+                                    text = stringResource(id = R.string.select_country),
                                     style = MaterialTheme.typography.titleMedium,
                                     color = contentColor,
                                 )

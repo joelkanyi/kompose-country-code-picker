@@ -243,10 +243,8 @@
     <string name="south_africa">Güney Afrika </string>
     <string name="zambia">Zambiya </string>
     <string name="zimbabwe">Zimbabve </string>
-    <string name="unkown">Bilinmiyor</string>
-    <string name="search">Ara...</string>
-    <string name="select_country">Ülke Seçiniz</string>
-    <string name="invalid_number">Hatalı Telefon Numarası</string>
-
-
+    <string name="unknown">Bilinmiyor</string>
+    <string name="search_country">Ara...</string>
+    <string name="select_country">Ülke Seç</string>
+    <string name="invalid_number">Geçersiz Telefon Numarası</string>
 </resources>
