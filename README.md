@@ -38,6 +38,21 @@ KomposeCountryCodePicker(
 -------------------------------------------------|-------------------------------------------------|------------------------------------------------------
  <img src="docs/assets/picker.png" width="250"/> | <img src="docs/assets/dialog.png" width="250"/> | <img src="docs/assets/picker-only.png" width="250"/> 
 
+### Translations
+This project includes translations for the following languages:
+
+- **Arabic (ar)**:
+- **French (fr)**:
+- **Hindi (hi)**:
+- **Italian (it-IT)**:
+- **Dutch (nl)**:
+- **Russian (ru-RU)**:
+- **Swahili (sw)**:
+- **Turkish (tr-TR)**:
+
+If your language is not included in the translations, or if you notice any errors in the current translations, please [open an issue](https://github.com/joelkanyi/kompose-country-code-picker/issues) on GitHub. Your contribution will be highly appreciated!
+
+
 ## License
 
 ```
