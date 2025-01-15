@@ -1,12 +1,14 @@
 name: Build
 
 on:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
   push:
-    branches: [ "*" ]
+    branches:
+      - main # Trigger for pushes to main branch
     paths-ignore:
       - 'mkdocs.yml'
       - 'docs/**'
-  pull_request:
 
 concurrency:
   group: build-${{ github.ref }}

@@ -98,7 +98,8 @@ public fun CountrySelectionDialog(
 
     AlertDialog(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .qaAutomationTestTag("countrySelectionDialog"),
         containerColor = containerColor,
         tonalElevation = 0.dp,
         shape = RoundedCornerShape(0),
@@ -118,7 +119,9 @@ public fun CountrySelectionDialog(
                         title = {
                             if (isSearch) {
                                 TextField(
-                                    modifier = Modifier.focusRequester(focusRequester),
+                                    modifier = Modifier
+                                        .focusRequester(focusRequester)
+                                        .qaAutomationTestTag("searchField"),
                                     value = searchValue,
                                     onValueChange = { searchStr ->
                                         searchValue = searchStr
@@ -149,7 +152,9 @@ public fun CountrySelectionDialog(
                                 )
                             } else {
                                 Text(
-                                    modifier = Modifier.offset(y = (-2).dp),
+                                    modifier = Modifier
+                                        .offset(y = (-2).dp)
+                                        .qaAutomationTestTag("countryDialogTitle"),
                                     text = stringResource(id = R.string.select_country),
                                     style = MaterialTheme.typography.titleMedium,
                                     color = contentColor,
@@ -158,6 +163,8 @@ public fun CountrySelectionDialog(
                         },
                         navigationIcon = {
                             IconButton(
+                                modifier = Modifier
+                                    .qaAutomationTestTag("backIcon"),
                                 onClick = {
                                     onDismissRequest()
                                 },
@@ -171,6 +178,8 @@ public fun CountrySelectionDialog(
                         },
                         actions = {
                             IconButton(
+                                modifier = Modifier
+                                    .qaAutomationTestTag("searchIcon"),
                                 onClick = {
                                     isSearch = !isSearch
                                 },
@@ -193,6 +202,7 @@ public fun CountrySelectionDialog(
                     LazyColumn(
                         Modifier
                             .padding(paddingValues)
+                            .qaAutomationTestTag("countryList")
                             .fillMaxSize(),
                     ) {
                         val countriesData =
@@ -204,19 +214,22 @@ public fun CountrySelectionDialog(
 
                         items(countriesData) { countryItem ->
                             ListItem(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .qaAutomationTestTag("countryListItem")
+                                    .clickable {
+                                        onSelect(countryItem)
+                                    },
                                 colors = ListItemDefaults.colors(
                                     containerColor = containerColor,
                                     trailingIconColor = contentColor,
                                     headlineColor = contentColor,
                                 ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        onSelect(countryItem)
-                                    },
                                 leadingContent = {
                                     Image(
-                                        modifier = Modifier.width(30.dp),
+                                        modifier = Modifier
+                                            .width(30.dp)
+                                            .qaAutomationTestTag("countryFlag"),
                                         painter = painterResource(
                                             id = getFlags(
                                                 countryItem.code,
@@ -227,13 +240,17 @@ public fun CountrySelectionDialog(
                                 },
                                 trailingContent = {
                                     Text(
+                                        modifier = Modifier
+                                            .qaAutomationTestTag("countryPhoneCode"),
                                         text = countryItem.phoneNoCode,
                                         style = MaterialTheme.typography.bodyMedium,
                                     )
                                 },
                                 headlineContent = {
                                     Text(
-                                        stringResource(id = getCountryName(countryItem.code.lowercase())),
+                                        modifier = Modifier
+                                            .qaAutomationTestTag("countryName"),
+                                        text = stringResource(id = getCountryName(countryItem.code.lowercase())),
                                         style = MaterialTheme.typography.bodyMedium,
                                     )
                                 },
