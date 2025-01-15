@@ -48,6 +48,7 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -55,6 +56,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -411,6 +415,7 @@ public fun KomposeCountryCodePicker(
      */
     if (showOnlyCountryCodePicker) {
         SelectedCountryComponent(
+            modifier = modifier,
             selectedCountry = state.countryCode.getCountry(),
             showCountryCode = state.showCountryCode,
             showFlag = state.showCountryFlag,
@@ -424,7 +429,8 @@ public fun KomposeCountryCodePicker(
         )
     } else {
         OutlinedTextField(
-            modifier = modifier,
+            modifier = modifier
+                .qaAutomationTestTag("countryCodePickerTextField"),
             shape = shape,
             value = phoneNo,
             onValueChange = {
@@ -484,7 +490,7 @@ private fun DefaultPlaceholder(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        modifier = modifier,
+        modifier = modifier.qaAutomationTestTag("defaultPlaceholder"),
         text = stringResource(id = PickerUtils.getNumberHint(PickerUtils.allCountries.single { it.code == defaultLang }.code.lowercase())),
         style = MaterialTheme.typography.labelMedium.copy(
             fontWeight = FontWeight.ExtraLight,
@@ -523,6 +529,7 @@ private fun SelectedCountryComponent(
     Row(
         modifier = modifier
             .padding(selectedCountryPadding)
+            .qaAutomationTestTag("selectedCountryComponent")
             .clickable(
                 interactionSource = MutableInteractionSource(),
                 indication = null,
@@ -536,7 +543,8 @@ private fun SelectedCountryComponent(
             Image(
                 modifier = Modifier
                     .width(selectedCountryFlagSize.width)
-                    .height(selectedCountryFlagSize.height),
+                    .height(selectedCountryFlagSize.height)
+                    .qaAutomationTestTag("countryFlag"),
                 painter = painterResource(
                     id = PickerUtils.getFlags(
                         selectedCountry.code,
@@ -549,7 +557,9 @@ private fun SelectedCountryComponent(
             Text(
                 text = selectedCountry.phoneNoCode,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 4.dp),
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .qaAutomationTestTag("countryCode"),
                 style = textStyle,
             )
         }
@@ -557,7 +567,9 @@ private fun SelectedCountryComponent(
             Text(
                 text = stringResource(id = PickerUtils.getCountryName(selectedCountry.code.lowercase())),
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 6.dp),
+                modifier = Modifier
+                    .padding(start = 6.dp)
+                    .qaAutomationTestTag("countryName"),
                 style = textStyle,
             )
         }
@@ -565,6 +577,17 @@ private fun SelectedCountryComponent(
             imageVector = Icons.Default.ArrowDropDown,
             contentDescription = null,
             tint = textStyle.color,
+            modifier = Modifier.qaAutomationTestTag("countryDropDown"),
         )
     }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+public fun Modifier.qaAutomationTestTag(tag: String): Modifier {
+    return this.then(
+        Modifier.semantics {
+            this.testTag = tag
+            this.testTagsAsResourceId = true
+        },
+    )
 }
