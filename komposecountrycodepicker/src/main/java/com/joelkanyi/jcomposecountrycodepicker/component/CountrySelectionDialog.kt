@@ -63,6 +63,9 @@ import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getFlags
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
 
 /**
+ * [CountrySelectionDialog] is a composable that displays a dialog for
+ * selecting a country.
+ *
  * @param countryList The list of countries to be displayed in the dialog.
  * @param containerColor The color of the dialog container.
  * @param contentColor The color of the dialog content.

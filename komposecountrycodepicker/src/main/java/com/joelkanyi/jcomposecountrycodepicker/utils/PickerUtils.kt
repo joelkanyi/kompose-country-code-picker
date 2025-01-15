@@ -38,7 +38,8 @@ internal object PickerUtils {
 
     /**
      * [getDefaultLangCode] Returns the default language code of the device.
-     * [context] The context of the activity or fragment.
+     *
+     * @param context The context of the activity or fragment.
      */
 
     fun getDefaultLangCode(context: Context): String {
@@ -55,8 +56,9 @@ internal object PickerUtils {
     }
 
     /**
-     * [isValid] Returns true if the phone number is valid. [phoneNumberStr]
-     * The phone number to be checked.
+     * [isValid] Returns true if the phone number is valid.
+     *
+     * @param phoneNumberStr The phone number to be checked.
      */
     fun isValid(phoneNumberStr: String): Boolean {
         return try {
@@ -82,7 +84,8 @@ internal object PickerUtils {
 
     /**
      * [searchForAnItem] Returns a list of items that match the search string.
-     * [searchStr] The search string.
+     *
+     * @param searchStr The search string.
      */
     fun List<Country>.searchForAnItem(
         searchStr: String,
@@ -108,6 +111,8 @@ internal object PickerUtils {
     /**
      * [extractCountryCodeAndPhoneNumber] Returns the country code and the
      * phone e.g +254712345678 -> Pair("ke", "712345678")
+     *
+     * @param wholePhoneNumber The phone number to be extracted.
      */
     fun extractCountryCodeAndPhoneNumber(wholePhoneNumber: String): Pair<String?, String> {
         val country = allCountries.find { wholePhoneNumber.startsWith(it.phoneNoCode) }
@@ -121,6 +126,12 @@ internal object PickerUtils {
         }
     }
 
+    /**
+     * [stripPhoneCode] Returns the phone number without the phone code.
+     *
+     * @param phoneCode The phone code.
+     * @param phoneNo The phone number.
+     */
     private fun stripPhoneCode(
         phoneCode: String,
         phoneNo: String,
@@ -131,6 +142,8 @@ internal object PickerUtils {
     /**
      * [getFlags] Returns the flag of the country. [countryName] The name of
      * the country.
+     *
+     * @param countryName The name of the country.
      */
     fun getFlags(countryName: String): Int {
         return when (countryName) {
@@ -383,6 +396,8 @@ internal object PickerUtils {
     /**
      * [getCountryName] Returns the name of the country. [countryName] The name
      * of the country.
+     *
+     * @param countryName The name of the country.
      */
     fun getCountryName(countryName: String): Int {
         return when (countryName) {
@@ -2089,6 +2104,8 @@ internal object PickerUtils {
     /**
      * [getNumberHint] Returns the hint of the country. [countryName] The name
      * of the country.
+     *
+     * @param countryName The name of the country.
      */
     fun getNumberHint(countryName: String): Int {
         return when (countryName) {

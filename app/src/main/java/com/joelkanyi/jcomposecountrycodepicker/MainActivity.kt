@@ -136,25 +136,24 @@ private fun PickerContent() {
                 },
             )
 
-            /*TextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                value = phoneNumber.value,
-                onValueChange = { phoneNumber.value = it },
-                placeholder = { Text(text = "Phone Number") },
-                leadingIcon = {
-                    KomposeCountryCodePicker(
-                        modifier = Modifier,
-                        showOnlyCountryCodePicker = true,
-                        text = phoneNumber.value,
-                        state = state,
-                    )
-                },
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedContainerColor = Color.Transparent,
-                ),
-            )*/
+//            OutlinedTextField(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                value = phoneNumber,
+//                onValueChange = { phoneNumber = it },
+//                placeholder = { Text(text = "Phone Number") },
+//                leadingIcon = {
+//                    KomposeCountryCodePicker(
+//                        showOnlyCountryCodePicker = true,
+//                        text = phoneNumber,
+//                        state = state,
+//                    )
+//                },
+//                colors = TextFieldDefaults.colors(
+//                    unfocusedContainerColor = Color.Transparent,
+//                    focusedContainerColor = Color.Transparent,
+//                ),
+//            )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),

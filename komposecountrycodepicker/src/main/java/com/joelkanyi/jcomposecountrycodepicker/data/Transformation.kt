@@ -16,7 +16,12 @@
 package com.joelkanyi.jcomposecountrycodepicker.data
 
 /**
- * [Transformation] is a data class that holds the data of the formatted phone number.
+ * [Transformation] is a data class that holds the data of the formatted
+ * phone number.
+ *
+ * @param formatted The formatted phone number.
+ * @param originalToTransformed The original to transformed offset mapping.
+ * @param transformedToOriginal The transformed to original offset mapping.
  */
 internal data class Transformation(
     val formatted: String?,

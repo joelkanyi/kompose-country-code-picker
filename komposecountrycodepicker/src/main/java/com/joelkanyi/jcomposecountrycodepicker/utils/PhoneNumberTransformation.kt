@@ -25,8 +25,10 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.joelkanyi.jcomposecountrycodepicker.data.Transformation
 
 /**
- * [PhoneNumberTransformation] is a visual transformation that formats the phone number.
- * [countryCode] The country code of the phone number.
+ * [PhoneNumberTransformation] is a visual transformation that formats the
+ * phone number.
+ *
+ * @param countryCode The country code of the phone number.
  */
 internal class PhoneNumberTransformation(
     private val countryCode: String,
@@ -37,7 +39,8 @@ internal class PhoneNumberTransformation(
 
     /**
      * [filter] Returns the formatted phone number.
-     * [text] The phone number.
+     *
+     * @param text The phone number.
      */
     override fun filter(text: AnnotatedString): TransformedText {
         val transformation = try {
@@ -65,8 +68,9 @@ internal class PhoneNumberTransformation(
 
     /**
      * [reformat] Returns the formatted phone number.
-     * [s] The phone number.
-     * [cursor] The cursor position.
+     *
+     * @param s The phone number.
+     * @param cursor The cursor position.
      */
     private fun reformat(s: CharSequence, cursor: Int): Transformation {
         return try {
@@ -123,8 +127,10 @@ internal class PhoneNumberTransformation(
 
     /**
      * [getFormattedNumber] Returns the formatted phone number.
-     * [lastNonSeparator] The last non separator character of the phone number.
-     * [hasCursor] If true, the cursor is at the end of the phone number.
+     *
+     * @param lastNonSeparator The last non separator character of the phone
+     *    number.
+     * @param hasCursor If true, the cursor is at the end of the phone number.
      */
     private fun getFormattedNumber(lastNonSeparator: Char, hasCursor: Boolean): String? {
         return if (hasCursor) {
