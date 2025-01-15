@@ -17,10 +17,11 @@ package com.joelkanyi.jcomposecountrycodepicker.data
 
 /**
  * [Country] is a data class that holds the data of a country.
- * [code] The code of the country.
- * [phoneNoCode] The phone number code of the country.
- * [name] The name of the country.
- * [flag] The flag of the country.
+ *
+ * @param code The code of the country.
+ * @param phoneNoCode The phone number code of the country.
+ * @param name The name of the country.
+ * @param flag The flag of the country.
  */
 public data class Country(
     val code: String,

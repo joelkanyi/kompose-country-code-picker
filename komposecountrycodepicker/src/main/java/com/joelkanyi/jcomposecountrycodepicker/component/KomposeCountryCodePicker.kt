@@ -132,13 +132,13 @@ public interface CountryCodePicker {
  * [CountryCodePicker] interface.
  *
  * @param defaultCountryCode The default country code to be displayed in
- *     the text field.
+ *    the text field.
  * @param limitedCountries The list of countries to be displayed in the
- *     country code picker dialog.
+ *    country code picker dialog.
  * @param showCode If true, the country code will be shown in the text
- *     field.
+ *    field.
  * @param showFlag If true, the country flag will be shown in the text
- *     field.
+ *    field.
  */
 @OptIn(RestrictedApi::class)
 @Stable
@@ -287,15 +287,15 @@ public class KomposeCountryCodePickerDefaults(
  * Creates a [CountryCodePicker] that is remembered across compositions.
  *
  * @param defaultCountryCode The default country code to be displayed in
- *     the text field.
+ *    the text field.
  * @param limitedCountries The list of countries to be displayed in the
- *     country code picker dialog.
+ *    country code picker dialog.
  * @param showCountryCode If true, the country code will be shown in the
- *     text field.
+ *    text field.
  * @param showCountryFlag If true, the country flag will be shown in the
- *     text field.
+ *    text field.
  * @return A [CountryCodePicker] that holds the different utilities for the
- *     country code picker.
+ *    country code picker.
  * @see CountryCodePicker.getCountryPhoneCode
  * @see CountryCodePicker.getCountryPhoneCodeWithoutPrefix
  * @see CountryCodePicker.getCountryName
@@ -326,33 +326,40 @@ public fun rememberKomposeCountryCodePickerState(
 }
 
 /**
- * [KomposeCountryCodePicker] is a composable that displays a text
- * field with a country code picker dialog. [state] The state of the
- * country code picker. [text] The text to be displayed in the text
- * field. [onValueChange] Called when the value is changed. [modifier]
- * Modifier to be applied to the layout. [error] If true, the text field
- * will be displayed in the error state. [showOnlyCountryCodePicker] If
- * true, only the country code picker will be displayed. [shape] The
- * shape of the text field's outline. [placeholder] The placeholder
- * to be displayed in the text field. [colors] The colors to be used
- * to display the text field. [trailingIcon] The trailing icon to be
- * displayed in the text field. [countrySelectionDialogContainerColor]
- * The color to be used to display the country selection dialog
- * container. [countrySelectionDialogContentColor] The color
- * to be used to display the country selection dialog content.
- * text. [interactionSource] The MutableInteractionSource
- * representing the stream of Interactions for this text field.
- * [selectedCountryFlagSize] The size of the selected country flag (width and height in `.dp`).
- * [textStyle] The style to be used for displaying text on the `TextField` and the selected country.
- * [enabled] Controls the enabled state of the text field.
+ * [KomposeCountryCodePicker] is a composable that displays a text field
+ * with a country code picker dialog.
+ *
+ * @param state The state of the country code picker.
+ * @param text The text to be displayed in the text field.
+ * @param modifier Modifier to be applied to the layout.
+ * @param onValueChange Called when the value is changed.
+ * @param error If true, the text field will be displayed in the error
+ *    state.
+ * @param showOnlyCountryCodePicker If true, only the country code picker
+ *    will be displayed.
+ * @param shape The shape of the text field's outline.
+ * @param placeholder The placeholder to be displayed in the text field.
+ * @param colors The colors to be used to display the text field.
+ * @param trailingIcon The trailing icon to be displayed in the text field.
+ * @param countrySelectionDialogContainerColor The color to be used to
+ *    display the country selection dialog container.
+ * @param countrySelectionDialogContentColor The color to be used to
+ *    display the country selection dialog content. text.
+ * @param interactionSource The MutableInteractionSource representing the
+ *    stream of Interactions for this text field.
+ * @param selectedCountryFlagSize The size of the selected country flag
+ *    (width and height in `.dp`).
+ * @param textStyle The style to be used for displaying text on the
+ *    `TextField` and the selected country.
+ * @param enabled Controls the enabled state of the text field.
  */
 @OptIn(RestrictedApi::class)
 @Composable
 public fun KomposeCountryCodePicker(
     state: CountryCodePicker,
     text: String,
-    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit = {},
     error: Boolean = false,
     showOnlyCountryCodePicker: Boolean = false,
     shape: Shape = MaterialTheme.shapes.medium,
@@ -421,7 +428,7 @@ public fun KomposeCountryCodePicker(
             shape = shape,
             value = phoneNo,
             onValueChange = {
-                if (text != it) {
+                if (text != it && showOnlyCountryCodePicker.not()) {
                     onValueChange(it)
                 }
             },
@@ -466,8 +473,10 @@ public fun KomposeCountryCodePicker(
 
 /**
  * [DefaultPlaceholder] is a composable that displays the default
- * placeholder. [defaultLang] The default language code. [modifier]
- * Modifier to be applied to the layout.
+ * placeholder.
+ *
+ * @param defaultLang The default language code.
+ * @param modifier Modifier to be applied to the layout.
  */
 @Composable
 private fun DefaultPlaceholder(
@@ -484,16 +493,19 @@ private fun DefaultPlaceholder(
 }
 
 /**
- * [SelectedCountryComponent] is a composable that displays the selected country.
- * [selectedCountry] The selected country.
- * [selectedCountryFlagSize] The size of the selected country flag.
- * [textStyle] The style to be used to display the text.
- * [onClickSelectedCountry] Called when the selected country is clicked.
- * [modifier] Modifier to be applied to the layout.
- * [selectedCountryPadding] The padding to be applied to the selected country.
- * [showCountryCode] If true, the country code will be shown.
- * [showFlag] If true, the country flag will be shown.
- * [showCountryName] If true, the country name will be shown.
+ * [SelectedCountryComponent] is a composable that displays the
+ *
+ * @param selectedCountry] The selected country.
+ * @param selectedCountryFlagSize] The size of the selected country flag.
+ * @param textStyle The style to be used to display the text.
+ * @param onClickSelectedCountry Called when the selected country is
+ *    clicked.
+ * @param modifier Modifier to be applied to the layout.
+ * @param selectedCountryPadding The padding to be applied to the selected
+ *    country.
+ * @param showCountryCode If true, the country code will be shown.
+ * @param showFlag] If true, the country flag will be shown.
+ * @param showCountryName If true, the country name will be shown.
  */
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
