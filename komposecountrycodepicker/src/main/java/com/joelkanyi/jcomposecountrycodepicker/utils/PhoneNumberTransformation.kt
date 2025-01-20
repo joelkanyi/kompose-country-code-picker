@@ -107,7 +107,7 @@ internal class PhoneNumberTransformation(
                 } else {
                     originalToTransformed.add(index)
                 }
-                transformedToOriginal.add(index - specialCharsCount)
+                transformedToOriginal.add(maxOf(index - specialCharsCount, 0))
             }
 
             // Ensure both lists have a proper end boundary offset
