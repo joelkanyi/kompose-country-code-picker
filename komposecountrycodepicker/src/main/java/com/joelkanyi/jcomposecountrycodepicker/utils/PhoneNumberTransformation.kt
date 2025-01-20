@@ -54,13 +54,12 @@ internal class PhoneNumberTransformation(
             AnnotatedString(transformation.formatted ?: text.text),
             object : OffsetMapping {
                 override fun originalToTransformed(offset: Int): Int {
-                    return transformation.originalToTransformed.getOrElse(offset) {
-                        offset // Return the original offset if out of bounds
-                    }
+                    // Return the original offset if out of bounds
+                    return transformation.originalToTransformed[offset.coerceIn(transformation.originalToTransformed.indices)]
                 }
 
                 override fun transformedToOriginal(offset: Int): Int {
-                    return transformation.transformedToOriginal.getOrElse(offset) { -1 }
+                    return transformation.transformedToOriginal[offset.coerceIn(transformation.transformedToOriginal.indices)]
                 }
             },
         )
