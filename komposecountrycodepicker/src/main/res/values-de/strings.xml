@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="andora">Andorra</string>
+    <string name="united_arab_emirates">Vereinigte Arabische Emirate</string>
+    <string name="afghanistan">Afghanistan</string>
+    <string name="antigua_and_barbuda">Antigua und Barbuda</string>
+    <string name="anguilla">Anguilla</string>
+    <string name="albania">Albanien</string>
+    <string name="armenia">Armenien</string>
+    <string name="angola">Angola</string>
+    <string name="antarctica">Antarktika</string>
+    <string name="argentina">Argentinien</string>
+    <string name="american_samoa">Amerikanisch-Samoa</string>
+    <string name="austria">Österreich</string>
+    <string name="australia">Australien</string>
+    <string name="aruba">Aruba</string>
+    <string name="aland_islands">Ålandinseln</string>
+    <string name="azerbaijan">Aserbaidschan</string>
+    <string name="andorra">Andorra</string>
+    <string name="bosnia">Bosnien und Herzegowina</string>
+    <string name="barbados">Barbados</string>
+    <string name="bangladesh">Bangladesch</string>
+    <string name="belgium">Belgien</string>
+    <string name="burkina_faso">Burkina Faso</string>
+    <string name="bulgaria">Bulgarien</string>
+    <string name="bahrain">Bahrain</string>
+    <string name="burundi">Burundi</string>
+    <string name="benin">Benin</string>
+    <string name="saint_barhelemy">Sankt Bartholomäus</string>
+    <string name="bermuda">Bermuda</string>
+    <string name="brunei_darussalam">Brunei Darussalam</string>
+    <string name="bolivia">Bolivien</string>
+    <string name="brazil">Brasilien</string>
+    <string name="bahamas">Bahamas</string>
+    <string name="bhutan">Bhutan</string>
+    <string name="botswana">Botswana</string>
+    <string name="belarus">Belarus</string>
+    <string name="belize">Belize</string>
+    <string name="canada">Kanada</string>
+    <string name="cocos">Terretorium Kokosinseln (Keelinginseln)</string>
+    <string name="congo_democratic">Demokratische Republik Kongo</string>
+    <string name="central_african">Zentralafrikanische Republik</string>
+    <string name="congo">Kongo</string>
+    <string name="switzerland">Schweiz</string>
+    <string name="cote_dlvoire">Elfenbeinküste</string>
+    <string name="cook_islands">Cook-Inseln</string>
+    <string name="chile">Chile</string>
+    <string name="cameroon">Kamerun</string>
+    <string name="china">China</string>
+    <string name="colombia">Kolumbien</string>
+    <string name="costa_rica">Costa Rica</string>
+    <string name="cuba">Kuba</string>
+    <string name="cape_verde">Kap Verde</string>
+    <string name="curacao">Curaçao</string>
+    <string name="christmas_island">Weihnachtsinsel</string>
+    <string name="cyprus">Zypern</string>
+    <string name="czech_republic">Tschechische Republik</string>
+    <string name="germany">Deutschland</string>
+    <string name="djibouti">Dschibuti</string>
+    <string name="denmark">Dänemark</string>
+    <string name="dominica">Dominica</string>
+    <string name="dominician_republic">Dominikanische Republik</string>
+    <string name="algeria">Algerien</string>
+    <string name="ecuador">Ecuador</string>
+    <string name="estonia">Estland</string>
+    <string name="egypt">Ägypten</string>
+    <string name="eritrea">Eritrea</string>
+    <string name="spain">Spanien</string>
+    <string name="ethiopia">Äthiopien</string>
+    <string name="finland">Finnland</string>
+    <string name="fiji">Fidschi</string>
+    <string name="falkland_islands">Falklandinseln</string>
+    <string name="micro">Föderierte Staaten von Mikronesien</string>
+    <string name="faroe_islands">Färöer</string>
+    <string name="france">Frankreich</string>
+    <string name="gabon">Gabun</string>
+    <string name="united_kingdom">Vereinigtes Königreich</string>
+    <string name="grenada">Granada</string>
+    <string name="georgia">Georgien</string>
+    <string name="french_guyana">Französisch-Guyana</string>
+    <string name="ghana">Ghana</string>
+    <string name="guernsey">Guernsey</string>
+    <string name="gibraltar">Gibraltar</string>
+    <string name="greenland">Grönland</string>
+    <string name="gambia">Gambia</string>
+    <string name="guinea">Guinea</string>
+    <string name="guadeloupe">Guadeloupe</string>
+    <string name="equatorial_guinea">Republik Äquatorialguinea</string>
+    <string name="greece">Griechenland</string>
+    <string name="guatemala">Guatemala</string>
+    <string name="guam">Guam</string>
+    <string name="guinea_bissau">Guinea-Bissau</string>
+    <string name="guyana">Guyana</string>
+    <string name="hong_kong">Hong Kong</string>
+    <string name="honduras">Honduras</string>
+    <string name="croatia">Kroatien</string>
+    <string name="haiti">Haiti</string>
+    <string name="hungary">Ungarn</string>
+    <string name="indonesia">Indonesien</string>
+    <string name="ireland">Irland</string>
+    <string name="israil">Israel</string>
+    <string name="isle_of_man">Isle Of Man</string>
+    <string name="iceland">Island</string>
+    <string name="india">Indien</string>
+    <string name="british_indian_ocean">Britisches Territorium im Indischen Ozean</string>
+    <string name="iraq">Irak</string>
+    <string name="iran">Iran</string>
+    <string name="italia">Italien</string>
+    <string name="jersey">Jersey</string>
+    <string name="jamaica">Jamaika</string>
+    <string name="jordan">Jordan</string>
+    <string name="japan">Japan</string>
+    <string name="kenya">Kenia</string>
+    <string name="kyrgyzstan">Kirgisistan</string>
+    <string name="cambodia">Kambodscha</string>
+    <string name="kiribati">Kiribati</string>
+    <string name="comoros">Komoren</string>
+    <string name="saint_kitts">St. Kitts und Nevis</string>
+    <string name="north_korea">Nordkorea</string>
+    <string name="south_korea">Südkorea</string>
+    <string name="kuwait">Kuwait</string>
+    <string name="cayman_islands">Kaimaninseln</string>
+    <string name="kazakhstan">Kasachstan</string>
+    <string name="laos">Demokratische Volksrepublik Laos</string>
+    <string name="lebanon">Libanon</string>
+    <string name="saint_lucia">St. Lucia</string>
+    <string name="liechtenstein">Liechtenstein</string>
+    <string name="siri_lanka">Sri Lanka</string>
+    <string name="liberia">Liberia</string>
+    <string name="lesotho">Lesotho</string>
+    <string name="lithuania">Litauen</string>
+    <string name="luxembourg">Luxemburg</string>
+    <string name="latvia">Lettland</string>
+    <string name="libya">Libyen</string>
+    <string name="marocco">Marokko</string>
+    <string name="monaco">Monako</string>
+    <string name="moldova">Republik Moldau</string>
+    <string name="montenegro">Montenegro</string>
+    <string name="saint_martin">Saint Martin</string>
+    <string name="madagascar">Madagaskar</string>
+    <string name="marshall_islands">Marshallinseln</string>
+    <string name="north_macedonia">Republik Nordmazedonien</string>
+    <string name="mali">Mali</string>
+    <string name="myanmar">Myanmar</string>
+    <string name="mongolia">Mongolei</string>
+    <string name="macau">Macau</string>
+    <string name="northern_mariana">Nördlichen Marianen</string>
+    <string name="martinique">Martinique</string>
+    <string name="mauriatana">Mauritanien</string>
+    <string name="montserrat">Montserrat</string>
+    <string name="malta">Malta</string>
+    <string name="mauritius">Mauritius</string>
+    <string name="maldives">Malediven</string>
+    <string name="malawi">Malawi</string>
+    <string name="mexico">Mexiko</string>
+    <string name="malaysia">Malaysia</string>
+    <string name="mozambique">Mosambik</string>
+    <string name="namibia">Namibia</string>
+    <string name="new_caledonia">Neukaledonien</string>
+    <string name="niger">Niger</string>
+    <string name="norfolk">Norfolkinsel</string>
+    <string name="nigeria">Nigeria</string>
+    <string name="nicaragua">Nicaragua</string>
+    <string name="netherlands">Niederlande</string>
+    <string name="norway">Norwegen</string>
+    <string name="nepal">Nepal</string>
+    <string name="nauru">Nauru</string>
+    <string name="niue">Niue</string>
+    <string name="new_zealand">Neuseeland</string>
+    <string name="oman">Oman</string>
+    <string name="panama">Panama</string>
+    <string name="peru">Peru</string>
+    <string name="french_polynesia">Französisch-Polynesien</string>
+    <string name="papua_new_guinea">Papua-Neuguinea</string>
+    <string name="philippinies">Philippinen</string>
+    <string name="pakistan">Pakistan</string>
+    <string name="poland">Polen</string>
+    <string name="saint_pierre">Saint-Pierre und Miquelon</string>
+    <string name="pitcairn">Pitcairninseln</string>
+    <string name="puerto_rico">Puerto Rico</string>
+    <string name="state_of_palestine">Palestina</string>
+    <string name="portugal">Portugal</string>
+    <string name="palau">Palau</string>
+    <string name="paraguay">Paraguay</string>
+    <string name="qatar">Katar</string>
+    <string name="reunion">Réunion</string>
+    <string name="romania">Rumänien</string>
+    <string name="serbia">Serbien</string>
+    <string name="russia">Russische Föderation</string>
+    <string name="rwanda">Ruanda</string>
+    <string name="saudi_arabia">Saudi-Arabien</string>
+    <string name="solomon_islands">Solomoninseln</string>
+    <string name="seychelles">Seychellen</string>
+    <string name="sudan">Sudan</string>
+    <string name="sweden">Schweden</string>
+    <string name="singapore">Singapur</string>
+    <string name="saint_helena">St. Helena, Ascension und Tristan da Cunha</string>
+    <string name="slovenia">Slowenien</string>
+    <string name="slovakia">Slowakei</string>
+    <string name="sierra_leone">Sierra Leone</string>
+    <string name="san_marino">San Marino</string>
+    <string name="senegal">Senegal</string>
+    <string name="somali">Somalia</string>
+    <string name="suriname">Surinam</string>
+    <string name="south_sudan">Südsudan</string>
+    <string name="sao_tome">Sao Tome und Principe</string>
+    <string name="el_salvador">El Salvador</string>
+    <string name="sint_maarten">Sint Maarten</string>
+    <string name="syrian">Syrien</string>
+    <string name="swaziland">Eswatini</string>
+    <string name="turks_and_caicos">Turks- und Caicosinseln</string>
+    <string name="chad">Tschad</string>
+    <string name="togo">Togo</string>
+    <string name="thailand">Thailand</string>
+    <string name="taijikistan">Tadschikistan</string>
+    <string name="tokelau">Tokelau</string>
+    <string name="timor_leste">Osttimor</string>
+    <string name="turkmenistan">Turkmenistan</string>
+    <string name="tunisia">Tunesien</string>
+    <string name="tonga">Tonga</string>
+    <string name="turkey">Türkei</string>
+    <string name="trinidad_and_tobago"><![CDATA[Trinidad & Tobago]]></string>
+    <string name="tuvalu">Tuvalu</string>
+    <string name="taiwan">Taiwan</string>
+    <string name="tazmania">Tansania</string>
+    <string name="ukraina">Ukraine</string>
+    <string name="uganda">Uganda</string>
+    <string name="united_states_america">Vereinigte Staaten von Amerika</string>
+    <string name="uruguay">Uruguay</string>
+    <string name="uzbekistan">Usbekistan</string>
+    <string name="holy_see">Vatikanstadt</string>
+    <string name="saint_vincent"><![CDATA[St. Vincent und die Grenadinen]]></string>
+    <string name="venezuela">Venezuela</string>
+    <string name="virgin_islands">Britische Jungferninseln</string>
+    <string name="virgin_island_us">Amerikanische Jungferninseln</string>
+    <string name="vietnam">Vietnam</string>
+    <string name="vanuatu">Vanuatu</string>
+    <string name="walli_and_fatuna">Wallis und Futuna</string>
+    <string name="samoa">Samoa</string>
+    <string name="kosovo">Kosovo</string>
+    <string name="yemen">Jemen</string>
+    <string name="mayotte">Mayotte</string>
+    <string name="south_africa">Südafrika</string>
+    <string name="zambia">Sambia</string>
+    <string name="zimbabwe">Simbabwe</string>
+    <string name="unknown">Unbekannt</string>
+    <string name="search_country">Suchen...</string>
+    <string name="afganistan_hint" translatable="false">70 123 4567</string>
+    <string name="algeria_hint" translatable="false">551 23 45 67</string>
+    <string name="american_samoa_hint" translatable="false">684-733-1234</string>
+    <string name="united_arab_emirates_hint" translatable="false">50 123 4567</string>
+    <string name="aland_islands_hint" translatable="false">41 2345678</string>
+    <string name="united_states_america_hint" translatable="false">201-555-0123</string>
+    <string name="andorra_hint" translatable="false">312 345</string>
+    <string name="angola_hint" translatable="false">923 123 456</string>
+    <string name="antigua_and_barbuda_hint" translatable="false">268-464-1234</string>
+    <string name="argentina_hint" translatable="false">9 11 2345-6789</string>
+    <string name="albania_hint" translatable="false">67 212 3456</string>
+    <string name="aruba_hint" translatable="false">560 1234</string>
+    <string name="australia_hint" translatable="false">412 345 678</string>
+    <string name="austria_hint" translatable="false">664 123456</string>
+    <string name="azerbaijan_hint" translatable="false">40 123 45 67</string>
+    <string name="saint_martin_hint" translatable="false">690 00 12 34</string>
+    <string name="bahamas_hint" translatable="false">242-359-1234</string>
+    <string name="bahrain_hint" translatable="false">3600 1234</string>
+    <string name="bangladesh_hint" translatable="false">1812-345678</string>
+    <string name="barbados_hint" translatable="false">246-250-1234</string>
+    <string name="belarus_hint" translatable="false">29 491-19-11</string>
+    <string name="belgium_hint" translatable="false">470 12 34 56</string>
+    <string name="belize_hint" translatable="false">622-1234</string>
+    <string name="benin_hint" translatable="false">90 01 12 34</string>
+    <string name="bermuda_hint" translatable="false">441-370-1234</string>
+    <string name="bhutan_hint" translatable="false">17 12 34 56</string>
+    <string name="united_kingdom_hint" translatable="false">7400 123456</string>
+    <string name="bolivia_hint" translatable="false">71234567</string>
+    <string name="bosnia_hint" translatable="false">61 123 456</string>
+    <string name="botswana_hint" translatable="false">71 123 456</string>
+    <string name="brazil_hint" translatable="false">11 96123-4567</string>
+    <string name="brunei_darussalam_hint" translatable="false">712 3456</string>
+    <string name="bulgaria_hint" translatable="false">48 123 456</string>
+    <string name="burkina_faso_hint" translatable="false">70 12 34 56</string>
+    <string name="cape_verde_hint" translatable="false">991 12 34</string>
+    <string name="cayman_islands_hint" translatable="false">345-323-1234</string>
+    <string name="djibouti_hint" translatable="false">77 83 10 01</string>
+    <string name="cocos_hint" translatable="false">412 345 678</string>
+    <string name="cook_islands_hint" translatable="false">71 234</string>
+    <string name="curacao_hint" translatable="false">9 518 1234</string>
+    <string name="chad_hint" translatable="false">63 01 23 45</string>
+    <string name="czech_republic_hint" translatable="false">601 123 456</string>
+    <string name="china_hint" translatable="false">131 2345 6789</string>
+    <string name="denmark_hint" translatable="false">32 12 34 56</string>
+    <string name="dominician_republic_hint" translatable="false">809-234-5678</string>
+    <string name="dominica_hint" translatable="false">767-225-1234</string>
+    <string name="ecuador_hint" translatable="false">99 123 4567</string>
+    <string name="equatorial_guinea_hint" translatable="false">222 123 456</string>
+    <string name="el_salvador_hint" translatable="false">7012 3456</string>
+    <string name="eritrea_hint" translatable="false">7 123 456</string>
+    <string name="armenia_hint" translatable="false">77 123456</string>
+    <string name="estonia_hint" translatable="false">5123 4567</string>
+    <string name="ethiopia_hint" translatable="false">91 123 4567</string>
+    <string name="falkland_islands_hint" translatable="false">51234</string>
+    <string name="faroe_islands_hint" translatable="false">211234</string>
+    <string name="marocco_hint" translatable="false">650-123456</string>
+    <string name="turkey_hint" translatable="false">501 234 56 78</string>
+    <string name="philippinies_hint" translatable="false">905 123 4567</string>
+    <string name="state_of_palestine_hint" translatable="false">599 123 456</string>
+    <string name="france_hint" translatable="false">6 12 34 56 78</string>
+    <string name="french_guyana_hint" translatable="false">694 20 12 34</string>
+    <string name="french_polynesia_hint" translatable="false">87 12 34 56</string>
+    <string name="gabon_hint" translatable="false">6 03 12 34</string>
+    <string name="gambia_hint" translatable="false">301 2345</string>
+    <string name="ghana_hint" translatable="false">23 123 4567</string>
+    <string name="guinea_hint" translatable="false">601 12 34 56</string>
+    <string name="guinea_bissau_hint" translatable="false">955 012 345</string>
+    <string name="grenada_hint" translatable="false">473-403-1234</string>
+    <string name="greenland_hint" translatable="false">22 12 34</string>
+    <string name="guadeloupe_hint" translatable="false">690 00 12 34</string>
+    <string name="guam_hint" translatable="false">671-300-1234</string>
+    <string name="guatemala_hint" translatable="false">5123 4567</string>
+    <string name="guernsey_hint" translatable="false">7781 123456</string>
+    <string name="guyana_hint" translatable="false">609 1234</string>
+    <string name="south_africa_hint" translatable="false">71 123 4567</string>
+    <string name="south_korea_hint" translatable="false">-2000-0000</string>
+    <string name="south_sudan_hint" translatable="false">977 123 456</string>
+    <string name="georgia_hint" translatable="false">555 12 34 56</string>
+    <string name="haiti_hint" translatable="false">34 10 1234</string>
+    <string name="croatia_hint" translatable="false">92 123 4567</string>
+    <string name="netherlands_hint" translatable="false">6 12345678</string>
+    <string name="honduras_hint" translatable="false">9123-4567</string>
+    <string name="hong_kong_hint" translatable="false">5123 4567</string>
+    <string name="virgin_islands_hint" translatable="false">284-300-1234</string>
+    <string name="spain_hint" translatable="false">612 34 56 78</string>
+    <string name="sweden_hint" translatable="false">70 123 45 67</string>
+    <string name="switzerland_hint" translatable="false">78 123 45 67</string>
+    <string name="japan_hint" translatable="false">-1234-5678</string>
+    <string name="jersey_hint" translatable="false">7797 712345</string>
+    <string name="cambodia_hint" translatable="false">91 234 567</string>
+    <string name="cameroon_hint" translatable="false">6 71 23 45 67</string>
+    <string name="canada_hint" translatable="false">506-234-5678</string>
+    <string name="montenegro_hint" translatable="false">67 622 901</string>
+    <string name="qatar_hint" translatable="false">3312 3456</string>
+    <string name="kazakhstan_hint" translatable="false">771 000 9998</string>
+    <string name="kenya_hint" translatable="false">712 123456</string>
+    <string name="cyprus_hint" translatable="false">96 123456</string>
+    <string name="kyrgyzstan_hint" translatable="false">700 123 456</string>
+    <string name="colombia_hint" translatable="false">321 1234567</string>
+    <string name="comoros_hint" translatable="false">321 23 45</string>
+    <string name="congo_hint" translatable="false">61234567</string>
+    <string name="congo_democratic_hint" translatable="false">991 234 567</string>
+    <string name="kosovo_hint" translatable="false">43 201 234</string>
+    <string name="costa_rica_hint" translatable="false">8312 3456</string>
+    <string name="kuwait_hint" translatable="false">500 12345</string>
+    <string name="north_korea_hint" translatable="false">192 123 4567</string>
+    <string name="north_macedonia_hint" translatable="false">72 345 678</string>
+    <string name="northern_mariana_hint" translatable="false">670-234-5678</string>
+    <string name="cuba_hint" translatable="false">5 1234567</string>
+    <string name="laos_hint" translatable="false">20 23 123 456</string>
+    <string name="lesotho_hint" translatable="false">5012 3456</string>
+    <string name="latvia_hint" translatable="false">21 234 567</string>
+    <string name="liberia_hint" translatable="false">77 012 3456</string>
+    <string name="libya_hint" translatable="false">91-2345678</string>
+    <string name="lithuania_hint" translatable="false">612 34567</string>
+    <string name="lebanon_hint" translatable="false">71 123 456</string>
+    <string name="luxembourg_hint" translatable="false">628 123 456</string>
+    <string name="hungary_hint" translatable="false">20 123 4567</string>
+    <string name="macau_hint" translatable="false">6612 3456</string>
+    <string name="madagascar_hint" translatable="false">32 12 345 67</string>
+    <string name="malawi_hint" translatable="false">991 23 45 67</string>
+    <string name="maldives_hint" translatable="false">771-2345</string>
+    <string name="malaysia_hint" translatable="false">12-345 6789</string>
+    <string name="mali_hint" translatable="false">65 01 23 45</string>
+    <string name="malta_hint" translatable="false">9696 1234</string>
+    <string name="marshall_islands_hint" translatable="false">235-1234</string>
+    <string name="martinique_hint" translatable="false">696 20 12 34</string>
+    <string name="mauritius_hint" translatable="false">5251 2345</string>
+    <string name="mayotte_hint" translatable="false">639 01 23 45</string>
+    <string name="mexico_hint" translatable="false">222 123 4567</string>
+    <string name="egypt_hint" translatable="false">100 123 4567</string>
+    <string name="micro_hint" translatable="false">350 1234</string>
+    <string name="mongolia_hint" translatable="false">8812 3456</string>
+    <string name="moldova_hint" translatable="false">621 12 345</string>
+    <string name="monaco_hint" translatable="false">6 12 34 56 78</string>
+    <string name="montserrat_hint" translatable="false">664-492-3456</string>
+    <string name="mauriatana_hint" translatable="false">22 12 34 56</string>
+    <string name="mozambique_hint" translatable="false">82 123 4567</string>
+    <string name="myanmar_hint" translatable="false">9 712 345 678</string>
+    <string name="namibia_hint" translatable="false">81 123 4567</string>
+    <string name="nauru_hint" translatable="false">555 1234</string>
+    <string name="nepal_hint" translatable="false">984-1234567</string>
+    <string name="niger_hint" translatable="false">93 12 34 56</string>
+    <string name="nigeria_hint" translatable="false">802 123 4567</string>
+    <string name="niue_hint" translatable="false">888 4012</string>
+    <string name="christmas_island_hint" translatable="false">412 345 678</string>
+    <string name="norfolk_hint" translatable="false">3 81234</string>
+    <string name="norway_hint" translatable="false">406 12 345</string>
+    <string name="central_african_hint" translatable="false">70 01 23 45</string>
+    <string name="uzbekistan_hint" translatable="false">91 234 56 78</string>
+    <string name="pakistan_hint" translatable="false">301 2345678</string>
+    <string name="palau_hint" translatable="false">620 1234</string>
+    <string name="panama_hint" translatable="false">6123-4567</string>
+    <string name="papua_new_guinea_hint" translatable="false">7012 3456</string>
+    <string name="paraguay_hint" translatable="false">961 456789</string>
+    <string name="peru_hint" translatable="false">912 345 678</string>
+    <string name="poland_hint" translatable="false">512 345 678</string>
+    <string name="portugal_hint" translatable="false">912 345 678</string>
+    <string name="puerto_rico_hint" translatable="false">787-234-5678</string>
+    <string name="reunion_hint" translatable="false">692 12 34 56</string>
+    <string name="romania_hint" translatable="false">712 034 567</string>
+    <string name="rwanda_hint" translatable="false">720 123 456</string>
+    <string name="russia_hint" translatable="false">912 345-67-89</string>
+    <string name="saint_barhelemy_hint" translatable="false">690 00 12 34</string>
+    <string name="saint_helena_hint" translatable="false">51234</string>
+    <string name="saint_kitts_hint" translatable="false">869-765-2917</string>
+    <string name="saint_lucia_hint" translatable="false">758-284-5678</string>
+    <string name="saint_pierre_hint" translatable="false">55 12 34</string>
+    <string name="saint_vincent_hint" translatable="false">784-430-1234</string>
+    <string name="samoa_hint" translatable="false">72 12345</string>
+    <string name="san_marino_hint" translatable="false">66 66 12 12</string>
+    <string name="sao_tome_hint" translatable="false">981 2345</string>
+    <string name="senegal_hint" translatable="false">70 123 45 67</string>
+    <string name="seychelles_hint" translatable="false">2 510 123</string>
+    <string name="serbia_hint" translatable="false">60 1234567</string>
+    <string name="sierra_leone_hint" translatable="false">25 123456</string>
+    <string name="singapore_hint" translatable="false">8123 4567</string>
+    <string name="sint_maarten_hint" translatable="false">721-520-5678</string>
+    <string name="slovakia_hint" translatable="false">912 123 456</string>
+    <string name="solomon_islands_hint" translatable="false">74 21234</string>
+    <string name="somali_hint" translatable="false">7 1123456</string>
+    <string name="siri_lanka_hint" translatable="false">71 234 5678</string>
+    <string name="sudan_hint" translatable="false">91 123 1234</string>
+    <string name="suriname_hint" translatable="false">741-2345</string>
+    <string name="syrian_hint" translatable="false">944 567 890</string>
+    <string name="saudi_arabia_hint" translatable="false">51 234 5678</string>
+    <string name="swaziland_hint" translatable="false">7612 3456</string>
+    <string name="chile_hint" translatable="false">2 2123 4567</string>
+    <string name="taijikistan_hint" translatable="false">917 12 3456</string>
+    <string name="tazmania_hint" translatable="false">621 234 567</string>
+    <string name="thailand_hint" translatable="false">81 234 5678</string>
+    <string name="taiwan_hint" translatable="false">912 345 678</string>
+    <string name="timor_leste_hint" translatable="false">7721 2345</string>
+    <string name="togo_hint" translatable="false">90 11 23 45</string>
+    <string name="tokelau_hint" translatable="false">7290</string>
+    <string name="tonga_hint" translatable="false">771 5123</string>
+    <string name="trinidad_and_tobago_hint" translatable="false">868-291-1234</string>
+    <string name="tunisia_hint" translatable="false">20 123 456</string>
+    <string name="turks_and_caicos_hint" translatable="false">649-231-1234</string>
+    <string name="tuvalu_hint" translatable="false">901234</string>
+    <string name="turkmenistan_hint" translatable="false">66 123456</string>
+    <string name="uganda_hint" translatable="false">712 345678</string>
+    <string name="ukraina_hint" translatable="false">50 123 4567</string>
+    <string name="oman_hint" translatable="false">9212 3456</string>
+    <string name="uruguay_hint" translatable="false">94 231 234</string>
+    <string name="jordan_hint" translatable="false">7 9012 3456</string>
+    <string name="vanuatu_hint" translatable="false">591 2345</string>
+    <string name="venezuela_hint" translatable="false">412-1234567</string>
+    <string name="vietnam_hint" translatable="false">91 234 56 78</string>
+    <string name="walli_and_fatuna_hint" translatable="false">82 12 34</string>
+    <string name="yemen_hint" translatable="false">712 345 678</string>
+    <string name="new_caledonia_hint" translatable="false">75.12.34</string>
+    <string name="new_zealand_hint" translatable="false">21 123 4567</string>
+    <string name="greece_hint" translatable="false">691 234 5678</string>
+    <string name="zambia_hint" translatable="false">95 5123456</string>
+    <string name="zimbabwe_hint" translatable="false">71 234 5678</string>
+    <string name="anguilla_hint" translatable="false">(264) 123-1234</string>
+    <string name="antarctica_hint" translatable="false">xxx xxx</string>
+    <string name="burundi_hint" translatable="false">29 12 34 56</string>
+    <string name="cote_dlvoire_hint" translatable="false">02 12 34 56</string>
+    <string name="germany_hint" translatable="false">0171 123456</string>
+    <string name="finland_hint" translatable="false">042 123456</string>
+    <string name="fiji_hint" translatable="false">665 1234</string>
+    <string name="israil_hint" translatable="false">03-123-4567</string>
+    <string name="ireland_hint" translatable="false">087 123 4567</string>
+    <string name="indonesia_hint" translatable="false">21 8379 6236</string>
+    <string name="india_hint" translatable="false">241 123 5</string>
+    <string name="iran_hint" translatable="false">021 1234 5678</string>
+    <string name="italia_hint" translatable="false">388 123 4567</string>
+    <string name="jamaica_hint" translatable="false">(876) 123-4567</string>
+    <string name="iraq_hint" translatable="false">0777 123 4567</string>
+    <string name="slovenia_hint" translatable="false">070 123 456</string>
+    <string name="select_country">Land auswählen</string>
+    <string name="invalid_number">Ungültige Telefonnummer</string>
+</resources>
