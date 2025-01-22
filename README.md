@@ -42,6 +42,7 @@ KomposeCountryCodePicker(
 This project includes translations for the following languages:
 
 - **Arabic (ar)**:
+- **German (de)**:
 - **French (fr)**:
 - **Hindi (hi)**:
 - **Italian (it-IT)**:
