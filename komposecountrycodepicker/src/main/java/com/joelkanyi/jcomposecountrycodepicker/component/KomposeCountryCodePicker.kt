@@ -576,12 +576,17 @@ private fun SelectedCountryComponent(
         Icon(
             imageVector = Icons.Default.ArrowDropDown,
             contentDescription = null,
-            tint = textStyle.color,
             modifier = Modifier.qaAutomationTestTag("countryDropDown"),
         )
     }
 }
 
+/**
+ * [qaAutomationTestTag] is a composable that adds a test tag to important
+ * components in the country code picker, to be used for QA automation.
+ * @param tag The tag to be added to the component.
+ * @return A [Modifier] that adds a test tag to the component.
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 public fun Modifier.qaAutomationTestTag(tag: String): Modifier {
     return this.then(
