@@ -1147,7 +1147,7 @@ internal object PickerUtils {
             ),
             Country(
                 "gp",
-                "+450",
+                "+590",
                 "Guadeloupe",
                 R.drawable.gp,
             ),
