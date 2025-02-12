@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:Suppress("UNCHECKED_CAST")
-
 package com.joelkanyi.jcomposecountrycodepicker.component
 
 import android.annotation.SuppressLint
@@ -205,45 +203,29 @@ internal class CountryCodePickerImpl(
     override val countryList: List<Country>
         get() = _countryList.value
 
-    override fun getCountryName(): String {
-        return countryCode.getCountry().name.replaceFirstChar {
-            it.uppercase()
-        }
+    override fun getCountryName(): String = countryCode.getCountry().name.replaceFirstChar {
+        it.uppercase()
     }
 
-    override fun getCountryPhoneCode(): String {
-        return countryCode.getCountry().phoneNoCode
-    }
+    override fun getCountryPhoneCode(): String = countryCode.getCountry().phoneNoCode
 
-    override fun getCountryPhoneCodeWithoutPrefix(): String {
-        return countryCode.getCountry().phoneNoCode.removePrefix("+")
-    }
+    override fun getCountryPhoneCodeWithoutPrefix(): String = countryCode.getCountry().phoneNoCode.removePrefix("+")
 
-    override fun getPhoneNumberWithoutPrefix(): String {
-        return phoneNumber.removeSpecialCharacters().removePrefix("0")
-    }
+    override fun getPhoneNumberWithoutPrefix(): String = phoneNumber.removeSpecialCharacters().removePrefix("0")
 
-    override fun getFullPhoneNumberWithoutPrefix(): String {
-        return getCountryPhoneCodeWithoutPrefix() + phoneNumber.removeSpecialCharacters()
-            .removePrefix("0")
-    }
+    override fun getFullPhoneNumberWithoutPrefix(): String = getCountryPhoneCodeWithoutPrefix() + phoneNumber.removeSpecialCharacters()
+        .removePrefix("0")
 
-    override fun getFullPhoneNumber(): String {
-        return getCountryPhoneCode() + phoneNumber.removeSpecialCharacters()
-            .removePrefix("0")
-    }
+    override fun getFullPhoneNumber(): String = getCountryPhoneCode() + phoneNumber.removeSpecialCharacters()
+        .removePrefix("0")
 
-    override fun isPhoneNumberValid(phoneNumber: String): Boolean {
-        return PickerUtils.isValid(phoneNumber)
-    }
+    override fun isPhoneNumberValid(phoneNumber: String): Boolean = PickerUtils.isValid(phoneNumber)
 
-    override fun getFullyFormattedPhoneNumber(): String {
-        return PhoneNumberTransformation(countryCode).filter(
-            buildAnnotatedString {
-                append(getFullPhoneNumber())
-            },
-        ).text.toString()
-    }
+    override fun getFullyFormattedPhoneNumber(): String = PhoneNumberTransformation(countryCode).filter(
+        buildAnnotatedString {
+            append(getFullPhoneNumber())
+        },
+    ).text.toString()
 
     override fun setPhoneNo(phoneNumber: String) {
         _phoneNumber.value = phoneNumber
@@ -588,11 +570,9 @@ private fun SelectedCountryComponent(
  * @return A [Modifier] that adds a test tag to the component.
  */
 @OptIn(ExperimentalComposeUiApi::class)
-public fun Modifier.qaAutomationTestTag(tag: String): Modifier {
-    return this.then(
-        Modifier.semantics {
-            this.testTag = tag
-            this.testTagsAsResourceId = true
-        },
-    )
-}
+public fun Modifier.qaAutomationTestTag(tag: String): Modifier = this.then(
+    Modifier.semantics {
+        this.testTag = tag
+        this.testTagsAsResourceId = true
+    },
+)
