@@ -26,10 +26,36 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
+      - name: Extract version from tag
+        run: |
+          VERSION_NAME="${GITHUB_REF#refs/tags/}"  # Remove "refs/tags/"
+          echo "Extracted VERSION_NAME: $VERSION_NAME"  # Debugging step
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+
+      - name: Update version in gradle.properties
+        run: |
+          sed -i "s/^version=.*/version=${{ env.VERSION_NAME }}/" gradle.properties
+
+      - name: Commit and push version change to main branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git checkout main
+          git pull origin main
+
+          git add gradle.properties
+          git commit -m "Bump version to ${{ env.VERSION_NAME }}" || echo "No changes to commit"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+
       - name: Make gradle executable
         run: chmod +x ./gradlew
 
       - uses: gradle/gradle-build-action@v3
+
       - name: Deploy to Maven Central
         run: ./gradlew publishAllPublicationsToCentralPortal --no-configuration-cache --stacktrace
         env:
