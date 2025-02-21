@@ -190,14 +190,7 @@ internal class CountryCodePickerImpl(
         if (limitedCountries.isEmpty()) {
             PickerUtils.allCountries
         } else {
-            PickerUtils.allCountries.filter { country ->
-                limitedCountries
-                    .map { it.lowercase() }
-                    .map { it.trim() }
-                    .contains(country.code) ||
-                    limitedCountries.contains(country.phoneNoCode) ||
-                    limitedCountries.contains(country.name)
-            }
+            PickerUtils.getLimitedCountries(limitedCountries)
         },
     )
     override val countryList: List<Country>

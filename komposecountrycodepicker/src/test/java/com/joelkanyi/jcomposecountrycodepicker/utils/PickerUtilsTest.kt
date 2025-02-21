@@ -62,7 +62,7 @@ class PickerUtilsTest {
     @Test
     fun testRemoveSpecialCharacters() {
         // Given
-        val testData = "+254712345678_"
+        val testData = "+-,`˜@/.!#%^&*()254712345678_+$"
 
         // When
         val result = testData.removeSpecialCharacters()
@@ -112,5 +112,23 @@ class PickerUtilsTest {
 
         // Then
         assertThat(phoneNumber).isEqualTo(wholePhoneNumber)
+    }
+
+    @Test
+    fun testReturnsLimitedCountries() {
+        // Given
+        val limitedCountriesString = listOf(
+            "UG",
+            "255",
+            "+260",
+            "Kenya",
+            "ng",
+        )
+
+        // When
+        val result = PickerUtils.getLimitedCountries(limitedCountriesString).map { it.name }
+
+        // Then
+        assertThat(result).hasSize(5)
     }
 }
