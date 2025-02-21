@@ -37,6 +37,30 @@ internal object PickerUtils {
     }
 
     /**
+     * [getLimitedCountries] Returns a list of countries that match the search
+     * @param limitedCountries The list of countries strings.
+     */
+    fun getLimitedCountries(limitedCountries: List<String>): List<Country> {
+        val cleanedCountries =
+            limitedCountries.map { it.removeSpecialCharacters().trim().lowercase() }
+
+        val digits = cleanedCountries.filter { it.all { char -> char.isDigit() } }
+        val shortCodes =
+            cleanedCountries.filter { it.all { char -> char.isLetter() } && it.length <= 2 }
+        val names = cleanedCountries.filter { it.all { char -> char.isLetter() } && it.length > 2 }
+
+        return (
+            digits.flatMap { digit ->
+                allCountries.filter { it.phoneNoCode.contains(digit) }
+            } + shortCodes.flatMap { code ->
+                allCountries.filter { it.code.lowercase() == code }
+            } + names.flatMap { name ->
+                allCountries.filter { it.name.lowercase().contains(name) }
+            }
+            ).distinct().sortedBy { it.name }
+    }
+
+    /**
      * [getDefaultLangCode] Returns the default language code of the device.
      *
      * @param context The context of the activity or fragment.
@@ -71,10 +95,10 @@ internal object PickerUtils {
     }
 
     /**
-     * [removeSpecialCharacters] Returns the phone number without special
+     * [removeSpecialCharacters] Returns the string without special
      * characters.
      */
-    fun String.removeSpecialCharacters(): String = this.replace("[^0-9]".toRegex(), "")
+    fun String.removeSpecialCharacters(): String = this.replace("[^a-zA-Z0-9]".toRegex(), "")
 
     /**
      * [searchForAnItem] Returns a list of items that match the search string.

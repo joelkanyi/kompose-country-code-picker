@@ -6,7 +6,7 @@ The `state` parameter is used to set and access different variables and methods 
 
 ```kotlin
 val state = rememberKomposeCountryCodePickerState(
-    limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS"),
+    limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS", "Togo", "+260", "250", "+211", "Mali", "Malawi"),
     showCountryCode = true,
     showCountryFlag = true,
     defaultCountryCode = "TZ",

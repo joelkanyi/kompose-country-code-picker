@@ -23,18 +23,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -78,64 +77,63 @@ private fun PickerContent() {
                         style = MaterialTheme.typography.titleMedium,
                     )
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
             )
         },
     ) { paddingValues ->
-        Column(
+        var phoneNumber by rememberSaveable { mutableStateOf("") }
+        val state = rememberKomposeCountryCodePickerState(
+//            limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS", "Togo", "+260", "250", "+211", "Mali", "Malawi"),
+            showCountryCode = true,
+            showCountryFlag = true,
+            defaultCountryCode = "KE",
+        )
+
+        LazyColumn(
             modifier = Modifier
-                .padding(paddingValues)
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = paddingValues,
         ) {
-            var phoneNumber by rememberSaveable { mutableStateOf("") }
-            val state = rememberKomposeCountryCodePickerState(
-                // limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS"),
-                showCountryCode = true,
-                showCountryFlag = true,
-                defaultCountryCode = "KE",
-            )
-
-            KomposeCountryCodePicker(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = phoneNumber,
-                onValueChange = { phoneNumber = it },
-                placeholder = {
-                    Text(
-                        text = "Phone Number",
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = FontWeight.ExtraLight,
-                        ),
-                    )
-                },
-                shape = MaterialTheme.shapes.medium,
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedContainerColor = Color.Transparent,
-                ),
-                state = state,
-                countrySelectionDialogContainerColor = MaterialTheme.colorScheme.background,
-                countrySelectionDialogContentColor = MaterialTheme.colorScheme.onBackground,
-                interactionSource = remember { MutableInteractionSource() }.also { interactionSource ->
-                    LaunchedEffect(interactionSource) {
-                        interactionSource.interactions.collect {
-                            if (it is PressInteraction.Release) {
-                                Log.e(
-                                    "CountryCodePicker",
-                                    "clicked",
-                                )
+            item {
+                KomposeCountryCodePicker(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = phoneNumber,
+                    onValueChange = { phoneNumber = it },
+                    placeholder = {
+                        Text(
+                            text = "Phone Number",
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = FontWeight.ExtraLight,
+                            ),
+                        )
+                    },
+                    shape = MaterialTheme.shapes.medium,
+                    colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedContainerColor = Color.Transparent,
+                    ),
+                    state = state,
+                    countrySelectionDialogContainerColor = MaterialTheme.colorScheme.background,
+                    countrySelectionDialogContentColor = MaterialTheme.colorScheme.onBackground,
+                    interactionSource = remember { MutableInteractionSource() }.also { interactionSource ->
+                        LaunchedEffect(interactionSource) {
+                            interactionSource.interactions.collect {
+                                if (it is PressInteraction.Release) {
+                                    Log.e(
+                                        "CountryCodePicker",
+                                        "clicked",
+                                    )
+                                }
                             }
                         }
-                    }
-                },
-            )
+                    },
+                )
+            }
 
+            item {
 //            OutlinedTextField(
 //                modifier = Modifier
 //                    .fillMaxWidth(),
@@ -154,186 +152,218 @@ private fun PickerContent() {
 //                    focusedContainerColor = Color.Transparent,
 //                ),
 //            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Get country code */
-                Text(
-                    text = "Country Phone No Code: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = state.getCountryPhoneCodeWithoutPrefix(),
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Prefixed country code */
-                Text(
-                    text = "Prefixed Country Phone No Code: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = state.getCountryPhoneCode(),
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Get country name */
-                Text(
-                    text = "Country Name: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = state.getCountryName(),
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Get country code */
+                    /** Get country code */
+                    Text(
+                        text = "Country Phone No Code: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = state.getCountryPhoneCodeWithoutPrefix(),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Get country language code */
-                Text(
-                    text = "Country Language Code: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = state.countryCode
-                        .uppercase(),
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Prefixed country code */
+                    /** Prefixed country code */
+                    Text(
+                        text = "Prefixed Country Phone No Code: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = state.getCountryPhoneCode(),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Get phone number */
-                Text(
-                    text = "Phone Number: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = state.phoneNumber,
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Get country name */
+                    /** Get country name */
+                    Text(
+                        text = "Country Name: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = state.getCountryName(),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Get phone number without prefix */
-                Text(
-                    text = "Phone Number Without Prefix: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = state.getPhoneNumberWithoutPrefix(),
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Get country language code */
+                    /** Get country language code */
+                    Text(
+                        text = "Country Language Code: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = state.countryCode
+                            .uppercase(),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Get full phone number */
-                Text(
-                    text = "Full Phone Number: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = state.getFullPhoneNumber(),
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Get phone number */
+                    /** Get phone number */
+                    Text(
+                        text = "Phone Number: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = state.phoneNumber,
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Get full phone number without prefix */
-                Text(
-                    text = "Full Phone Number Without Prefix: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = state.getFullPhoneNumberWithoutPrefix(),
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Get phone number without prefix */
+                    /** Get phone number without prefix */
+                    Text(
+                        text = "Phone Number Without Prefix: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = state.getPhoneNumberWithoutPrefix(),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Get full phone number without prefix */
-                Text(
-                    text = "Fully Formatted Phone Number: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = state.getFullyFormattedPhoneNumber(),
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Get full phone number */
+                    /** Get full phone number */
+                    Text(
+                        text = "Full Phone Number: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = state.getFullPhoneNumber(),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                /** Check if phone number is valid */
-                Text(
-                    text = "Phone Number State: ",
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    text = if (state.isPhoneNumberValid()) "Valid" else "Invalid",
-                    color = if (state.isPhoneNumberValid()) Color.Green else Color.Red,
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.ExtraBold,
-                    ),
-                )
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Get full phone number without prefix */
+                    /** Get full phone number without prefix */
+                    Text(
+                        text = "Full Phone Number Without Prefix: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = state.getFullPhoneNumberWithoutPrefix(),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
+            }
+
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Get full phone number without prefix */
+                    /** Get full phone number without prefix */
+                    Text(
+                        text = "Fully Formatted Phone Number: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = state.getFullyFormattedPhoneNumber(),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
+            }
+
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    /** Check if phone number is valid */
+                    /** Check if phone number is valid */
+                    Text(
+                        text = "Phone Number State: ",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        text = if (state.isPhoneNumberValid()) "Valid" else "Invalid",
+                        color = if (state.isPhoneNumberValid()) Color.Green else Color.Red,
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.ExtraBold,
+                        ),
+                    )
+                }
             }
         }
     }
