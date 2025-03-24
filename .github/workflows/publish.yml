@@ -34,7 +34,7 @@ jobs:
 
       - name: Update version in gradle.properties
         run: |
-          sed -i "s/^version=.*/version=${{ env.VERSION_NAME }}/" gradle.properties
+          sed -i '' "s/^version=.*/version=${{ env.VERSION_NAME }}/" gradle.properties
 
       - name: Commit and push version change to main branch
         run: |
