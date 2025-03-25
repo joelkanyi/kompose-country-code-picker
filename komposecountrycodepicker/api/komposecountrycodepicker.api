@@ -4,13 +4,13 @@ public abstract interface annotation class com/joelkanyi/jcomposecountrycodepick
 public final class com/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$CountrySelectionDialogKt {
 	public static final field INSTANCE Lcom/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$CountrySelectionDialogKt;
 	public fun <init> ()V
-	public final fun getLambda-1$komposecountrycodepicker_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$317520286$komposecountrycodepicker_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$KomposeCountryCodePickerKt {
 	public static final field INSTANCE Lcom/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$KomposeCountryCodePickerKt;
 	public fun <init> ()V
-	public final fun getLambda-1$komposecountrycodepicker_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$655212088$komposecountrycodepicker_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public abstract interface class com/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker {
