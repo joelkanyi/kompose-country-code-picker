@@ -51,7 +51,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -60,6 +59,7 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -331,6 +331,10 @@ public fun rememberKomposeCountryCodePickerState(
  * @param textStyle The style to be used for displaying text on the
  *    `TextField` and the selected country.
  * @param enabled Controls the enabled state of the text field.
+ * @param keyboardOptions The keyboard options to be used to display the
+ *   keyboard.
+ *   @param keyboardActions The keyboard actions to be used to display
+ *   the keyboard.
  */
 @OptIn(RestrictedApi::class)
 @Composable
@@ -353,8 +357,12 @@ public fun KomposeCountryCodePicker(
     selectedCountryFlagSize: FlagSize = FlagSize(28.dp, 18.dp),
     textStyle: TextStyle = LocalTextStyle.current,
     enabled: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
+        keyboardType = KeyboardType.Phone,
+        imeAction = ImeAction.Next,
+    ),
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
 
     val phoneTextPair = extractCountryCodeAndPhoneNumber(text)
@@ -422,14 +430,8 @@ public fun KomposeCountryCodePicker(
             visualTransformation = PhoneNumberTransformation(
                 state.countryCode.uppercase(),
             ),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Phone,
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    keyboardController?.hide()
-                },
-            ),
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
             leadingIcon = {
                 SelectedCountryComponent(
                     selectedCountry = state.countryCode.getCountry(),
