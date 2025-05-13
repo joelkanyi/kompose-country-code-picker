@@ -61,6 +61,40 @@ internal object PickerUtils {
     }
 
     /**
+     * [getPriorityCountries] Returns all the countries but the ones in
+     * the priority list will be at the top of the list.
+     * @param priorityCountries The list of countries strings.
+     * @return A list of countries sorted by priority.
+     */
+    fun getPriorityCountries(priorityCountries: List<String>): List<Country> {
+        val cleanedSet = priorityCountries
+            .map { it.removeSpecialCharacters().trim().lowercase() }
+            .toSet()
+
+        val priorityList = mutableListOf<Country>()
+        val nonPriorityList = mutableListOf<Country>()
+
+        for (country in allCountries) {
+            val phoneCode = country.phoneNoCode.lowercase()
+            val countryCode = country.code.lowercase()
+            val countryName = country.name.lowercase()
+
+            val isPriority = when {
+                cleanedSet.any { it.length > 2 && countryName.contains(it) } -> true
+                cleanedSet.contains(countryCode) -> true
+                cleanedSet.any { phoneCode.contains(it) } -> true
+                else -> false
+            }
+
+            if (isPriority) priorityList.add(country)
+            else nonPriorityList.add(country)
+        }
+
+        return priorityList.distinct() + nonPriorityList.sortedBy { it.name }
+    }
+
+
+    /**
      * [getDefaultLangCode] Returns the default language code of the device.
      *
      * @param context The context of the activity or fragment.
