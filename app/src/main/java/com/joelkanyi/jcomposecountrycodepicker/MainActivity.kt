@@ -82,7 +82,8 @@ private fun PickerContent() {
     ) { paddingValues ->
         var phoneNumber by rememberSaveable { mutableStateOf("") }
         val state = rememberKomposeCountryCodePickerState(
-//            limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS", "Togo", "+260", "250", "+211", "Mali", "Malawi"),
+            // limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS", "Togo", "+260", "250", "+211", "Mali", "Malawi"),
+            limitedCountries = listOf( "TZ", "UG","KE", "SS", "Togo", "+260", ),
             showCountryCode = true,
             showCountryFlag = true,
             defaultCountryCode = "KE",

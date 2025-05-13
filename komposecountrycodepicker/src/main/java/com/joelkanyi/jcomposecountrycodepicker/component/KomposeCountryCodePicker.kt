@@ -137,6 +137,8 @@ public interface CountryCodePicker {
  *    the text field.
  * @param limitedCountries The list of countries to be displayed in the
  *    country code picker dialog.
+ * @param priorityCountries The list of countries to be displayed at the top
+ *    of the country code picker dialog.
  * @param showCode If true, the country code will be shown in the text
  *    field.
  * @param showFlag If true, the country flag will be shown in the text
@@ -147,6 +149,7 @@ public interface CountryCodePicker {
 internal class CountryCodePickerImpl(
     val defaultCountryCode: String,
     val limitedCountries: List<String>,
+    val priorityCountries: List<String>,
     val showCode: Boolean,
     val showFlag: Boolean,
 ) : CountryCodePicker {
@@ -190,7 +193,8 @@ internal class CountryCodePickerImpl(
         if (limitedCountries.isEmpty()) {
             PickerUtils.allCountries
         } else {
-            PickerUtils.getLimitedCountries(limitedCountries)
+            PickerUtils.getPriorityCountries(limitedCountries)
+            // PickerUtils.getLimitedCountries(limitedCountries)
         },
     )
     override val countryList: List<Country>
@@ -202,23 +206,28 @@ internal class CountryCodePickerImpl(
 
     override fun getCountryPhoneCode(): String = countryCode.getCountry().phoneNoCode
 
-    override fun getCountryPhoneCodeWithoutPrefix(): String = countryCode.getCountry().phoneNoCode.removePrefix("+")
+    override fun getCountryPhoneCodeWithoutPrefix(): String =
+        countryCode.getCountry().phoneNoCode.removePrefix("+")
 
-    override fun getPhoneNumberWithoutPrefix(): String = phoneNumber.removeSpecialCharacters().removePrefix("0")
+    override fun getPhoneNumberWithoutPrefix(): String =
+        phoneNumber.removeSpecialCharacters().removePrefix("0")
 
-    override fun getFullPhoneNumberWithoutPrefix(): String = getCountryPhoneCodeWithoutPrefix() + phoneNumber.removeSpecialCharacters()
-        .removePrefix("0")
+    override fun getFullPhoneNumberWithoutPrefix(): String =
+        getCountryPhoneCodeWithoutPrefix() + phoneNumber.removeSpecialCharacters()
+            .removePrefix("0")
 
-    override fun getFullPhoneNumber(): String = getCountryPhoneCode() + phoneNumber.removeSpecialCharacters()
-        .removePrefix("0")
+    override fun getFullPhoneNumber(): String =
+        getCountryPhoneCode() + phoneNumber.removeSpecialCharacters()
+            .removePrefix("0")
 
     override fun isPhoneNumberValid(phoneNumber: String): Boolean = PickerUtils.isValid(phoneNumber)
 
-    override fun getFullyFormattedPhoneNumber(): String = PhoneNumberTransformation(countryCode).filter(
-        buildAnnotatedString {
-            append(getFullPhoneNumber())
-        },
-    ).text.toString()
+    override fun getFullyFormattedPhoneNumber(): String =
+        PhoneNumberTransformation(countryCode).filter(
+            buildAnnotatedString {
+                append(getFullPhoneNumber())
+            },
+        ).text.toString()
 
     override fun setPhoneNo(phoneNumber: String) {
         _phoneNumber.value = phoneNumber
@@ -242,8 +251,9 @@ internal class CountryCodePickerImpl(
                 CountryCodePickerImpl(
                     defaultCountryCode = it[0] as String,
                     limitedCountries = it[1] as List<String>,
-                    showCode = it[2] as Boolean,
-                    showFlag = it[3] as Boolean,
+                    priorityCountries = it[2] as List<String>,
+                    showCode = it[3] as Boolean,
+                    showFlag = it[4] as Boolean,
                 )
             },
         )
@@ -269,6 +279,8 @@ public class KomposeCountryCodePickerDefaults(
  *    the text field.
  * @param limitedCountries The list of countries to be displayed in the
  *    country code picker dialog.
+ * @param priorityCountries The list of countries to be displayed at the
+ *    top of the country code picker dialog.
  * @param showCountryCode If true, the country code will be shown in the
  *    text field.
  * @param showCountryFlag If true, the country flag will be shown in the
@@ -287,6 +299,7 @@ public class KomposeCountryCodePickerDefaults(
 public fun rememberKomposeCountryCodePickerState(
     defaultCountryCode: String? = null,
     limitedCountries: List<String> = emptyList(),
+    priorityCountries: List<String> = emptyList(),
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
 ): CountryCodePicker {
@@ -298,6 +311,7 @@ public fun rememberKomposeCountryCodePickerState(
         CountryCodePickerImpl(
             defaultCountryCode = countryCode.lowercase(),
             limitedCountries = limitedCountries,
+            priorityCountries = priorityCountries,
             showCode = showCountryCode,
             showFlag = showCountryFlag,
         )

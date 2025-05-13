@@ -23,17 +23,18 @@ import com.joelkanyi.jcomposecountrycodepicker.R
 import com.joelkanyi.jcomposecountrycodepicker.data.Country
 
 internal object PickerUtils {
+    private val phoneNumberUtil = PhoneNumberUtil.getInstance()
+
+    private val countryCodeMap by lazy {
+        allCountries.associateBy { it.code.lowercase() }
+    }
+
     /**
      * [getCountry] Returns the country of the supplied country code. if the
      * country code is empty, the default country is the United States.
      */
     fun String.getCountry(): Country {
-        val default = allCountries.first { it.code.lowercase() == "us" }
-        return if (this.isNotEmpty()) {
-            allCountries.find { it.code.lowercase() == this.lowercase() } ?: default
-        } else {
-            default
-        }
+        return countryCodeMap[this.lowercase()] ?: countryCodeMap["us"]!!
     }
 
     /**
@@ -41,24 +42,59 @@ internal object PickerUtils {
      * @param limitedCountries The list of countries strings.
      */
     fun getLimitedCountries(limitedCountries: List<String>): List<Country> {
-        val cleanedCountries =
-            limitedCountries.map { it.removeSpecialCharacters().trim().lowercase() }
+        val cleanedSet = limitedCountries
+            .map { it.removeSpecialCharacters().trim().lowercase() }
+            .toSet()
 
-        val digits = cleanedCountries.filter { it.all { char -> char.isDigit() } }
-        val shortCodes =
-            cleanedCountries.filter { it.all { char -> char.isLetter() } && it.length <= 2 }
-        val names = cleanedCountries.filter { it.all { char -> char.isLetter() } && it.length > 2 }
+        return allCountries
+            .filter { country ->
+                val name = country.name.lowercase()
+                val code = country.code.lowercase()
+                val phone = country.phoneNoCode
 
-        return (
-            digits.flatMap { digit ->
-                allCountries.filter { it.phoneNoCode.contains(digit) }
-            } + shortCodes.flatMap { code ->
-                allCountries.filter { it.code.lowercase() == code }
-            } + names.flatMap { name ->
-                allCountries.filter { it.name.lowercase().contains(name) }
+                cleanedSet.any { input ->
+                    input.all { it.isDigit() } && phone.contains(input) ||
+                        input.length <= 2 && input.all { it.isLetter() } && input == code ||
+                        input.length > 2 && input.all { it.isLetter() } && name.contains(input)
+                }
             }
-            ).distinct().sortedBy { it.name }
+            .distinct()
+            .sortedBy { it.name }
     }
+
+    /**
+     * [getPriorityCountries] Returns all the countries but the ones in
+     * the priority list will be at the top of the list.
+     * @param priorityCountries The list of countries strings.
+     * @return A list of countries sorted by priority.
+     */
+    fun getPriorityCountries(priorityCountries: List<String>): List<Country> {
+        val cleanedSet = priorityCountries
+            .map { it.removeSpecialCharacters().trim().lowercase() }
+            .toSet()
+
+        val priorityList = mutableListOf<Country>()
+        val nonPriorityList = mutableListOf<Country>()
+
+        for (country in allCountries) {
+            val phoneCode = country.phoneNoCode.lowercase()
+            val countryCode = country.code.lowercase()
+            val countryName = country.name.lowercase()
+
+            val isPriority = when {
+                cleanedSet.any { it.length > 2 && countryName.contains(it) } -> true
+                cleanedSet.contains(countryCode) -> true
+                cleanedSet.any { phoneCode.contains(it) } -> true
+                else -> false
+            }
+
+            if (isPriority) priorityList.add(country)
+            else nonPriorityList.add(country)
+        }
+
+        return priorityList.distinct() + nonPriorityList.sortedBy { it.name }
+    }
+
 
     /**
      * [getDefaultLangCode] Returns the default language code of the device.
@@ -66,64 +102,56 @@ internal object PickerUtils {
      * @param context The context of the activity or fragment.
      */
 
-    fun getDefaultLangCode(context: Context): String = try {
-        val localeCode: TelephonyManager =
-            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val countryCode = localeCode.networkCountryIso
-        countryCode.ifEmpty {
+    fun getDefaultLangCode(context: Context): String {
+        return try {
+            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+            telephonyManager?.networkCountryIso?.takeIf { it.isNotEmpty() } ?: "us"
+        } catch (e: SecurityException) {
+            // Handle only the specific exception if needed
             "us"
         }
-    } catch (e: Exception) {
-        "us"
     }
+
 
     /**
      * [isValid] Returns true if the phone number is valid.
      *
      * @param phoneNumberStr The phone number to be checked.
      */
-    fun isValid(phoneNumberStr: String): Boolean = try {
-        val phoneNumber =
-            PhoneNumberUtil.getInstance().parse(
+    fun isValid(phoneNumberStr: String): Boolean {
+        return try {
+            val phoneNumber = phoneNumberUtil.parse(
                 phoneNumberStr.trim(),
-                PhoneNumberUtil.REGION_CODE_FOR_NON_GEO_ENTITY,
+                PhoneNumberUtil.REGION_CODE_FOR_NON_GEO_ENTITY
             )
-        PhoneNumberUtil.getInstance().isValidNumber(phoneNumber)
-    } catch (e: NumberParseException) {
-        e.printStackTrace()
-        false
+            phoneNumberUtil.isValidNumber(phoneNumber)
+        } catch (e: NumberParseException) {
+            // Log the exception or handle it in a more meaningful way
+            false
+        }
     }
 
     /**
      * [removeSpecialCharacters] Returns the string without special
      * characters.
      */
-    fun String.removeSpecialCharacters(): String = this.replace("[^a-zA-Z0-9]".toRegex(), "")
+    fun String.removeSpecialCharacters(): String {
+        return this.filter { it.isLetterOrDigit() }
+    }
 
     /**
      * [searchForAnItem] Returns a list of items that match the search string.
      *
      * @param searchStr The search string.
      */
-    fun List<Country>.searchForAnItem(
-        searchStr: String,
-    ): List<Country> {
-        val filteredItems = filter {
-            it.name.contains(
-                searchStr,
-                ignoreCase = true,
-            ) ||
-                it.phoneNoCode.contains(
-                    searchStr,
-                    ignoreCase = true,
-                ) ||
-                it.code.contains(
-                    searchStr,
-                    ignoreCase = true,
-                )
+    fun List<Country>.searchForAnItem(searchStr: String): List<Country> {
+        val searchTerm = searchStr.lowercase()  // Pre-process the search string once for efficiency
+
+        return filter { country ->
+            country.name.contains(searchTerm, ignoreCase = true) ||
+                country.phoneNoCode.contains(searchTerm, ignoreCase = true) ||
+                country.code.contains(searchTerm, ignoreCase = true)
         }
-        println(filteredItems)
-        return filteredItems.toList()
     }
 
     /**
@@ -150,10 +178,15 @@ internal object PickerUtils {
      * @param phoneCode The phone code.
      * @param phoneNo The phone number.
      */
-    private fun stripPhoneCode(
-        phoneCode: String,
-        phoneNo: String,
-    ): String = phoneNo.replaceFirst(phoneCode, "")
+    private fun stripPhoneCode(phoneCode: String, phoneNo: String): String {
+        // Ensure the phone code comparison is case-insensitive and only remove it if it's at the start
+        return if (phoneNo.startsWith(phoneCode, ignoreCase = true)) {
+            phoneNo.removePrefix(phoneCode)
+        } else {
+            phoneNo
+        }
+    }
+
 
     /**
      * [getFlags] Returns the flag of the country. [countryName] The name of

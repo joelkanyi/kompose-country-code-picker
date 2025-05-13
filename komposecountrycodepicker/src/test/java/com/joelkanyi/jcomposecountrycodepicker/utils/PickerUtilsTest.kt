@@ -20,6 +20,7 @@ import com.joelkanyi.jcomposecountrycodepicker.data.Country
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountry
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.removeSpecialCharacters
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
+import kotlin.collections.flatten
 import org.junit.Test
 
 class PickerUtilsTest {
@@ -130,5 +131,24 @@ class PickerUtilsTest {
 
         // Then
         assertThat(result).hasSize(5)
+    }
+
+    @Test
+    fun testReturnsPriorityCountries() {
+        // Given
+        val priorityCountriesString = listOf(
+            "tz",
+            "ke",
+            "ug",
+        )
+
+        // When
+        val result = PickerUtils.getPriorityCountries(priorityCountriesString)
+
+        // Then
+        val actualTopThree = result.take(3)
+        val expectedTopThreeNames = listOf("Kenya", "Uganda", "Tanzania, United Republic Of")
+
+        assertThat(actualTopThree.map { it.name }).containsExactlyElementsIn(expectedTopThreeNames)
     }
 }
