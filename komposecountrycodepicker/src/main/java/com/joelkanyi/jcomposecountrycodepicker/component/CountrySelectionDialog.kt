@@ -52,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -92,6 +93,8 @@ public fun CountrySelectionDialog(
         )
     },
 ) {
+    val context = LocalContext.current
+
     var searchValue by remember { mutableStateOf("") }
     var isSearch by remember { mutableStateOf(false) }
     var filteredItems by remember { mutableStateOf(countryList) }
@@ -125,7 +128,7 @@ public fun CountrySelectionDialog(
                                     value = searchValue,
                                     onValueChange = { searchStr ->
                                         searchValue = searchStr
-                                        filteredItems = countryList.searchForAnItem(searchStr)
+                                        filteredItems = countryList.searchForAnItem(searchStr, context)
                                     },
                                     placeholder = {
                                         Text(
