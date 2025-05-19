@@ -107,12 +107,17 @@ internal object PickerUtils {
      */
     fun List<Country>.searchForAnItem(
         searchStr: String,
+        context: Context? = null,
     ): List<Country> {
         val filteredItems = filter {
-            it.name.contains(
+            context?.getString(getCountryName(it.code))?.unaccent()?.contains(
                 searchStr,
                 ignoreCase = true,
-            ) ||
+            ) ?: false ||
+                it.name.unaccent().contains(
+                    searchStr,
+                    ignoreCase = true,
+                ) ||
                 it.phoneNoCode.contains(
                     searchStr,
                     ignoreCase = true,
