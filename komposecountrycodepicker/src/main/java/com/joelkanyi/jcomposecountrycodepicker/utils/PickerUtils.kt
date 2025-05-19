@@ -113,8 +113,7 @@ internal object PickerUtils {
             context?.getString(getCountryName(it.code))?.unaccent()?.contains(
                 searchStr,
                 ignoreCase = true,
-            ) ?: false
-                ||
+            ) ?: false ||
                 it.name.unaccent().contains(
                     searchStr,
                     ignoreCase = true,
