@@ -68,6 +68,10 @@ import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
  * @param countryList The list of countries to be displayed in the dialog.
  * @param containerColor The color of the dialog container.
  * @param contentColor The color of the dialog content.
+ * @param centerAlignedTopBarSearchTextFieldPlaceholderComposable A composable
+ *    that defines the placeholder for the search text field in the top bar.
+ * @param centerAlignedTopBarTitleComposable A composable that defines the
+ *    title displayed in the top bar when not in search mode.
  * @param onDismissRequest Called when the dialog is dismissed.
  * @param onSelect Called when a country is selected.
  * @param modifier Modifier to be applied to the layout.
