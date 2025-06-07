@@ -20,7 +20,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -57,7 +56,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import com.joelkanyi.jcomposecountrycodepicker.R
 import com.joelkanyi.jcomposecountrycodepicker.data.Country
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountryName
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getFlags
@@ -70,6 +68,10 @@ import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
  * @param countryList The list of countries to be displayed in the dialog.
  * @param containerColor The color of the dialog container.
  * @param contentColor The color of the dialog content.
+ * @param centerAlignedTopBarSearchTextFieldPlaceholderComposable A composable
+ *    that defines the placeholder for the search text field in the top bar.
+ * @param centerAlignedTopBarTitleComposable A composable that defines the
+ *    title displayed in the top bar when not in search mode.
  * @param onDismissRequest Called when the dialog is dismissed.
  * @param onSelect Called when a country is selected.
  * @param modifier Modifier to be applied to the layout.
@@ -81,6 +83,8 @@ public fun CountrySelectionDialog(
     countryList: List<Country>,
     containerColor: Color,
     contentColor: Color,
+    centerAlignedTopBarSearchTextFieldPlaceholderComposable: @Composable () -> Unit,
+    centerAlignedTopBarTitleComposable: @Composable () -> Unit,
     onDismissRequest: () -> Unit,
     onSelect: (item: Country) -> Unit,
     modifier: Modifier = Modifier,
@@ -130,12 +134,7 @@ public fun CountrySelectionDialog(
                                         searchValue = searchStr
                                         filteredItems = countryList.searchForAnItem(searchStr, context)
                                     },
-                                    placeholder = {
-                                        Text(
-                                            text = stringResource(R.string.search_country),
-                                            color = contentColor.copy(alpha = 0.5f),
-                                        )
-                                    },
+                                    placeholder = centerAlignedTopBarSearchTextFieldPlaceholderComposable,
                                     colors = TextFieldDefaults.colors(
                                         disabledContainerColor = Color.Transparent,
                                         focusedContainerColor = Color.Transparent,
@@ -154,14 +153,7 @@ public fun CountrySelectionDialog(
                                     ),
                                 )
                             } else {
-                                Text(
-                                    modifier = Modifier
-                                        .offset(y = (-2).dp)
-                                        .qaAutomationTestTag("countryDialogTitle"),
-                                    text = stringResource(id = R.string.select_country),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = contentColor,
-                                )
+                                centerAlignedTopBarTitleComposable()
                             }
                         },
                         navigationIcon = {
