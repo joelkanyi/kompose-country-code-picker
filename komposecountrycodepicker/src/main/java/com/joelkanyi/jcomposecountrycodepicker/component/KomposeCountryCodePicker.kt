@@ -23,6 +23,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
@@ -63,6 +64,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.joelkanyi.jcomposecountrycodepicker.R
 import com.joelkanyi.jcomposecountrycodepicker.annotation.RestrictedApi
 import com.joelkanyi.jcomposecountrycodepicker.data.Country
 import com.joelkanyi.jcomposecountrycodepicker.data.FlagSize
@@ -322,6 +324,10 @@ public fun rememberKomposeCountryCodePickerState(
  * @param trailingIcon The trailing icon to be displayed in the text field.
  * @param countrySelectionDialogContainerColor The color to be used to
  *    display the country selection dialog container.
+ * @param centerAlignedTopBarTextFieldPlaceholderComposable A composable
+ *    for the placeholder in the dialog's search text field.
+ * @param centerAlignedTopBarTitleComposable A composable for the title
+ *    in the country selection dialog.
  * @param countrySelectionDialogContentColor The color to be used to
  *    display the country selection dialog content. text.
  * @param interactionSource The MutableInteractionSource representing the
@@ -353,6 +359,22 @@ public fun KomposeCountryCodePicker(
     trailingIcon: @Composable (() -> Unit)? = null,
     countrySelectionDialogContainerColor: Color = MaterialTheme.colorScheme.background,
     countrySelectionDialogContentColor: Color = MaterialTheme.colorScheme.onBackground,
+    centerAlignedTopBarTextFieldPlaceholderComposable: @Composable () -> Unit = {
+        Text(
+            text = stringResource(R.string.search_country),
+            color = countrySelectionDialogContentColor.copy(alpha = 0.5f),
+        )
+    },
+    centerAlignedTopBarTitleComposable: @Composable () -> Unit = {
+        Text(
+            modifier = Modifier
+                .offset(y = (-2).dp)
+                .qaAutomationTestTag("countryDialogTitle"),
+            text = stringResource(id = R.string.select_country),
+            style = MaterialTheme.typography.titleMedium,
+            color = countrySelectionDialogContentColor,
+        )
+    },
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     selectedCountryFlagSize: FlagSize = FlagSize(28.dp, 18.dp),
     textStyle: TextStyle = LocalTextStyle.current,
@@ -389,6 +411,8 @@ public fun KomposeCountryCodePicker(
             },
             containerColor = countrySelectionDialogContainerColor,
             contentColor = countrySelectionDialogContentColor,
+            centerAlignedTopBarSearchTextFieldPlaceholderComposable = centerAlignedTopBarTextFieldPlaceholderComposable,
+            centerAlignedTopBarTitleComposable = centerAlignedTopBarTitleComposable,
         )
     }
 
