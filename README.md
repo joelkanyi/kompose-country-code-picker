@@ -56,6 +56,7 @@ This project includes translations for the following languages:
 - **Turkish (tr-TR)**:
 - **Indonesia (in-rID)**:
 - **Vietnamese (vi)**:
+- **Japanese (ja)**:
 
 If your language is not included in the translations, or if you notice any errors in the current translations, please [open an issue](https://github.com/joelkanyi/kompose-country-code-picker/issues) on GitHub. Your contribution will be highly appreciated!
 
