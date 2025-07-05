@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
@@ -29,18 +28,20 @@ subprojects {
         }
         format("kts") {
             target("**/*.kts")
-            targetExclude("$buildDir/**/*.kts")
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"), "(^(?![\\/ ]\\*).*$)")
         }
         format("misc") {
             target("**/*.md", "**/.gitignore")
             trimTrailingWhitespace()
-            indentWithTabs()
+            leadingTabsToSpaces()
             endWithNewline()
         }
     }
 }
 
-tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask>().configureEach {
-    outputDirectory.set(file("$rootDir/docs/kdoc"))
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(layout.buildDirectory.dir("$rootDir/docs/kdoc"))
+    }
 }
+
