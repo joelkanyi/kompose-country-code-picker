@@ -39,9 +39,7 @@ subprojects {
     }
 }
 
-dokka {
-    dokkaPublications.html {
-        outputDirectory.set(layout.buildDirectory.dir("$rootDir/docs/kdoc"))
-    }
+tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask>().configureEach {
+    outputDirectory.set(file("$rootDir/docs/kdoc"))
 }
 
