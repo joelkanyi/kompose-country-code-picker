@@ -7,6 +7,7 @@ The `state` parameter is used to set and access different variables and methods 
 ```kotlin
 val state = rememberKomposeCountryCodePickerState(
     limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS", "Togo", "+260", "250", "+211", "Mali", "Malawi"),
+    priorityCountries = listOf("KE", "UG", "TZ"),
     showCountryCode = true,
     showCountryFlag = true,
     defaultCountryCode = "TZ",
@@ -15,12 +16,13 @@ val state = rememberKomposeCountryCodePickerState(
 ```
 
 ## KomposeCountryCodePickerState Customizations
-| Customization          | Description                                                                                               |
-|------------------------|-----------------------------------------------------------------------------------------------------------|
-| **showCountryCode**    | If `true`, the country code will be displayed in the country code picker `TextField`.                     |
-| **showCountryFlag**    | If `true`, the country flag will be displayed in the country code picker `TextField`.                     |
-| **defaultCountryCode** | Sets the default country code to be displayed in the country code picker.                                 |
-| **limitedCountries**   | Limits the list of countries to be displayed in the country code picker by specifying country codes, country names, or country phone codes, e.g., `listOf("KE", "UG", "TZ")`, `listOf("Kenya", "Uganda", "Tanzania")` or `listOf("+254", "+256", "+255")`. |
+| Customization          | Description                                                                                                                                                                                                                                                                                      |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **showCountryCode**    | If `true`, the country code will be displayed in the country code picker `TextField`.                                                                                                                                                                                                            |
+| **showCountryFlag**    | If `true`, the country flag will be displayed in the country code picker `TextField`.                                                                                                                                                                                                            |
+| **defaultCountryCode** | Sets the default country code to be displayed in the country code picker.                                                                                                                                                                                                                        |
+| **limitedCountries**   | Limits the list of countries to be displayed in the country code picker by specifying country codes, country names, or country phone codes, e.g., `listOf("KE", "UG", "TZ")`, `listOf("Kenya", "Uganda", "Tanzania")` or `listOf("+254", "+256", "+255")`.                                       |
+| **priorityCountries**   | Specifies the priority countries to be displayed at the top of the list in the country code picker. This can be ONLY a list of country codes e.g., `listOf("KE", "UG", "TZ")`. |
 
 ## Available methods/variables accessible from the state
 

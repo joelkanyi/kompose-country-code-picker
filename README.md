@@ -20,6 +20,7 @@ dependencies {
 var phoneNumber by rememberSaveable { mutableStateOf("") }
 val state = rememberKomposeCountryCodePickerState(
     // limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS"),
+    // priorityCountries = listOf("KE", "UG", "TZ"),
     // showCountryCode = true,
     // showCountryFlag = true,
     // defaultCountryCode = "KE",
