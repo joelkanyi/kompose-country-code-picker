@@ -61,6 +61,32 @@ internal object PickerUtils {
     }
 
     /**
+     * [sortCountriesWithPriority] Sorts the countries list with the priority
+     * countries at the top.
+     *
+     * @param countries The list of countries to be sorted.
+     * @param priorityCountries The list of country codes that should be prioritized.
+     * @return A sorted list of countries with the priority countries at the top.
+     *
+     * Please dont alter the order of the priority countries.
+     */
+    fun sortCountriesWithPriority(
+        countries: List<Country>,
+        priorityCountries: List<String>,
+    ): List<Country> {
+        val priorityCodesLower = priorityCountries.map { it.lowercase() }
+
+        val priorityMap = priorityCodesLower.withIndex().associate { it.value to it.index }
+
+        val (priority, nonPriority) = countries.partition { it.code.lowercase() in priorityMap }
+
+        val sortedPriority = priority.sortedBy { priorityMap[it.code.lowercase()] }
+        val sortedNonPriority = nonPriority.sortedBy { it.name.lowercase() }
+
+        return sortedPriority + sortedNonPriority
+    }
+
+    /**
      * [getDefaultLangCode] Returns the default language code of the device.
      *
      * @param context The context of the activity or fragment.
@@ -73,7 +99,7 @@ internal object PickerUtils {
         countryCode.ifEmpty {
             "us"
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         "us"
     }
 

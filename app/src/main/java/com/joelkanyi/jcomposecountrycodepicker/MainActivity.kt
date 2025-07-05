@@ -85,9 +85,10 @@ private fun PickerContent() {
         var phoneNumber by rememberSaveable { mutableStateOf("") }
         val state = rememberKomposeCountryCodePickerState(
 //            limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS", "Togo", "+260", "250", "+211", "Mali", "Malawi"),
-            showCountryCode = true,
-            showCountryFlag = true,
-            defaultCountryCode = "KE",
+//            priorityCountries = listOf("SA", "KW", "BH", "QA"),
+//            showCountryCode = true,
+//            showCountryFlag = true,
+//            defaultCountryCode = "KE",
         )
 
         LazyColumn(

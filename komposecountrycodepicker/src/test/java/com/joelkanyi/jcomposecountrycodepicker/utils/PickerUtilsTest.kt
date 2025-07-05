@@ -131,4 +131,19 @@ class PickerUtilsTest {
         // Then
         assertThat(result).hasSize(5)
     }
+
+    @Test
+    fun testSortCountriesWithPriorityCountries() {
+        // Given
+        val priorityCountries = listOf("ug", "ke", "tz")
+        val countries = PickerUtils.allCountries
+
+        // When
+        val sortedCountries = PickerUtils.sortCountriesWithPriority(countries, priorityCountries)
+
+        // Then
+        assertThat(sortedCountries.map { it.phoneNoCode }.take(3)).isEqualTo(
+            listOf("+256", "+254", "+255"),
+        )
+    }
 }

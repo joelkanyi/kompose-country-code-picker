@@ -137,6 +137,8 @@ public interface CountryCodePicker {
  *    the text field.
  * @param limitedCountries The list of countries to be displayed in the
  *    country code picker dialog.
+ * @param priorityCountries The list of countries to be prioritized
+ *   in the country code picker dialog.
  * @param showCode If true, the country code will be shown in the text
  *    field.
  * @param showFlag If true, the country flag will be shown in the text
@@ -147,6 +149,7 @@ public interface CountryCodePicker {
 internal class CountryCodePickerImpl(
     val defaultCountryCode: String,
     val limitedCountries: List<String>,
+    val priorityCountries: List<String>,
     val showCode: Boolean,
     val showFlag: Boolean,
 ) : CountryCodePicker {
@@ -191,6 +194,15 @@ internal class CountryCodePickerImpl(
             PickerUtils.allCountries
         } else {
             PickerUtils.getLimitedCountries(limitedCountries)
+        }.let {
+            if (priorityCountries.isNotEmpty()) {
+                PickerUtils.sortCountriesWithPriority(
+                    countries = it,
+                    priorityCountries = priorityCountries,
+                )
+            } else {
+                it
+            }
         },
     )
     override val countryList: List<Country>
@@ -234,6 +246,7 @@ internal class CountryCodePickerImpl(
                 listOf(
                     it.countryCode,
                     it.limitedCountries,
+                    it.priorityCountries,
                     it.showCode,
                     it.showFlag,
                 )
@@ -242,6 +255,7 @@ internal class CountryCodePickerImpl(
                 CountryCodePickerImpl(
                     defaultCountryCode = it[0] as String,
                     limitedCountries = it[1] as List<String>,
+                    priorityCountries = it[1] as List<String>,
                     showCode = it[2] as Boolean,
                     showFlag = it[3] as Boolean,
                 )
@@ -287,6 +301,7 @@ public class KomposeCountryCodePickerDefaults(
 public fun rememberKomposeCountryCodePickerState(
     defaultCountryCode: String? = null,
     limitedCountries: List<String> = emptyList(),
+    priorityCountries: List<String> = emptyList(),
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
 ): CountryCodePicker {
@@ -298,6 +313,7 @@ public fun rememberKomposeCountryCodePickerState(
         CountryCodePickerImpl(
             defaultCountryCode = countryCode.lowercase(),
             limitedCountries = limitedCountries,
+            priorityCountries = priorityCountries,
             showCode = showCountryCode,
             showFlag = showCountryFlag,
         )
