@@ -119,8 +119,7 @@ private fun PickerContent() {
                         focusedContainerColor = Color.Transparent,
                     ),
                     state = state,
-                    countrySelectionDialogContainerColor = MaterialTheme.colorScheme.background,
-                    countrySelectionDialogContentColor = MaterialTheme.colorScheme.onBackground,
+
                     interactionSource = remember { MutableInteractionSource() }.also { interactionSource ->
                         LaunchedEffect(interactionSource) {
                             interactionSource.interactions.collect {
@@ -136,6 +135,30 @@ private fun PickerContent() {
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Next,
                     ),
+//                    countrySelectionDialogContainerColor = MaterialTheme.colorScheme.background,
+//                    countrySelectionDialogContentColor = MaterialTheme.colorScheme.onBackground,
+//                    countrySelectionDialogTitle = {
+//                        Text(
+//                            text = "Select Joel",
+//                            style = MaterialTheme.typography.titleMedium.copy(
+//                                fontWeight = FontWeight.Bold,
+//                            ),
+//                        )
+//                    },
+//                    countrySelectionDialogSearchIcon = {
+//                        Icon(
+//                            imageVector = Icons.Default.Send,
+//                            contentDescription = "Search",
+//                            tint = MaterialTheme.colorScheme.onBackground,
+//                        )
+//                    },
+//                    countrySelectionDialogBackIcon = {
+//                        Icon(
+//                            imageVector = Icons.Default.Close,
+//                            contentDescription = "Back",
+//                            tint = MaterialTheme.colorScheme.onBackground,
+//                        )
+//                    },
                 )
             }
 

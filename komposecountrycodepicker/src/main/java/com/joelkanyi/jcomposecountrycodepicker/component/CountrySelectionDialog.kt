@@ -74,6 +74,9 @@ import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
  * @param onSelect Called when a country is selected.
  * @param modifier Modifier to be applied to the layout.
  * @param properties The properties of the dialog.
+ * @param title A composable function to display the title of the dialog.
+ * @param backIcon A composable function to display the back icon in the top app bar.
+ * @param searchIcon A composable function to display the search icon in the top app bar.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,6 +93,30 @@ public fun CountrySelectionDialog(
             dismissOnClickOutside = it.dismissOnClickOutside,
             securePolicy = it.securePolicy,
             usePlatformDefaultWidth = false,
+        )
+    },
+    title: @Composable () -> Unit = {
+        Text(
+            modifier = Modifier
+                .offset(y = (-2).dp)
+                .qaAutomationTestTag("countryDialogTitle"),
+            text = stringResource(id = R.string.select_country),
+            style = MaterialTheme.typography.titleMedium,
+            color = contentColor,
+        )
+    },
+    backIcon: @Composable () -> Unit = {
+        Icon(
+            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+            contentDescription = null,
+            tint = contentColor,
+        )
+    },
+    searchIcon: @Composable () -> Unit = {
+        Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = null,
+            tint = contentColor,
         )
     },
 ) {
@@ -128,7 +155,8 @@ public fun CountrySelectionDialog(
                                     value = searchValue,
                                     onValueChange = { searchStr ->
                                         searchValue = searchStr
-                                        filteredItems = countryList.searchForAnItem(searchStr, context)
+                                        filteredItems =
+                                            countryList.searchForAnItem(searchStr, context)
                                     },
                                     placeholder = {
                                         Text(
@@ -154,14 +182,7 @@ public fun CountrySelectionDialog(
                                     ),
                                 )
                             } else {
-                                Text(
-                                    modifier = Modifier
-                                        .offset(y = (-2).dp)
-                                        .qaAutomationTestTag("countryDialogTitle"),
-                                    text = stringResource(id = R.string.select_country),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = contentColor,
-                                )
+                                title()
                             }
                         },
                         navigationIcon = {
@@ -172,11 +193,7 @@ public fun CountrySelectionDialog(
                                     onDismissRequest()
                                 },
                             ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                    contentDescription = null,
-                                    tint = contentColor,
-                                )
+                                backIcon()
                             }
                         },
                         actions = {
@@ -187,11 +204,7 @@ public fun CountrySelectionDialog(
                                     isSearch = !isSearch
                                 },
                             ) {
-                                Icon(
-                                    imageVector = Icons.Default.Search,
-                                    contentDescription = null,
-                                    tint = contentColor,
-                                )
+                                searchIcon()
                             }
                         },
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

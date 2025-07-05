@@ -68,6 +68,9 @@ Use the state you defined (`val state = rememberKomposeCountryCodePickerState()`
 | **state**                                | The state of the country code picker.                                                      |
 | **countrySelectionDialogContainerColor** | The color of the country selection dialog container.                                       |
 | **countrySelectionDialogContentColor**   | The color of the country selection dialog content.                                         |
+| **countrySelectionDialogTitle**   | The title of the country selection dialog.                                         |
+| **countrySelectionDialogSearchIcon**   | The icon to be used for the search field in the country selection dialog. |
+| **countrySelectionDialogBackIcon**   | The icon to be used for the back button in the country selection dialog. |
 | **textStyle**                            | The style to be used for displaying text on the `TextField` and the selected country.       |
 | **interactionSource**                    | The `MutableInteractionSource` representing the stream of Interactions for this text field. |
 | **selectedCountryFlagSize**              | The size of the selected country flag (width and height in `.dp`).                         |

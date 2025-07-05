@@ -23,12 +23,15 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -63,6 +66,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.joelkanyi.jcomposecountrycodepicker.R
 import com.joelkanyi.jcomposecountrycodepicker.annotation.RestrictedApi
 import com.joelkanyi.jcomposecountrycodepicker.data.Country
 import com.joelkanyi.jcomposecountrycodepicker.data.FlagSize
@@ -405,6 +409,189 @@ public fun KomposeCountryCodePicker(
             },
             containerColor = countrySelectionDialogContainerColor,
             contentColor = countrySelectionDialogContentColor,
+        )
+    }
+
+    /**
+     * if [showOnlyCountryCodePicker] is true, only the country code picker
+     * will be displayed.
+     */
+    if (showOnlyCountryCodePicker) {
+        SelectedCountryComponent(
+            modifier = modifier,
+            selectedCountry = state.countryCode.getCountry(),
+            showCountryCode = state.showCountryCode,
+            showFlag = state.showCountryFlag,
+            onClickSelectedCountry = {
+                if (enabled) {
+                    openCountrySelectionDialog = true
+                }
+            },
+            selectedCountryFlagSize = selectedCountryFlagSize,
+            textStyle = textStyle,
+        )
+    } else {
+        OutlinedTextField(
+            modifier = modifier
+                .qaAutomationTestTag("countryCodePickerTextField"),
+            shape = shape,
+            value = phoneNo,
+            onValueChange = {
+                if (text != it && showOnlyCountryCodePicker.not()) {
+                    onValueChange(it)
+                }
+            },
+            placeholder = {
+                placeholder(state.countryCode)
+            },
+            singleLine = true,
+            colors = colors,
+            isError = error,
+            visualTransformation = PhoneNumberTransformation(
+                state.countryCode.uppercase(),
+            ),
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            leadingIcon = {
+                SelectedCountryComponent(
+                    selectedCountry = state.countryCode.getCountry(),
+                    showCountryCode = state.showCountryCode,
+                    showFlag = state.showCountryFlag,
+                    onClickSelectedCountry = {
+                        if (enabled) {
+                            openCountrySelectionDialog = true
+                        }
+                    },
+                    selectedCountryFlagSize = selectedCountryFlagSize,
+                    textStyle = textStyle,
+                )
+            },
+            trailingIcon = trailingIcon,
+            interactionSource = interactionSource,
+            textStyle = textStyle,
+            enabled = enabled,
+        )
+    }
+}
+
+/**
+ * [KomposeCountryCodePicker] is a composable that displays a text field
+ * with a country code picker dialog.
+ *
+ * @param state The state of the country code picker.
+ * @param text The text to be displayed in the text field.
+ * @param modifier Modifier to be applied to the layout.
+ * @param onValueChange Called when the value is changed.
+ * @param error If true, the text field will be displayed in the error
+ *    state.
+ * @param showOnlyCountryCodePicker If true, only the country code picker
+ *    will be displayed.
+ * @param shape The shape of the text field's outline.
+ * @param placeholder The placeholder to be displayed in the text field.
+ * @param colors The colors to be used to display the text field.
+ * @param trailingIcon The trailing icon to be displayed in the text field.
+ * @param countrySelectionDialogContainerColor The color to be used to
+ *    display the country selection dialog container.
+ * @param countrySelectionDialogContentColor The color to be used to
+ *    display the country selection dialog content. text.
+ *  @param countrySelectionDialogTitle The title to be displayed in the
+ *    country selection dialog.
+ *  @param countrySelectionDialogBackIcon The back icon to be displayed in
+ *  country selection dialog.
+ *  @param countrySelectionDialogSearchIcon The search icon to be displayed
+ *  in country selection dialog.
+ * @param interactionSource The MutableInteractionSource representing the
+ *    stream of Interactions for this text field.
+ * @param selectedCountryFlagSize The size of the selected country flag
+ *    (width and height in `.dp`).
+ * @param textStyle The style to be used for displaying text on the
+ *    `TextField` and the selected country.
+ * @param enabled Controls the enabled state of the text field.
+ * @param keyboardOptions The keyboard options to be used to display the
+ *   keyboard.
+ * @param keyboardActions The keyboard actions to be used to display
+ *   the keyboard.
+ */
+@OptIn(RestrictedApi::class)
+@Composable
+public fun KomposeCountryCodePicker(
+    state: CountryCodePicker,
+    text: String,
+    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit = {},
+    error: Boolean = false,
+    showOnlyCountryCodePicker: Boolean = false,
+    shape: Shape = MaterialTheme.shapes.medium,
+    placeholder: @Composable ((defaultLang: String) -> Unit) = { defaultLang ->
+        DefaultPlaceholder(defaultLang)
+    },
+    colors: TextFieldColors = TextFieldDefaults.colors(),
+    trailingIcon: @Composable (() -> Unit)? = null,
+    countrySelectionDialogContainerColor: Color = MaterialTheme.colorScheme.background,
+    countrySelectionDialogContentColor: Color = MaterialTheme.colorScheme.onBackground,
+    countrySelectionDialogTitle: @Composable () -> Unit = {
+        Text(
+            modifier = Modifier
+                .offset(y = (-2).dp)
+                .qaAutomationTestTag("countryDialogTitle"),
+            text = stringResource(id = R.string.select_country),
+            style = MaterialTheme.typography.titleMedium,
+            color = countrySelectionDialogContentColor,
+        )
+    },
+    countrySelectionDialogBackIcon: @Composable () -> Unit = {
+        Icon(
+            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+            contentDescription = null,
+            tint = countrySelectionDialogContentColor,
+        )
+    },
+    countrySelectionDialogSearchIcon: @Composable () -> Unit = {
+        Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = null,
+            tint = countrySelectionDialogContentColor,
+        )
+    },
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    selectedCountryFlagSize: FlagSize = FlagSize(28.dp, 18.dp),
+    textStyle: TextStyle = LocalTextStyle.current,
+    enabled: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
+        keyboardType = KeyboardType.Phone,
+        imeAction = ImeAction.Next,
+    ),
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+) {
+    var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
+
+    val phoneTextPair = extractCountryCodeAndPhoneNumber(text)
+    val countryCode = phoneTextPair.first
+    val phoneNo = phoneTextPair.second
+
+    LaunchedEffect(countryCode) {
+        countryCode?.let { state.setCode(it) }
+    }
+
+    LaunchedEffect(phoneNo) {
+        state.setPhoneNo(phoneNo)
+    }
+
+    if (openCountrySelectionDialog) {
+        CountrySelectionDialog(
+            countryList = state.countryList,
+            onDismissRequest = {
+                openCountrySelectionDialog = false
+            },
+            onSelect = { countryItem ->
+                state.setCode(countryItem.code)
+                openCountrySelectionDialog = false
+            },
+            containerColor = countrySelectionDialogContainerColor,
+            contentColor = countrySelectionDialogContentColor,
+            title = countrySelectionDialogTitle,
+            backIcon = countrySelectionDialogBackIcon,
+            searchIcon = countrySelectionDialogSearchIcon,
         )
     }
 
