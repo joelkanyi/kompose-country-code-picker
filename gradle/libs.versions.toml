@@ -9,7 +9,7 @@ spotless = "7.0.4"
 kotlin-compatibility = "0.18.0"
 dokka = "2.0.0"
 gradleMavenPublish = "0.33.0"
-nmcp = "0.1.5"
+nmcp = "1.0.1"
 compose = "1.8.3"
 junitVersion = "4.13.2"
 androidxJunit = "1.2.1"
@@ -40,5 +40,5 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlin-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlin-compatibility" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 gradleMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "gradleMavenPublish" }
-nmcp = { id = "com.gradleup.nmcp", version.ref = "nmcp" }
+nmcp-aggregation = { id = "com.gradleup.nmcp.aggregation", version.ref = "nmcp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

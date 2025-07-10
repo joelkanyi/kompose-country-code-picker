@@ -57,7 +57,7 @@ jobs:
       - uses: gradle/gradle-build-action@v3
 
       - name: Deploy to Maven Central
-        run: ./gradlew publishAllPublicationsToCentralPortal --no-configuration-cache --stacktrace
+        run: ./gradlew publishAggregationToCentralPortal --no-configuration-cache --stacktrace
         env:
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
