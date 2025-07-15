@@ -259,9 +259,9 @@ internal class CountryCodePickerImpl(
                 CountryCodePickerImpl(
                     defaultCountryCode = it[0] as String,
                     limitedCountries = it[1] as List<String>,
-                    priorityCountries = it[1] as List<String>,
-                    showCode = it[2] as Boolean,
-                    showFlag = it[3] as Boolean,
+                    priorityCountries = it[2] as List<String>,
+                    showCode = it[3] as Boolean,
+                    showFlag = it[4] as Boolean,
                 )
             },
         )
