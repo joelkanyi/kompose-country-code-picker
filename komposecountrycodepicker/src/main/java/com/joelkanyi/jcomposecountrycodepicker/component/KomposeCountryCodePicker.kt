@@ -257,7 +257,7 @@ internal class CountryCodePickerImpl(
             },
             restore = {
                 CountryCodePickerImpl(
-                     defaultCountryCode = it[0] as String,
+                    defaultCountryCode = it[0] as String,
                     limitedCountries = it[1] as List<String>,
                     priorityCountries = it[2] as List<String>,
                     showCode = it[3] as Boolean,
