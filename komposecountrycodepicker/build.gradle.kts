@@ -13,44 +13,83 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
+    alias(libs.plugins.multiplatform)
+    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compatibility)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.nmcp.aggregation)
     alias(libs.plugins.gradleMavenPublish)
     alias(libs.plugins.compose.compiler)
 }
 
-android {
-    namespace = "com.joelkanyi.jcomposecountrycodepicker"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+kotlin {
+    applyDefaultHierarchyTemplate()
 
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
+    explicitApi() // https://kotlinlang.org/docs/whatsnew14.html#explicit-api-mode-for-library-authors
+
+    // for strict mode
+    explicitApi = ExplicitApiMode.Strict
+
+    // for warning mode
+    explicitApi = ExplicitApiMode.Warning
+
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
+        }
+        publishLibraryVariants("release")
+
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+
+        dependencies {
+            androidTestImplementation(libs.androidx.ui.test.junit4.android)
+            debugImplementation(libs.androidx.ui.test.manifest)
+        }
     }
 
-    buildFeatures {
-        compose = true
+    jvm()
+
+    js {
+        browser()
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
-    kotlin {
-        // for strict mode
-        explicitApi = ExplicitApiMode.Strict
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.ui)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+        }
 
-        // for warning mode
-        explicitApi = ExplicitApiMode.Warning
+        // Adds common test dependencies
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+        }
+
+        // Adds the desktop test dependency
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
+        }
     }
 }
 
@@ -60,6 +99,30 @@ dependencies {
     implementation(libs.core.ktx)
     testImplementation(libs.junit)
     testImplementation(libs.truth)
+}
+
+android {
+    namespace = "com.joelkanyi.jcomposecountrycodepicker"
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        compose = true
+    }
+
+    kotlin {
+        compilerOptions {
+//            jvmTarget = JvmTarget.JVM_1_8
+        }
+    }
 }
 
 group = "io.github.joelkanyi"

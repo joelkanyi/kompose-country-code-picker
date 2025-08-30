@@ -49,8 +49,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
-import com.joelkanyi.jcomposecountrycodepicker.component.rememberKomposeCountryCodePickerState
+//import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
+//import com.joelkanyi.jcomposecountrycodepicker.component.rememberKomposeCountryCodePickerState
 import com.joelkanyi.jcomposecountrycodepicker.ui.theme.ComposePickerTheme
 
 class MainActivity : ComponentActivity() {
@@ -83,13 +83,13 @@ private fun PickerContent() {
         },
     ) { paddingValues ->
         var phoneNumber by rememberSaveable { mutableStateOf("") }
-        val state = rememberKomposeCountryCodePickerState(
+//        val state = rememberKomposeCountryCodePickerState(
 //            limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS", "Togo", "+260", "250", "+211", "Mali", "Malawi"),
 //            priorityCountries = listOf("SA", "KW", "BH", "QA"),
 //            showCountryCode = true,
 //            showCountryFlag = true,
 //            defaultCountryCode = "KE",
-        )
+//        )
 
         LazyColumn(
             modifier = Modifier
@@ -99,68 +99,68 @@ private fun PickerContent() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = paddingValues,
         ) {
-            item {
-                KomposeCountryCodePicker(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    text = phoneNumber,
-                    onValueChange = { phoneNumber = it },
-                    placeholder = {
-                        Text(
-                            text = "Phone Number",
-                            style = MaterialTheme.typography.labelMedium.copy(
-                                fontWeight = FontWeight.ExtraLight,
-                            ),
-                        )
-                    },
-                    shape = MaterialTheme.shapes.medium,
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedContainerColor = Color.Transparent,
-                    ),
-                    state = state,
-
-                    interactionSource = remember { MutableInteractionSource() }.also { interactionSource ->
-                        LaunchedEffect(interactionSource) {
-                            interactionSource.interactions.collect {
-                                if (it is PressInteraction.Release) {
-                                    Log.e(
-                                        "CountryCodePicker",
-                                        "clicked",
-                                    )
-                                }
-                            }
-                        }
-                    },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Next,
-                    ),
-//                    countrySelectionDialogContainerColor = MaterialTheme.colorScheme.background,
-//                    countrySelectionDialogContentColor = MaterialTheme.colorScheme.onBackground,
-//                    countrySelectionDialogTitle = {
+//            item {
+//                KomposeCountryCodePicker(
+//                    modifier = Modifier
+//                        .fillMaxWidth(),
+//                    text = phoneNumber,
+//                    onValueChange = { phoneNumber = it },
+//                    placeholder = {
 //                        Text(
-//                            text = "Select Joel",
-//                            style = MaterialTheme.typography.titleMedium.copy(
-//                                fontWeight = FontWeight.Bold,
+//                            text = "Phone Number",
+//                            style = MaterialTheme.typography.labelMedium.copy(
+//                                fontWeight = FontWeight.ExtraLight,
 //                            ),
 //                        )
 //                    },
-//                    countrySelectionDialogSearchIcon = {
-//                        Icon(
-//                            imageVector = Icons.Default.Send,
-//                            contentDescription = "Search",
-//                            tint = MaterialTheme.colorScheme.onBackground,
-//                        )
+//                    shape = MaterialTheme.shapes.medium,
+//                    colors = TextFieldDefaults.colors(
+//                        unfocusedContainerColor = Color.Transparent,
+//                        focusedContainerColor = Color.Transparent,
+//                    ),
+//                    state = state,
+//
+//                    interactionSource = remember { MutableInteractionSource() }.also { interactionSource ->
+//                        LaunchedEffect(interactionSource) {
+//                            interactionSource.interactions.collect {
+//                                if (it is PressInteraction.Release) {
+//                                    Log.e(
+//                                        "CountryCodePicker",
+//                                        "clicked",
+//                                    )
+//                                }
+//                            }
+//                        }
 //                    },
-//                    countrySelectionDialogBackIcon = {
-//                        Icon(
-//                            imageVector = Icons.Default.Close,
-//                            contentDescription = "Back",
-//                            tint = MaterialTheme.colorScheme.onBackground,
-//                        )
-//                    },
-                )
-            }
+//                    keyboardOptions = KeyboardOptions.Default.copy(
+//                        imeAction = ImeAction.Next,
+//                    ),
+////                    countrySelectionDialogContainerColor = MaterialTheme.colorScheme.background,
+////                    countrySelectionDialogContentColor = MaterialTheme.colorScheme.onBackground,
+////                    countrySelectionDialogTitle = {
+////                        Text(
+////                            text = "Select Joel",
+////                            style = MaterialTheme.typography.titleMedium.copy(
+////                                fontWeight = FontWeight.Bold,
+////                            ),
+////                        )
+////                    },
+////                    countrySelectionDialogSearchIcon = {
+////                        Icon(
+////                            imageVector = Icons.Default.Send,
+////                            contentDescription = "Search",
+////                            tint = MaterialTheme.colorScheme.onBackground,
+////                        )
+////                    },
+////                    countrySelectionDialogBackIcon = {
+////                        Icon(
+////                            imageVector = Icons.Default.Close,
+////                            contentDescription = "Back",
+////                            tint = MaterialTheme.colorScheme.onBackground,
+////                        )
+////                    },
+//                )
+//            }
 
             item {
 //            OutlinedTextField(
@@ -183,217 +183,217 @@ private fun PickerContent() {
 //            )
             }
 
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Get country code */
-                    /** Get country code */
-                    Text(
-                        text = "Country Phone No Code: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = state.getCountryPhoneCodeWithoutPrefix(),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                }
-            }
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Get country code */
+//                    /** Get country code */
+//                    Text(
+//                        text = "Country Phone No Code: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = state.getCountryPhoneCodeWithoutPrefix(),
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                    )
+//                }
+//            }
+//
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Prefixed country code */
+//                    /** Prefixed country code */
+//                    Text(
+//                        text = "Prefixed Country Phone No Code: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = state.getCountryPhoneCode(),
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                    )
+//                }
+//            }
 
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Prefixed country code */
-                    /** Prefixed country code */
-                    Text(
-                        text = "Prefixed Country Phone No Code: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = state.getCountryPhoneCode(),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Get country name */
-                    /** Get country name */
-                    Text(
-                        text = "Country Name: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = state.getCountryName(),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Get country language code */
-                    /** Get country language code */
-                    Text(
-                        text = "Country Language Code: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = state.countryCode
-                            .uppercase(),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Get phone number */
-                    /** Get phone number */
-                    Text(
-                        text = "Phone Number: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = state.phoneNumber,
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Get phone number without prefix */
-                    /** Get phone number without prefix */
-                    Text(
-                        text = "Phone Number Without Prefix: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = state.getPhoneNumberWithoutPrefix(),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Get full phone number */
-                    /** Get full phone number */
-                    Text(
-                        text = "Full Phone Number: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = state.getFullPhoneNumber(),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Get full phone number without prefix */
-                    /** Get full phone number without prefix */
-                    Text(
-                        text = "Full Phone Number Without Prefix: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = state.getFullPhoneNumberWithoutPrefix(),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Get full phone number without prefix */
-                    /** Get full phone number without prefix */
-                    Text(
-                        text = "Fully Formatted Phone Number: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = state.getFullyFormattedPhoneNumber(),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    /** Check if phone number is valid */
-                    /** Check if phone number is valid */
-                    Text(
-                        text = "Phone Number State: ",
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        text = if (state.isPhoneNumberValid()) "Valid" else "Invalid",
-                        color = if (state.isPhoneNumberValid()) Color.Green else Color.Red,
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.ExtraBold,
-                        ),
-                    )
-                }
-            }
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Get country name */
+//                    /** Get country name */
+//                    Text(
+//                        text = "Country Name: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = state.getCountryName(),
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                    )
+//                }
+//            }
+//
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Get country language code */
+//                    /** Get country language code */
+//                    Text(
+//                        text = "Country Language Code: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = state.countryCode
+//                            .uppercase(),
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                    )
+//                }
+//            }
+//
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Get phone number */
+//                    /** Get phone number */
+//                    Text(
+//                        text = "Phone Number: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = state.phoneNumber,
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                    )
+//                }
+//            }
+//
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Get phone number without prefix */
+//                    /** Get phone number without prefix */
+//                    Text(
+//                        text = "Phone Number Without Prefix: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = state.getPhoneNumberWithoutPrefix(),
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                    )
+//                }
+//            }
+//
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Get full phone number */
+//                    /** Get full phone number */
+//                    Text(
+//                        text = "Full Phone Number: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = state.getFullPhoneNumber(),
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                    )
+//                }
+//            }
+//
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Get full phone number without prefix */
+//                    /** Get full phone number without prefix */
+//                    Text(
+//                        text = "Full Phone Number Without Prefix: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = state.getFullPhoneNumberWithoutPrefix(),
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                    )
+//                }
+//            }
+//
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Get full phone number without prefix */
+//                    /** Get full phone number without prefix */
+//                    Text(
+//                        text = "Fully Formatted Phone Number: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = state.getFullyFormattedPhoneNumber(),
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                    )
+//                }
+//            }
+//
+//            item {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                ) {
+//                    /** Check if phone number is valid */
+//                    /** Check if phone number is valid */
+//                    Text(
+//                        text = "Phone Number State: ",
+//                        style = MaterialTheme.typography.bodySmall,
+//                    )
+//                    Text(
+//                        text = if (state.isPhoneNumberValid()) "Valid" else "Invalid",
+//                        color = if (state.isPhoneNumberValid()) Color.Green else Color.Red,
+//                        style = MaterialTheme.typography.titleSmall.copy(
+//                            fontWeight = FontWeight.ExtraBold,
+//                        ),
+//                    )
+//                }
+//            }
         }
     }
 }
