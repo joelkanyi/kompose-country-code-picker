@@ -28,10 +28,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -541,14 +537,14 @@ public fun KomposeCountryCodePicker(
     },
     countrySelectionDialogBackIcon: @Composable () -> Unit = {
         Icon(
-            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+            painter = painterResource(id = R.drawable.ic_arrow_back),
             contentDescription = null,
             tint = countrySelectionDialogContentColor,
         )
     },
     countrySelectionDialogSearchIcon: @Composable () -> Unit = {
         Icon(
-            imageVector = Icons.Default.Search,
+            painter = painterResource(id = R.drawable.ic_search),
             contentDescription = null,
             tint = countrySelectionDialogContentColor,
         )
@@ -754,7 +750,7 @@ private fun SelectedCountryComponent(
             )
         }
         Icon(
-            imageVector = Icons.Default.ArrowDropDown,
+            painter = painterResource(id = R.drawable.ic_arrow_drop_down),
             contentDescription = null,
             modifier = Modifier.qaAutomationTestTag("countryDropDown"),
         )
