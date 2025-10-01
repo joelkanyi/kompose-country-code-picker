@@ -26,9 +26,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -107,14 +104,14 @@ public fun CountrySelectionDialog(
     },
     backIcon: @Composable () -> Unit = {
         Icon(
-            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+            painter = painterResource(id = R.drawable.ic_arrow_back),
             contentDescription = null,
             tint = contentColor,
         )
     },
     searchIcon: @Composable () -> Unit = {
         Icon(
-            imageVector = Icons.Default.Search,
+            painter = painterResource(id = R.drawable.ic_search),
             contentDescription = null,
             tint = contentColor,
         )
@@ -207,7 +204,7 @@ public fun CountrySelectionDialog(
                                 searchIcon()
                             }
                         },
-                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = containerColor,
                             titleContentColor = contentColor,
                         ),
