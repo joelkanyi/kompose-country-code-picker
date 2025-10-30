@@ -351,6 +351,7 @@ public fun rememberKomposeCountryCodePickerState(
  *   keyboard.
  *   @param keyboardActions The keyboard actions to be used to display
  *   the keyboard.
+ *   @param dropdownIconTint The tint to be applied to the dropdown icon.
  */
 @OptIn(RestrictedApi::class)
 @Composable
@@ -378,6 +379,7 @@ public fun KomposeCountryCodePicker(
         imeAction = ImeAction.Next,
     ),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    dropdownIconTint: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -425,6 +427,7 @@ public fun KomposeCountryCodePicker(
             },
             selectedCountryFlagSize = selectedCountryFlagSize,
             textStyle = textStyle,
+            dropdownIconTint = dropdownIconTint,
         )
     } else {
         OutlinedTextField(
@@ -460,6 +463,7 @@ public fun KomposeCountryCodePicker(
                     },
                     selectedCountryFlagSize = selectedCountryFlagSize,
                     textStyle = textStyle,
+                    dropdownIconTint = dropdownIconTint,
                 )
             },
             trailingIcon = trailingIcon,
@@ -507,6 +511,7 @@ public fun KomposeCountryCodePicker(
  *   keyboard.
  * @param keyboardActions The keyboard actions to be used to display
  *   the keyboard.
+ * @param dropdownIconTint The tint to be applied to the dropdown icon.
  */
 @OptIn(RestrictedApi::class)
 @Composable
@@ -558,6 +563,7 @@ public fun KomposeCountryCodePicker(
         imeAction = ImeAction.Next,
     ),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    dropdownIconTint: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -608,6 +614,7 @@ public fun KomposeCountryCodePicker(
             },
             selectedCountryFlagSize = selectedCountryFlagSize,
             textStyle = textStyle,
+            dropdownIconTint = dropdownIconTint,
         )
     } else {
         OutlinedTextField(
@@ -643,6 +650,7 @@ public fun KomposeCountryCodePicker(
                     },
                     selectedCountryFlagSize = selectedCountryFlagSize,
                     textStyle = textStyle,
+                    dropdownIconTint = dropdownIconTint,
                 )
             },
             trailingIcon = trailingIcon,
@@ -688,6 +696,7 @@ private fun DefaultPlaceholder(
  * @param showCountryCode If true, the country code will be shown.
  * @param showFlag] If true, the country flag will be shown.
  * @param showCountryName If true, the country name will be shown.
+ * @param dropdownIconTint The tint to be applied to the dropdown icon.
  */
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
@@ -695,6 +704,7 @@ private fun SelectedCountryComponent(
     selectedCountry: Country,
     selectedCountryFlagSize: FlagSize,
     textStyle: TextStyle,
+    dropdownIconTint: Color,
     onClickSelectedCountry: () -> Unit,
     modifier: Modifier = Modifier,
     selectedCountryPadding: Dp = 8.dp,
@@ -751,8 +761,9 @@ private fun SelectedCountryComponent(
         }
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_drop_down),
-            contentDescription = null,
+            contentDescription = "Dropdown Icon",
             modifier = Modifier.qaAutomationTestTag("countryDropDown"),
+            tint = dropdownIconTint,
         )
     }
 }
