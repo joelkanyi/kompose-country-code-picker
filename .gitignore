@@ -9,26 +9,13 @@ captures
 /local.properties
 
 # IntelliJ IDEA specific files and directories
-.idea/workspace.xml
-.idea/misc.xml
-.idea/libraries
-.idea/caches
-.idea/navEditor.xml
-.idea/tasks.xml
-.idea/modules.xml
-.idea/compiler.xml
-.idea/jarRepositories.xml
-.idea/deploymentTargetDropDown.xml
-.idea/androidTestResultsUserPreferences.xml
-.idea/appInsightsSettings.xml
-.idea/artifacts
-gradle.xml
+.idea/
 *.iml
 .fleet
 
 # General OS and build system specific files
-.DS_Store                # macOS specific system file
-.externalNativeBuild     # External native build directories and files
+.DS_Store
+.externalNativeBuild
 
 # Security: Do not commit plain-text release keys
 app-release.jks
@@ -47,6 +34,7 @@ bin/
 # Documentation and cache directories
 site/
 .cache/
+docs/kdoc/
 
 # Ignore baseline profile files in sample projects
 sample/**/generated
