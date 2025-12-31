@@ -21,9 +21,11 @@ subprojects {
             trimTrailingWhitespace()
             endWithNewline()
 
-            ktlint().customRuleSets(
+            ktlint(
+                "1.8.0"
+            ).customRuleSets(
                 listOf(
-                    "io.nlopez.compose.rules:ktlint:0.4.27",
+                    "io.nlopez.compose.rules:ktlint:0.5.3",
                 ),
             )
         }

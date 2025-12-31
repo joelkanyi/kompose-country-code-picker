@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.library)
@@ -37,12 +38,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlin {
@@ -60,6 +57,12 @@ dependencies {
     implementation(libs.core.ktx)
     testImplementation(libs.junit)
     testImplementation(libs.truth)
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
 }
 
 group = "io.github.joelkanyi"
