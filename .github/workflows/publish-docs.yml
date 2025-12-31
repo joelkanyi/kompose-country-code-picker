@@ -45,7 +45,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
 
       - name: Generate Dokka documentation
-        run: ./gradlew dokkaHtmlMultiModule
+        run: ./gradlew dokkaGeneratePublicationHtml
 
       - name: Build MkDocs
         run: mkdocs build
