@@ -78,53 +78,35 @@ import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.removeSpecialCh
  */
 @Stable
 public interface CountryCodePicker {
-    /** Returns the phone number. */
     public val phoneNumber: String
 
-    /** Returns the country code e.g KE. */
     public val countryCode: String
 
-    /** Shows the country code in the text field if true. */
     public val showCountryCode: Boolean
 
-    /** Shows the country flag in the text field if true. */
     public val showCountryFlag: Boolean
 
-    /**
-     * Returns the list of countries to be displayed in the country code picker
-     * dialog.
-     */
     public val countryList: List<Country>
 
-    /** Returns the country name. i.e Kenya. */
     public fun getCountryName(): String
 
-    /** Returns the phone number code of the country with a prefix. e.g +254. */
     public fun getCountryPhoneCode(): String
 
-    /** Returns the phone number code of the country without a prefix. e.g 254. */
     public fun getCountryPhoneCodeWithoutPrefix(): String
 
-    /** Returns the phone number without the prefix. e.g 712345678. */
     public fun getPhoneNumberWithoutPrefix(): String
 
-    /** Returns the full phone number without the prefix. e.g 254712345678. */
     public fun getFullPhoneNumberWithoutPrefix(): String
 
-    /** Returns the full phone number with the prefix. e.g +254712345678. */
     public fun getFullPhoneNumber(): String
 
-    /** Returns true if the phone number is valid. */
     public fun isPhoneNumberValid(phoneNumber: String = getFullPhoneNumber()): Boolean
 
-    /** Returns fully formatted phone number. */
     public fun getFullyFormattedPhoneNumber(): String
 
-    /** Sets the phone number. */
     @RestrictedApi
     public fun setPhoneNo(phoneNumber: String)
 
-    /** Sets the country code. */
     @RestrictedApi
     public fun setCode(countryCode: String)
 }
@@ -153,7 +135,6 @@ internal class CountryCodePickerImpl(
     val showCode: Boolean,
     val showFlag: Boolean,
 ) : CountryCodePicker {
-    /** A mutable state of [_phoneNumber] that holds the phone number. */
     private val _phoneNumber = mutableStateOf("")
     override val phoneNumber: String
         get() = if (_phoneNumber.value.startsWith("0")) {
@@ -162,33 +143,20 @@ internal class CountryCodePickerImpl(
             "0${_phoneNumber.value.removeSpecialCharacters()}"
         }
 
-    /** A mutable state of [_countryCode] that holds the country code. */
     private val _countryCode = mutableStateOf(
         defaultCountryCode,
     )
     override val countryCode: String
         get() = _countryCode.value
 
-    /**
-     * A mutable state of [_showCountryCode] that holds the value of
-     * [showCountryCode].
-     */
     private val _showCountryCode = mutableStateOf(showCode)
     override val showCountryCode: Boolean
         get() = _showCountryCode.value
 
-    /**
-     * A mutable state of [_showCountryFlag] that holds the value of
-     * [showCountryFlag].
-     */
     private val _showCountryFlag = mutableStateOf(showFlag)
     override val showCountryFlag: Boolean
         get() = _showCountryFlag.value
 
-    /**
-     * A mutable state of [_countryList] that holds the list of countries to be
-     * displayed in the country code picker dialog.
-     */
     private val _countryList = mutableStateOf(
         if (limitedCountries.isEmpty()) {
             PickerUtils.allCountries
@@ -410,10 +378,6 @@ public fun KomposeCountryCodePicker(
         )
     }
 
-    /**
-     * if [showOnlyCountryCodePicker] is true, only the country code picker
-     * will be displayed.
-     */
     if (showOnlyCountryCodePicker) {
         SelectedCountryComponent(
             modifier = modifier,
@@ -597,10 +561,6 @@ public fun KomposeCountryCodePicker(
         )
     }
 
-    /**
-     * if [showOnlyCountryCodePicker] is true, only the country code picker
-     * will be displayed.
-     */
     if (showOnlyCountryCodePicker) {
         SelectedCountryComponent(
             modifier = modifier,
