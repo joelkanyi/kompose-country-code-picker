@@ -28,7 +28,7 @@ subprojects {
                 "1.8.0"
             ).customRuleSets(
                 listOf(
-                    "io.nlopez.compose.rules:ktlint:0.5.3",
+                    "io.nlopez.compose.rules:ktlint:0.5.5",
                 ),
             )
         }
