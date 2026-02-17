@@ -1,8 +1,8 @@
 [versions]
 agp = "8.13.2"
 kotlin = "2.3.0"
-activityCompose = "1.12.3"
-libphonenumber = "9.0.23"
+activityCompose = "1.12.4"
+libphonenumber = "9.0.24"
 material3 = "1.4.0"
 ktx = "1.17.0"
 spotless = "8.2.1"
