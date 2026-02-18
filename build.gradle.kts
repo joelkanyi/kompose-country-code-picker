@@ -1,3 +1,6 @@
+import java.net.URI
+import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
@@ -24,9 +27,11 @@ subprojects {
             trimTrailingWhitespace()
             endWithNewline()
 
-            ktlint().customRuleSets(
+            ktlint(
+                "1.8.0"
+            ).customRuleSets(
                 listOf(
-                    "io.nlopez.compose.rules:ktlint:0.4.26",
+                    "io.nlopez.compose.rules:ktlint:0.5.6",
                 ),
             )
         }
@@ -43,8 +48,34 @@ subprojects {
     }
 }
 
-tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask>().configureEach {
-    outputDirectory.set(file("$rootDir/docs/kdoc"))
+dokka {
+    moduleName.set("Kompose Country Code Picker")
+
+    dokkaPublications.html {
+        // Output all aggregated docs here
+        outputDirectory.set(rootDir.resolve("docs/kdoc"))
+        suppressInheritedMembers.set(true)
+        failOnWarning.set(true)
+    }
+
+    dokkaSourceSets.configureEach {
+        includes.from("README.md")
+        documentedVisibilities.set(setOf(VisibilityModifier.Public))
+
+        sourceLink {
+            localDirectory.set(file("src/main/kotlin"))
+            remoteUrl.set(URI("https://github.com/joelkanyi/kompose-country-code-picker"))
+            remoteLineSuffix.set("#L")
+        }
+
+        externalDocumentationLinks.register("kotlin") {
+            url.set(URI("https://kotlinlang.org/api/latest/jvm/stdlib/"))
+        }
+    }
+}
+
+dependencies {
+    dokka(project(":komposecountrycodepicker"))
 }
 
 nmcpAggregation {

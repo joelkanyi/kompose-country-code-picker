@@ -20,16 +20,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: 21
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.x'
 
@@ -42,16 +42,16 @@ jobs:
           python3 -m pip install mkdocs mkdocs-material mkdocs-video "mkdocs-material[imaging]"
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Generate Dokka documentation
-        run: ./gradlew dokkaHtmlMultiModule
+        run: ./gradlew dokkaGeneratePublicationHtml
 
       - name: Build MkDocs
         run: mkdocs build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: 'site/' # MkDocs builds to site/ by default
 

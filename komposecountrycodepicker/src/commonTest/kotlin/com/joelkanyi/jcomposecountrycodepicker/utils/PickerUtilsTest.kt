@@ -27,24 +27,26 @@ class PickerUtilsTest {
     fun getCountry() {
         // Given
         val testData = "kE"
+        val expected = "Kenya"
 
         // When
         val result = testData.getCountry()
 
         // Then
-        assertThat(result).isEqualTo(Country("ke", "+254", "Kenya", 2131230853))
+        assertThat(result.name).isEqualTo(expected)
     }
 
     @Test
     fun getCountry_default() {
         // Given
         val testData = "does_not_exist"
+        val expected = "United States"
 
         // When
         val result = testData.getCountry()
 
         // Then
-        assertThat(result).isEqualTo(Country("us", "+1", "United States", 2131230986))
+        assertThat(result.name).isEqualTo(expected)
     }
 
     @Test

@@ -117,12 +117,6 @@ android {
     buildFeatures {
         compose = true
     }
-
-    kotlin {
-        compilerOptions {
-//            jvmTarget = JvmTarget.JVM_1_8
-        }
-    }
 }
 
 group = "io.github.joelkanyi"
