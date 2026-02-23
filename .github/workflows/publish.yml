@@ -26,9 +26,6 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v5
-
       - name: Extract version from tag
         run: |
           VERSION_NAME="${GITHUB_REF#refs/tags/}"  # Remove "refs/tags/"
@@ -54,15 +51,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
-      - name: Debug secrets
-        run: |
-          if [ -z "$MAVEN_CENTRAL_USERNAME" ]; then echo "MAVEN_CENTRAL_USERNAME is EMPTY/UNSET"; else echo "MAVEN_CENTRAL_USERNAME is set (length: ${#MAVEN_CENTRAL_USERNAME})"; fi
-          if [ -z "$MAVEN_CENTRAL_PASSWORD" ]; then echo "MAVEN_CENTRAL_PASSWORD is EMPTY/UNSET"; else echo "MAVEN_CENTRAL_PASSWORD is set (length: ${#MAVEN_CENTRAL_PASSWORD})"; fi
-          if [ -z "$ORG_GRADLE_PROJECT_signingInMemoryKey" ]; then echo "GPG_KEY is EMPTY/UNSET"; else echo "GPG_KEY is set (length: ${#ORG_GRADLE_PROJECT_signingInMemoryKey})"; fi
-        env:
-          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
+      - name: Make gradle executable
+        run: chmod +x ./gradlew
+
+      - uses: gradle/gradle-build-action@v3
 
       - name: Deploy to Maven Central
         run: ./gradlew publishAggregationToCentralPortal --no-configuration-cache --stacktrace
