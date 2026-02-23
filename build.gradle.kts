@@ -82,10 +82,17 @@ dependencies {
     dokka(project(":komposecountrycodepicker"))
 }
 
+val mcUsername = System.getenv("MAVEN_CENTRAL_USERNAME")
+val mcPassword = System.getenv("MAVEN_CENTRAL_PASSWORD")
+println("DEBUG_CREDS: username=${if (mcUsername != null) "SET(${mcUsername.length})" else "NULL"}, password=${if (mcPassword != null) "SET(${mcPassword.length})" else "NULL"}")
+println("DEBUG_CREDS: all env keys containing MAVEN = ${System.getenv().keys.filter { it.contains("MAVEN", ignoreCase = true) }}")
+println("DEBUG_CREDS: all env keys containing CENTRAL = ${System.getenv().keys.filter { it.contains("CENTRAL", ignoreCase = true) }}")
+println("DEBUG_CREDS: gradleProperty mavenCentralUsername = ${findProperty("mavenCentralUsername")}")
+
 nmcpAggregation {
     centralPortal {
-        username = System.getenv("MAVEN_CENTRAL_USERNAME")
-        password = System.getenv("MAVEN_CENTRAL_PASSWORD")
+        username = mcUsername
+        password = mcPassword
         publishingType = "AUTOMATIC"
     }
 
