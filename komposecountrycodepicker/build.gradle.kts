@@ -13,55 +13,104 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
+    alias(libs.plugins.multiplatform)
+    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compatibility)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.nmcp.aggregation)
     alias(libs.plugins.gradleMavenPublish)
     alias(libs.plugins.compose.compiler)
+}
+
+kotlin {
+    applyDefaultHierarchyTemplate()
+
+    explicitApi = ExplicitApiMode.Strict
+
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
+        }
+        publishLibraryVariants("release")
+
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+    }
+
+    jvm()
+
+    js {
+        browser()
+    }
+
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+    }
+
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.ui)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.libphonenumber)
+            implementation(libs.core.ktx)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.libphonenumber)
+        }
+
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+        }
+
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
+        }
+    }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.joelkanyi.jcomposecountrycodepicker.resources"
+    generateResClass = auto
 }
 
 android {
     namespace = "com.joelkanyi.jcomposecountrycodepicker"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
     buildFeatures {
         compose = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlin {
-        // for strict mode
-        explicitApi = ExplicitApiMode.Strict
-
-        // for warning mode
-        explicitApi = ExplicitApiMode.Warning
-    }
-}
-
-dependencies {
-    implementation(libs.material3)
-    implementation(libs.libphonenumber)
-    implementation(libs.core.ktx)
-    testImplementation(libs.junit)
-    testImplementation(libs.truth)
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_11)
     }
 }
 
@@ -76,7 +125,7 @@ mavenPublishing {
 
     pom {
         name.set("KomposeCountryCodePicker")
-        description.set("Kompose Country Code Picker is a Jetpack Compose library based on Material 3 (M3) that provides a country code picker for Android apps.")
+        description.set("Kompose Country Code Picker is a Compose Multiplatform library based on Material 3 (M3) that provides a country code picker for Android, iOS, JVM, JS, and WasmJS.")
         url.set("https://github.com/joelkanyi/KomposeCountryCodePicker")
 
         licenses {

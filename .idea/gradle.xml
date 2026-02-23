@@ -10,11 +10,15 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/komposecountrycodepicker" />
+            <option value="$PROJECT_DIR$/sample" />
+            <option value="$PROJECT_DIR$/sample/android" />
+            <option value="$PROJECT_DIR$/sample/desktop" />
+            <option value="$PROJECT_DIR$/sample/shared" />
+            <option value="$PROJECT_DIR$/sample/web-js" />
+            <option value="$PROJECT_DIR$/sample/web-wasm" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

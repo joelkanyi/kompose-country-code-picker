@@ -1,6 +1,7 @@
 [versions]
 agp = "8.13.2"
 kotlin = "2.3.10"
+compose-multipatform = "1.8.2"
 activityCompose = "1.12.4"
 libphonenumber = "9.0.24"
 material3 = "1.4.0"
@@ -20,6 +21,8 @@ android-minSdk = "23"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
+androidx-ui-test-junit4-android = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "compose" }
 libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumber" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -33,10 +36,13 @@ androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJu
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 [plugins]
+android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multipatform" }
+jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlin-compatibility" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 gradleMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "gradleMavenPublish" }

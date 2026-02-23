@@ -1,31 +1,66 @@
->Note:
+# Getting Started
 
->* You need Jetpack compose material three
-dependency - `implementation("androidx.compose.material3:material3:<version>")`.
->* The library is now hosted on Maven Central. If you were using the previous version hosted on Jitpack, please update your dependencies to the latest version.
->* The last version hosted on Jitpack was : `implementation("com.github.JoelKanyi:KomposeCountryCodePicker:1.1.2")`.
+## Prerequisites
 
-### Including it in your project:
+- A **Kotlin Multiplatform** project with the **Compose Multiplatform** plugin applied
+- **Material 3** dependency (`compose.material3`)
 
-#### Add the Maven Central repository if it is not already there:
-```gradle
+## Add Repository
+
+Ensure `mavenCentral()` is in your repositories block (this is the default for most projects):
+
+```kotlin
 repositories {
     mavenCentral()
 }
 ```
 
-#### Add the dependency to your dependencies block in your app's build.gradle file:
-```kotlin
-dependencies {
-    implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
-}
-```
+## Add Dependency
 
-#### For those using Gradle Version Catalog, you can add the dependency as follows:
-```libs.version.toml
-[versions]
-komposecountrycodepicker = "<latest-version>"
+=== "Kotlin DSL"
 
-[libraries]
-komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
-```
+    ```kotlin
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+                implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+            }
+        }
+    }
+    ```
+
+=== "Version Catalog"
+
+    Add to your `libs.versions.toml`:
+
+    ```toml
+    [versions]
+    komposecountrycodepicker = "<latest-version>"
+
+    [libraries]
+    komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
+    ```
+
+    Then in your `build.gradle.kts`:
+
+    ```kotlin
+    commonMain.dependencies {
+        implementation(libs.komposecountrycodepicker)
+    }
+    ```
+
+## Platform Notes
+
+| Platform | Status |
+|----------|--------|
+| **Android** | Works out of the box |
+| **iOS** | Requires Compose Multiplatform iOS support enabled in your project |
+| **Desktop (JVM)** | Works out of the box with JVM target |
+| **Web (JS)** | Works with `js(IR)` browser target |
+| **Web (WasmJS)** | Works with `wasmJs` browser target |
+
+For platform-specific details (validation engines, default country detection, running sample apps), see the [Platforms](platforms.md) page.
+
+## Next Steps
+
+Head over to the [Usage](usage.md) page to learn how to use the country code picker in your app.
