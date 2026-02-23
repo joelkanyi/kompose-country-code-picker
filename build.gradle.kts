@@ -84,8 +84,12 @@ dependencies {
 
 nmcpAggregation {
     centralPortal {
-        username = System.getenv("MAVEN_CENTRAL_USERNAME")
-        password = System.getenv("MAVEN_CENTRAL_PASSWORD")
+        username = providers.gradleProperty("mavenCentralUsername")
+            .orElse(providers.environmentVariable("MAVEN_CENTRAL_USERNAME"))
+            .orNull
+        password = providers.gradleProperty("mavenCentralPassword")
+            .orElse(providers.environmentVariable("MAVEN_CENTRAL_PASSWORD"))
+            .orNull
         publishingType = "AUTOMATIC"
     }
 
