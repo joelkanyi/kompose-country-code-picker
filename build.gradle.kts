@@ -33,6 +33,10 @@ subprojects {
                 listOf(
                     "io.nlopez.compose.rules:ktlint:0.5.6",
                 ),
+            ).editorConfigOverride(
+                mapOf(
+                    "ktlint_standard_no-wildcard-imports" to "disabled",
+                ),
             )
         }
         format("kts") {

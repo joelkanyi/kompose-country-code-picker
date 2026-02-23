@@ -1,2401 +1,2392 @@
+/*
+ * Copyright 2023 Joel Kanyi.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.joelkanyi.jcomposecountrycodepicker.utils
 
-import androidx.compose.ui.input.key.Key.Companion.R
+import com.joelkanyi.jcomposecountrycodepicker.data.Country
+import com.joelkanyi.jcomposecountrycodepicker.resources.*
+import com.joelkanyi.jcomposecountrycodepicker.resources.Res
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 
-///*
-// * Copyright 2023 Joel Kanyi.
-// *
-// * Licensed under the Apache License, Version 2.0 (the "License");
-// * you may not use this file except in compliance with the License.
-// * You may obtain a copy of the License at
-// *
-// *      http://www.apache.org/licenses/LICENSE-2.0
-// *
-// * Unless required by applicable law or agreed to in writing, software
-// * distributed under the License is distributed on an "AS IS" BASIS,
-// * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// * See the License for the specific language governing permissions and
-// * limitations under the License.
-// */
-//package com.joelkanyi.jcomposecountrycodepicker.utils
-//
-//import android.content.Context
-//import android.telephony.TelephonyManager
-//import com.google.i18n.phonenumbers.NumberParseException
-//import com.google.i18n.phonenumbers.PhoneNumberUtil
-//import com.joelkanyi.jcomposecountrycodepicker.data.Country
-//
-//internal object PickerUtils {
-//    /**
-//     * [getCountry] Returns the country of the supplied country code. if the
-//     * country code is empty, the default country is the United States.
-//     */
-//    fun String.getCountry(): Country {
-//        val default = allCountries.first { it.code.lowercase() == "us" }
-//        return if (this.isNotEmpty()) {
-//            allCountries.find { it.code.lowercase() == this.lowercase() } ?: default
-//        } else {
-//            default
-//        }
-//    }
-//
-//    /**
-//     * [getLimitedCountries] Returns a list of countries that match the search
-//     * @param limitedCountries The list of countries strings.
-//     */
-//    fun getLimitedCountries(limitedCountries: List<String>): List<Country> {
-//        val cleanedCountries =
-//            limitedCountries.map { it.removeSpecialCharacters().trim().lowercase() }
-//
-//        val digits = cleanedCountries.filter { it.all { char -> char.isDigit() } }
-//        val shortCodes =
-//            cleanedCountries.filter { it.all { char -> char.isLetter() } && it.length <= 2 }
-//        val names = cleanedCountries.filter { it.all { char -> char.isLetter() } && it.length > 2 }
-//
-//        return (
-//            digits.flatMap { digit ->
-//                allCountries.filter { it.phoneNoCode.contains(digit) }
-//            } + shortCodes.flatMap { code ->
-//                allCountries.filter { it.code.lowercase() == code }
-//            } + names.flatMap { name ->
-//                allCountries.filter { it.name.lowercase().contains(name) }
-//            }
-//            ).distinct().sortedBy { it.name }
-//    }
-//
-//    /**
-//     * [sortCountriesWithPriority] Sorts the countries list with the priority
-//     * countries at the top.
-//     *
-//     * @param countries The list of countries to be sorted.
-//     * @param priorityCountries The list of country codes that should be prioritized.
-//     * @return A sorted list of countries with the priority countries at the top.
-//     *
-//     * Please dont alter the order of the priority countries.
-//     */
-//    fun sortCountriesWithPriority(
-//        countries: List<Country>,
-//        priorityCountries: List<String>,
-//    ): List<Country> {
-//        val priorityCodesLower = priorityCountries.map { it.lowercase() }
-//
-//        val priorityMap = priorityCodesLower.withIndex().associate { it.value to it.index }
-//
-//        val (priority, nonPriority) = countries.partition { it.code.lowercase() in priorityMap }
-//
-//        val sortedPriority = priority.sortedBy { priorityMap[it.code.lowercase()] }
-//        val sortedNonPriority = nonPriority.sortedBy { it.name.lowercase() }
-//
-//        return sortedPriority + sortedNonPriority
-//    }
-//
-//    /**
-//     * [getDefaultLangCode] Returns the default language code of the device.
-//     *
-//     * @param context The context of the activity or fragment.
-//     */
-//
-//    fun getDefaultLangCode(context: Context): String = try {
-//        val localeCode: TelephonyManager =
-//            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-//        val countryCode = localeCode.networkCountryIso
-//        countryCode.ifEmpty {
-//            "us"
-//        }
-//    } catch (_: Exception) {
-//        "us"
-//    }
-//
-//    /**
-//     * [isValid] Returns true if the phone number is valid.
-//     *
-//     * @param phoneNumberStr The phone number to be checked.
-//     */
-//    fun isValid(phoneNumberStr: String): Boolean = try {
-//        val phoneNumber =
-//            PhoneNumberUtil.getInstance().parse(
-//                phoneNumberStr.trim(),
-//                PhoneNumberUtil.REGION_CODE_FOR_NON_GEO_ENTITY,
-//            )
-//        PhoneNumberUtil.getInstance().isValidNumber(phoneNumber)
-//    } catch (e: NumberParseException) {
-//        e.printStackTrace()
-//        false
-//    }
-//
-//    /**
-//     * [removeSpecialCharacters] Returns the string without special
-//     * characters.
-//     */
-//    fun String.removeSpecialCharacters(): String = this.replace("[^a-zA-Z0-9]".toRegex(), "")
-//
-//    /**
-//     * [searchForAnItem] Returns a list of items that match the search string.
-//     *
-//     * @param searchStr The search string.
-//     */
-//    fun List<Country>.searchForAnItem(
-//        searchStr: String,
-//        context: Context? = null,
-//    ): List<Country> {
-//        val filteredItems = filter {
-//            context?.getString(getCountryName(it.code))?.unaccent()?.contains(
-//                searchStr,
-//                ignoreCase = true,
-//            ) ?: false ||
-//                it.name.unaccent().contains(
-//                    searchStr,
-//                    ignoreCase = true,
-//                ) ||
-//                it.phoneNoCode.contains(
-//                    searchStr,
-//                    ignoreCase = true,
-//                ) ||
-//                it.code.contains(
-//                    searchStr,
-//                    ignoreCase = true,
-//                )
-//        }
-//        println(filteredItems)
-//        return filteredItems.toList()
-//    }
-//
-//    /**
-//     * [extractCountryCodeAndPhoneNumber] Returns the country code and the
-//     * phone e.g +254712345678 -> Pair("ke", "712345678")
-//     *
-//     * @param wholePhoneNumber The phone number to be extracted.
-//     */
-//    fun extractCountryCodeAndPhoneNumber(wholePhoneNumber: String): Pair<String?, String> {
-//        val country = allCountries.find { wholePhoneNumber.startsWith(it.phoneNoCode) }
-//        return if (country != null) {
-//            country.code to stripPhoneCode(
-//                phoneCode = country.phoneNoCode,
-//                phoneNo = wholePhoneNumber,
-//            )
-//        } else {
-//            null to wholePhoneNumber
-//        }
-//    }
-//
-//    /**
-//     * [stripPhoneCode] Returns the phone number without the phone code.
-//     *
-//     * @param phoneCode The phone code.
-//     * @param phoneNo The phone number.
-//     */
-//    private fun stripPhoneCode(
-//        phoneCode: String,
-//        phoneNo: String,
-//    ): String = phoneNo.replaceFirst(phoneCode, "")
-//
-//    /**
-//     * [getFlags] Returns the flag of the country. [countryName] The name of
-//     * the country.
-//     *
-//     * @param countryName The name of the country.
-//     */
-//    fun getFlags(countryName: String): Int = when (countryName) {
-//        "ad" -> R.drawable.ad
-//        "ae" -> R.drawable.ae
-//        "af" -> R.drawable.af
-//        "ag" -> R.drawable.ag
-//        "ai" -> R.drawable.ai
-//        "al" -> R.drawable.al
-//        "am" -> R.drawable.am
-//        "ao" -> R.drawable.ao
-//        "aq" -> R.drawable.aq
-//        "ar" -> R.drawable.ar
-//        "as" -> R.drawable.`as`
-//        "at" -> R.drawable.at
-//        "au" -> R.drawable.au
-//        "aw" -> R.drawable.aw
-//        "ax" -> R.drawable.ax
-//        "az" -> R.drawable.az
-//        "ba" -> R.drawable.ba
-//        "bb" -> R.drawable.bb
-//        "bd" -> R.drawable.bd
-//        "be" -> R.drawable.be
-//        "bf" -> R.drawable.bf
-//        "bg" -> R.drawable.bg
-//        "bh" -> R.drawable.bh
-//        "bi" -> R.drawable.bi
-//        "bj" -> R.drawable.bj
-//        "bl" -> R.drawable.bl
-//        "bm" -> R.drawable.bm
-//        "bn" -> R.drawable.bn
-//        "bo" -> R.drawable.bo
-//        "br" -> R.drawable.br
-//        "bs" -> R.drawable.bs
-//        "bt" -> R.drawable.bt
-//        "bw" -> R.drawable.bw
-//        "by" -> R.drawable.by
-//        "bz" -> R.drawable.bz
-//        "ca" -> R.drawable.ca
-//        "cc" -> R.drawable.cc
-//        "cd" -> R.drawable.cd
-//        "cf" -> R.drawable.cf
-//        "cg" -> R.drawable.cg
-//        "ch" -> R.drawable.ch
-//        "ci" -> R.drawable.ci
-//        "ck" -> R.drawable.ck
-//        "cl" -> R.drawable.cl
-//        "cm" -> R.drawable.cm
-//        "cn" -> R.drawable.cn
-//        "co" -> R.drawable.co
-//        "cr" -> R.drawable.cr
-//        "cu" -> R.drawable.cu
-//        "cv" -> R.drawable.cv
-//        "cw" -> R.drawable.cw
-//        "cx" -> R.drawable.cx
-//        "cy" -> R.drawable.cy
-//        "cz" -> R.drawable.cz
-//        "de" -> R.drawable.de
-//        "dj" -> R.drawable.dj
-//        "dk" -> R.drawable.dk
-//        "dm" -> R.drawable.dm
-//        "do" -> R.drawable.ic_do
-//        "dz" -> R.drawable.dz
-//        "ec" -> R.drawable.ec
-//        "ee" -> R.drawable.ee
-//        "eg" -> R.drawable.eg
-//        "er" -> R.drawable.er
-//        "es" -> R.drawable.es
-//        "et" -> R.drawable.et
-//        "fi" -> R.drawable.fi
-//        "fj" -> R.drawable.fj
-//        "fk" -> R.drawable.fk
-//        "fm" -> R.drawable.fm
-//        "fo" -> R.drawable.fo
-//        "fr" -> R.drawable.fr
-//        "ga" -> R.drawable.ga
-//        "gb" -> R.drawable.gb
-//        "gd" -> R.drawable.gd
-//        "ge" -> R.drawable.ge
-//        "gf" -> R.drawable.gf
-//        "gg" -> R.drawable.gg
-//        "gh" -> R.drawable.gh
-//        "gi" -> R.drawable.gi
-//        "gl" -> R.drawable.gl
-//        "gm" -> R.drawable.gm
-//        "gn" -> R.drawable.gn
-//        "gp" -> R.drawable.gp
-//        "gq" -> R.drawable.gq
-//        "gr" -> R.drawable.gr
-//        "gt" -> R.drawable.gt
-//        "gu" -> R.drawable.gu
-//        "gw" -> R.drawable.gw
-//        "gy" -> R.drawable.gy
-//        "hk" -> R.drawable.hk
-//        "hn" -> R.drawable.hn
-//        "hr" -> R.drawable.hr
-//        "ht" -> R.drawable.ht
-//        "hu" -> R.drawable.hu
-//        "id" -> R.drawable.id
-//        "ie" -> R.drawable.ie
-//        "il" -> R.drawable.il
-//        "im" -> R.drawable.im
-//        "is" -> R.drawable.`is`
-//        "in" -> R.drawable.`in`
-//        "io" -> R.drawable.io
-//        "iq" -> R.drawable.iq
-//        "ir" -> R.drawable.ir
-//        "it" -> R.drawable.it
-//        "je" -> R.drawable.je
-//        "jm" -> R.drawable.jm
-//        "jo" -> R.drawable.jo
-//        "jp" -> R.drawable.jp
-//        "ke" -> R.drawable.ke
-//        "kg" -> R.drawable.kg
-//        "kh" -> R.drawable.kh
-//        "ki" -> R.drawable.ki
-//        "km" -> R.drawable.km
-//        "kn" -> R.drawable.kn
-//        "kp" -> R.drawable.kp
-//        "kr" -> R.drawable.kr
-//        "kw" -> R.drawable.kw
-//        "ky" -> R.drawable.ky
-//        "kz" -> R.drawable.kz
-//        "la" -> R.drawable.la
-//        "lb" -> R.drawable.lb
-//        "lc" -> R.drawable.lc
-//        "li" -> R.drawable.li
-//        "lk" -> R.drawable.lk
-//        "lr" -> R.drawable.lr
-//        "ls" -> R.drawable.ls
-//        "lt" -> R.drawable.lt
-//        "lu" -> R.drawable.lu
-//        "lv" -> R.drawable.lv
-//        "ly" -> R.drawable.ly
-//        "ma" -> R.drawable.ma
-//        "mc" -> R.drawable.mc
-//        "md" -> R.drawable.md
-//        "me" -> R.drawable.me
-//        "mf" -> R.drawable.mf
-//        "mg" -> R.drawable.mg
-//        "mh" -> R.drawable.mh
-//        "mk" -> R.drawable.mk
-//        "ml" -> R.drawable.ml
-//        "mm" -> R.drawable.mm
-//        "mn" -> R.drawable.mn
-//        "mo" -> R.drawable.mo
-//        "mp" -> R.drawable.mp
-//        "mq" -> R.drawable.mq
-//        "mr" -> R.drawable.mr
-//        "ms" -> R.drawable.ms
-//        "mt" -> R.drawable.mt
-//        "mu" -> R.drawable.mu
-//        "mv" -> R.drawable.mv
-//        "mw" -> R.drawable.mw
-//        "mx" -> R.drawable.mx
-//        "my" -> R.drawable.my
-//        "mz" -> R.drawable.mz
-//        "na" -> R.drawable.na
-//        "nc" -> R.drawable.nc
-//        "ne" -> R.drawable.ne
-//        "nf" -> R.drawable.nf
-//        "ng" -> R.drawable.ng
-//        "ni" -> R.drawable.ni
-//        "nl" -> R.drawable.nl
-//        "no" -> R.drawable.no
-//        "np" -> R.drawable.np
-//        "nr" -> R.drawable.nr
-//        "nu" -> R.drawable.nu
-//        "nz" -> R.drawable.nz
-//        "om" -> R.drawable.om
-//        "pa" -> R.drawable.pa
-//        "pe" -> R.drawable.pe
-//        "pf" -> R.drawable.pf
-//        "pg" -> R.drawable.pg
-//        "ph" -> R.drawable.ph
-//        "pk" -> R.drawable.pk
-//        "pl" -> R.drawable.pl
-//        "pm" -> R.drawable.pm
-//        "pn" -> R.drawable.pn
-//        "pr" -> R.drawable.pr
-//        "ps" -> R.drawable.ps
-//        "pt" -> R.drawable.pt
-//        "pw" -> R.drawable.pw
-//        "py" -> R.drawable.py
-//        "qa" -> R.drawable.qa
-//        "re" -> R.drawable.re
-//        "ro" -> R.drawable.ro
-//        "rs" -> R.drawable.rs
-//        "ru" -> R.drawable.ru
-//        "rw" -> R.drawable.rw
-//        "sa" -> R.drawable.sa
-//        "sb" -> R.drawable.sb
-//        "sc" -> R.drawable.sc
-//        "sd" -> R.drawable.sd
-//        "se" -> R.drawable.se
-//        "sg" -> R.drawable.sg
-//        "sh" -> R.drawable.sh
-//        "si" -> R.drawable.si
-//        "sk" -> R.drawable.sk
-//        "sl" -> R.drawable.sl
-//        "sm" -> R.drawable.sm
-//        "sn" -> R.drawable.sn
-//        "so" -> R.drawable.so
-//        "sr" -> R.drawable.sr
-//        "ss" -> R.drawable.ss
-//        "st" -> R.drawable.st
-//        "sv" -> R.drawable.sv
-//        "sx" -> R.drawable.sx
-//        "sy" -> R.drawable.sy
-//        "sz" -> R.drawable.sz
-//        "tc" -> R.drawable.tc
-//        "td" -> R.drawable.td
-//        "tg" -> R.drawable.tg
-//        "th" -> R.drawable.th
-//        "tj" -> R.drawable.tj
-//        "tk" -> R.drawable.tk
-//        "tl" -> R.drawable.tl
-//        "tm" -> R.drawable.tm
-//        "tn" -> R.drawable.tn
-//        "to" -> R.drawable.to
-//        "tr" -> R.drawable.tr
-//        "tt" -> R.drawable.tt
-//        "tv" -> R.drawable.tv
-//        "tw" -> R.drawable.tw
-//        "tz" -> R.drawable.tz
-//        "ua" -> R.drawable.ua
-//        "ug" -> R.drawable.ug
-//        "us" -> R.drawable.us
-//        "uy" -> R.drawable.uy
-//        "uz" -> R.drawable.uz
-//        "va" -> R.drawable.va
-//        "vc" -> R.drawable.vc
-//        "ve" -> R.drawable.ve
-//        "vg" -> R.drawable.vg
-//        "vi" -> R.drawable.vi
-//        "vn" -> R.drawable.vn
-//        "vu" -> R.drawable.vu
-//        "wf" -> R.drawable.wf
-//        "ws" -> R.drawable.ws
-//        "xk" -> R.drawable.xk
-//        "ye" -> R.drawable.ye
-//        "yt" -> R.drawable.yt
-//        "za" -> R.drawable.za
-//        "zm" -> R.drawable.zm
-//        "zw" -> R.drawable.zw
-//        else -> R.drawable.tr
-//    }
-//
-//    /**
-//     * [getCountryName] Returns the name of the country. [countryName] The name
-//     * of the country.
-//     *
-//     * @param countryName The name of the country.
-//     */
-//    fun getCountryName(countryName: String): Int = when (countryName) {
-//        "ad" -> R.string.andorra
-//        "ae" -> R.string.united_arab_emirates
-//        "af" -> R.string.afghanistan
-//        "ag" -> R.string.antigua_and_barbuda
-//        "ai" -> R.string.anguilla
-//        "al" -> R.string.albania
-//        "am" -> R.string.armenia
-//        "ao" -> R.string.angola
-//        "aq" -> R.string.antarctica
-//        "ar" -> R.string.argentina
-//        "as" -> R.string.american_samoa
-//        "at" -> R.string.austria
-//        "au" -> R.string.australia
-//        "aw" -> R.string.aruba
-//        "ax" -> R.string.aland_islands
-//        "az" -> R.string.azerbaijan
-//        "ba" -> R.string.bosnia
-//        "bb" -> R.string.barbados
-//        "bd" -> R.string.bangladesh
-//        "be" -> R.string.belgium
-//        "bf" -> R.string.burkina_faso
-//        "bg" -> R.string.bulgaria
-//        "bh" -> R.string.bahrain
-//        "bi" -> R.string.burundi
-//        "bj" -> R.string.benin
-//        "bl" -> R.string.saint_barhelemy
-//        "bm" -> R.string.bermuda
-//        "bn" -> R.string.brunei_darussalam
-//        "bo" -> R.string.bolivia
-//        "br" -> R.string.brazil
-//        "bs" -> R.string.bahamas
-//        "bt" -> R.string.bhutan
-//        "bw" -> R.string.botswana
-//        "by" -> R.string.belarus
-//        "bz" -> R.string.belize
-//        "ca" -> R.string.canada
-//        "cc" -> R.string.cocos
-//        "cd" -> R.string.congo_democratic
-//        "cf" -> R.string.central_african
-//        "cg" -> R.string.congo
-//        "ch" -> R.string.switzerland
-//        "ci" -> R.string.cote_dlvoire
-//        "ck" -> R.string.cook_islands
-//        "cl" -> R.string.chile
-//        "cm" -> R.string.cameroon
-//        "cn" -> R.string.china
-//        "co" -> R.string.colombia
-//        "cr" -> R.string.costa_rica
-//        "cu" -> R.string.cuba
-//        "cv" -> R.string.cape_verde
-//        "cw" -> R.string.curacao
-//        "cx" -> R.string.christmas_island
-//        "cy" -> R.string.cyprus
-//        "cz" -> R.string.czech_republic
-//        "de" -> R.string.germany
-//        "dj" -> R.string.djibouti
-//        "dk" -> R.string.denmark
-//        "dm" -> R.string.dominica
-//        "do" -> R.string.dominician_republic
-//        "dz" -> R.string.algeria
-//        "ec" -> R.string.ecuador
-//        "ee" -> R.string.estonia
-//        "eg" -> R.string.egypt
-//        "er" -> R.string.eritrea
-//        "es" -> R.string.spain
-//        "et" -> R.string.ethiopia
-//        "fi" -> R.string.finland
-//        "fj" -> R.string.fiji
-//        "fk" -> R.string.falkland_islands
-//        "fm" -> R.string.micro
-//        "fo" -> R.string.faroe_islands
-//        "fr" -> R.string.france
-//        "ga" -> R.string.gabon
-//        "gb" -> R.string.united_kingdom
-//        "gd" -> R.string.grenada
-//        "ge" -> R.string.georgia
-//        "gf" -> R.string.french_guyana
-//        "gg" -> R.string.guernsey
-//        "gh" -> R.string.ghana
-//        "gi" -> R.string.gibraltar
-//        "gl" -> R.string.greenland
-//        "gm" -> R.string.gambia
-//        "gn" -> R.string.guinea
-//        "gp" -> R.string.guadeloupe
-//        "gq" -> R.string.equatorial_guinea
-//        "gr" -> R.string.greece
-//        "gt" -> R.string.guatemala
-//        "gu" -> R.string.guam
-//        "gw" -> R.string.guinea_bissau
-//        "gy" -> R.string.guyana
-//        "hk" -> R.string.hong_kong
-//        "hn" -> R.string.honduras
-//        "hr" -> R.string.croatia
-//        "ht" -> R.string.haiti
-//        "hu" -> R.string.hungary
-//        "id" -> R.string.indonesia
-//        "ie" -> R.string.ireland
-//        "il" -> R.string.israil
-//        "im" -> R.string.isle_of_man
-//        "is" -> R.string.iceland
-//        "in" -> R.string.india
-//        "io" -> R.string.british_indian_ocean
-//        "iq" -> R.string.iraq
-//        "ir" -> R.string.iran
-//        "it" -> R.string.italia
-//        "je" -> R.string.jersey
-//        "jm" -> R.string.jamaica
-//        "jo" -> R.string.jordan
-//        "jp" -> R.string.japan
-//        "ke" -> R.string.kenya
-//        "kg" -> R.string.kyrgyzstan
-//        "kh" -> R.string.cambodia
-//        "ki" -> R.string.kiribati
-//        "km" -> R.string.comoros
-//        "kn" -> R.string.saint_kitts
-//        "kp" -> R.string.north_korea
-//        "kr" -> R.string.south_korea
-//        "kw" -> R.string.kuwait
-//        "ky" -> R.string.cayman_islands
-//        "kz" -> R.string.kazakhstan
-//        "la" -> R.string.laos
-//        "lb" -> R.string.lebanon
-//        "lc" -> R.string.saint_lucia
-//        "li" -> R.string.liechtenstein
-//        "lk" -> R.string.siri_lanka
-//        "lr" -> R.string.liberia
-//        "ls" -> R.string.lesotho
-//        "lt" -> R.string.lithuania
-//        "lu" -> R.string.luxembourg
-//        "lv" -> R.string.latvia
-//        "ly" -> R.string.libya
-//        "ma" -> R.string.marocco
-//        "mc" -> R.string.monaco
-//        "md" -> R.string.moldova
-//        "me" -> R.string.montenegro
-//        "mf" -> R.string.saint_martin
-//        "mg" -> R.string.madagascar
-//        "mh" -> R.string.marshall_islands
-//        "mk" -> R.string.north_macedonia
-//        "ml" -> R.string.mali
-//        "mm" -> R.string.myanmar
-//        "mn" -> R.string.mongolia
-//        "mo" -> R.string.macau
-//        "mp" -> R.string.northern_mariana
-//        "mq" -> R.string.martinique
-//        "mr" -> R.string.mauriatana
-//        "ms" -> R.string.montserrat
-//        "mt" -> R.string.malta
-//        "mu" -> R.string.mauritius
-//        "mv" -> R.string.maldives
-//        "mw" -> R.string.malawi
-//        "mx" -> R.string.mexico
-//        "my" -> R.string.malaysia
-//        "mz" -> R.string.mozambique
-//        "na" -> R.string.namibia
-//        "nc" -> R.string.new_caledonia
-//        "ne" -> R.string.niger
-//        "nf" -> R.string.norfolk
-//        "ng" -> R.string.nigeria
-//        "ni" -> R.string.nicaragua
-//        "nl" -> R.string.netherlands
-//        "no" -> R.string.norway
-//        "np" -> R.string.nepal
-//        "nr" -> R.string.nauru
-//        "nu" -> R.string.niue
-//        "nz" -> R.string.new_zealand
-//        "om" -> R.string.oman
-//        "pa" -> R.string.panama
-//        "pe" -> R.string.peru
-//        "pf" -> R.string.french_polynesia
-//        "pg" -> R.string.papua_new_guinea
-//        "ph" -> R.string.philippinies
-//        "pk" -> R.string.pakistan
-//        "pl" -> R.string.poland
-//        "pm" -> R.string.saint_pierre
-//        "pn" -> R.string.pitcairn
-//        "pr" -> R.string.puerto_rico
-//        "ps" -> R.string.state_of_palestine
-//        "pt" -> R.string.portugal
-//        "pw" -> R.string.palau
-//        "py" -> R.string.paraguay
-//        "qa" -> R.string.qatar
-//        "re" -> R.string.reunion
-//        "ro" -> R.string.romania
-//        "rs" -> R.string.serbia
-//        "ru" -> R.string.russia
-//        "rw" -> R.string.rwanda
-//        "sa" -> R.string.saudi_arabia
-//        "sb" -> R.string.solomon_islands
-//        "sc" -> R.string.seychelles
-//        "sd" -> R.string.sudan
-//        "se" -> R.string.sweden
-//        "sg" -> R.string.singapore
-//        "sh" -> R.string.saint_helena
-//        "si" -> R.string.slovenia
-//        "sk" -> R.string.slovakia
-//        "sl" -> R.string.sierra_leone
-//        "sm" -> R.string.san_marino
-//        "sn" -> R.string.senegal
-//        "so" -> R.string.somali
-//        "sr" -> R.string.suriname
-//        "ss" -> R.string.south_sudan
-//        "st" -> R.string.sao_tome
-//        "sv" -> R.string.el_salvador
-//        "sx" -> R.string.sint_maarten
-//        "sy" -> R.string.syrian
-//        "sz" -> R.string.swaziland
-//        "tc" -> R.string.turks_and_caicos
-//        "td" -> R.string.chad
-//        "tg" -> R.string.togo
-//        "th" -> R.string.thailand
-//        "tj" -> R.string.taijikistan
-//        "tk" -> R.string.tokelau
-//        "tl" -> R.string.timor_leste
-//        "tm" -> R.string.turkmenistan
-//        "tn" -> R.string.tunisia
-//        "to" -> R.string.tonga
-//        "tr" -> R.string.turkey
-//        "tt" -> R.string.trinidad_and_tobago
-//        "tv" -> R.string.tuvalu
-//        "tw" -> R.string.taiwan
-//        "tz" -> R.string.tazmania
-//        "ua" -> R.string.ukraina
-//        "ug" -> R.string.uganda
-//        "us" -> R.string.united_states_america
-//        "uy" -> R.string.uruguay
-//        "uz" -> R.string.uzbekistan
-//        "va" -> R.string.holy_see
-//        "vc" -> R.string.saint_vincent
-//        "ve" -> R.string.venezuela
-//        "vg" -> R.string.virgin_islands
-//        "vi" -> R.string.virgin_island_us
-//        "vn" -> R.string.vietnam
-//        "vu" -> R.string.vanuatu
-//        "wf" -> R.string.walli_and_fatuna
-//        "ws" -> R.string.samoa
-//        "xk" -> R.string.kosovo
-//        "ye" -> R.string.yemen
-//        "yt" -> R.string.mayotte
-//        "za" -> R.string.south_africa
-//        "zm" -> R.string.zambia
-//        "zw" -> R.string.zimbabwe
-//        else -> R.string.unknown
-//    }
-//
-//    /**
-//     * [allCountries] is a list of all countries in the world sorted
-//     * alphabetically.
-//     */
-//    val allCountries: List<Country>
-//        get() = listOf(
-//            Country(
-//                code = "ad",
-//                phoneNoCode = "+376",
-//                name = "Andorra",
-//                flag = R.drawable.ad,
-//            ),
-//            Country(
-//                code = "ae",
-//                phoneNoCode = "+971",
-//                name = "United Arab Emirates (UAE)",
-//                flag = R.drawable.ae,
-//            ),
-//            Country(
-//                code = "af",
-//                phoneNoCode = "+93",
-//                name = "Afghanistan",
-//                flag = R.drawable.af,
-//            ),
-//            Country(
-//                code = "ag",
-//                phoneNoCode = "+1",
-//                name = "Antigua and Barbuda",
-//                flag = R.drawable.ag,
-//            ),
-//            Country(
-//                code = "ai",
-//                phoneNoCode = "+1",
-//                name = "Anguilla",
-//                flag = R.drawable.ai,
-//            ),
-//            Country(
-//                "al",
-//                "+355",
-//                "Albania",
-//                R.drawable.al,
-//            ),
-//            Country(
-//                "am",
-//                "+374",
-//                "Armenia",
-//                R.drawable.am,
-//            ),
-//            Country(
-//                "ao",
-//                "+244",
-//                "Angola",
-//                R.drawable.ao,
-//            ),
-//            Country(
-//                "aq",
-//                "+672",
-//                "Antarctica",
-//                R.drawable.aq,
-//            ),
-//            Country(
-//                "ar",
-//                "+54",
-//                "Argentina",
-//                R.drawable.ar,
-//            ),
-//            Country(
-//                "as",
-//                "+1",
-//                "American Samoa",
-//                R.drawable.`as`,
-//            ),
-//            Country(
-//                "at",
-//                "+43",
-//                "Austria",
-//                R.drawable.at,
-//            ),
-//            Country(
-//                "au",
-//                "+61",
-//                "Australia",
-//                R.drawable.au,
-//            ),
-//            Country(
-//                "aw",
-//                "+297",
-//                "Aruba",
-//                R.drawable.aw,
-//            ),
-//            Country(
-//                "ax",
-//                "+358",
-//                "Åland Islands",
-//                R.drawable.ax,
-//            ),
-//            Country(
-//                "az",
-//                "+994",
-//                "Azerbaijan",
-//                R.drawable.az,
-//            ),
-//            Country(
-//                "ba",
-//                "+387",
-//                "Bosnia And Herzegovina",
-//                R.drawable.ba,
-//            ),
-//            Country(
-//                "bb",
-//                "+1",
-//                "Barbados",
-//                R.drawable.bb,
-//            ),
-//            Country(
-//                "bd",
-//                "+880",
-//                "Bangladesh",
-//                R.drawable.bd,
-//            ),
-//            Country(
-//                "be",
-//                "+32",
-//                "Belgium",
-//                R.drawable.be,
-//            ),
-//            Country(
-//                "bf",
-//                "+226",
-//                "Burkina Faso",
-//                R.drawable.bf,
-//            ),
-//            Country(
-//                "bg",
-//                "+359",
-//                "Bulgaria",
-//                R.drawable.bg,
-//            ),
-//            Country(
-//                "bh",
-//                "+973",
-//                "Bahrain",
-//                R.drawable.bh,
-//            ),
-//            Country(
-//                "bi",
-//                "+257",
-//                "Burundi",
-//                R.drawable.bi,
-//            ),
-//            Country(
-//                "bj",
-//                "+229",
-//                "Benin",
-//                R.drawable.bj,
-//            ),
-//            Country(
-//                "bl",
-//                "+590",
-//                "Saint Barthélemy",
-//                R.drawable.bl,
-//            ),
-//            Country(
-//                "bm",
-//                "+1",
-//                "Bermuda",
-//                R.drawable.bm,
-//            ),
-//            Country(
-//                "bn",
-//                "+673",
-//                "Brunei Darussalam",
-//                R.drawable.bn,
-//            ),
-//            Country(
-//                "bo",
-//                "+591",
-//                "Bolivia, Plurinational State Of",
-//                R.drawable.bo,
-//            ),
-//            Country(
-//                "br",
-//                "+55",
-//                "Brazil",
-//                R.drawable.br,
-//            ),
-//            Country(
-//                "bs",
-//                "+1",
-//                "Bahamas",
-//                R.drawable.bs,
-//            ),
-//            Country(
-//                "bt",
-//                "+975",
-//                "Bhutan",
-//                R.drawable.bt,
-//            ),
-//            Country(
-//                "bw",
-//                "+267",
-//                "Botswana",
-//                R.drawable.bw,
-//            ),
-//            Country(
-//                "by",
-//                "+375",
-//                "Belarus",
-//                R.drawable.by,
-//            ),
-//            Country(
-//                "bz",
-//                "+501",
-//                "Belize",
-//                R.drawable.bz,
-//            ),
-//            Country(
-//                "ca",
-//                "+1",
-//                "Canada",
-//                R.drawable.ca,
-//            ),
-//            Country(
-//                "cc",
-//                "+61",
-//                "Cocos (keeling) Islands",
-//                R.drawable.cc,
-//            ),
-//            Country(
-//                "cd",
-//                "+243",
-//                "Congo, The Democratic Republic Of The",
-//                R.drawable.cd,
-//            ),
-//            Country(
-//                "cf",
-//                "+236",
-//                "Central African Republic",
-//                R.drawable.cf,
-//            ),
-//            Country(
-//                "cg",
-//                "+242",
-//                "Congo",
-//                R.drawable.cg,
-//            ),
-//            Country(
-//                "ch",
-//                "+41",
-//                "Switzerland",
-//                R.drawable.ch,
-//            ),
-//            Country(
-//                "ci",
-//                "+225",
-//                "Côte D'ivoire",
-//                R.drawable.ci,
-//            ),
-//            Country(
-//                "ck",
-//                "+682",
-//                "Cook Islands",
-//                R.drawable.ck,
-//            ),
-//            Country(
-//                "cl",
-//                "+56",
-//                "Chile",
-//                R.drawable.cl,
-//            ),
-//            Country(
-//                "cm",
-//                "+237",
-//                "Cameroon",
-//                R.drawable.cm,
-//            ),
-//            Country(
-//                "cn",
-//                "+86",
-//                "China",
-//                R.drawable.cn,
-//            ),
-//            Country(
-//                "co",
-//                "+57",
-//                "Colombia",
-//                R.drawable.co,
-//            ),
-//            Country(
-//                "cr",
-//                "+506",
-//                "Costa Rica",
-//                R.drawable.cr,
-//            ),
-//            Country(
-//                "cu",
-//                "+53",
-//                "Cuba",
-//                R.drawable.cu,
-//            ),
-//            Country(
-//                "cv",
-//                "+238",
-//                "Cape Verde",
-//                R.drawable.cv,
-//            ),
-//            Country(
-//                "cw",
-//                "+599",
-//                "Curaçao",
-//                R.drawable.cw,
-//            ),
-//            Country(
-//                "cx",
-//                "+61",
-//                "Christmas Island",
-//                R.drawable.cx,
-//            ),
-//            Country(
-//                "cy",
-//                "+357",
-//                "Cyprus",
-//                R.drawable.cy,
-//            ),
-//            Country(
-//                "cz",
-//                "+420",
-//                "Czech Republic",
-//                R.drawable.cz,
-//            ),
-//            Country(
-//                "de",
-//                "+49",
-//                "Germany",
-//                R.drawable.de,
-//            ),
-//            Country(
-//                "dj",
-//                "+253",
-//                "Djibouti",
-//                R.drawable.dj,
-//            ),
-//            Country(
-//                "dk",
-//                "+45",
-//                "Denmark",
-//                R.drawable.dk,
-//            ),
-//            Country(
-//                "dm",
-//                "+1",
-//                "Dominica",
-//                R.drawable.dm,
-//            ),
-//            Country(
-//                "do",
-//                "+1",
-//                "Dominican Republic",
-//                R.drawable.ic_do,
-//            ),
-//            Country(
-//                "dz",
-//                "+213",
-//                "Algeria",
-//                R.drawable.dz,
-//            ),
-//            Country(
-//                "ec",
-//                "+593",
-//                "Ecuador",
-//                R.drawable.ec,
-//            ),
-//            Country(
-//                "ee",
-//                "+372",
-//                "Estonia",
-//                R.drawable.ee,
-//            ),
-//            Country(
-//                "eg",
-//                "+20",
-//                "Egypt",
-//                R.drawable.eg,
-//            ),
-//            Country(
-//                "er",
-//                "+291",
-//                "Eritrea",
-//                R.drawable.er,
-//            ),
-//            Country(
-//                "es",
-//                "+34",
-//                "Spain",
-//                R.drawable.es,
-//            ),
-//            Country(
-//                "et",
-//                "+251",
-//                "Ethiopia",
-//                R.drawable.et,
-//            ),
-//            Country(
-//                "fi",
-//                "+358",
-//                "Finland",
-//                R.drawable.fi,
-//            ),
-//            Country(
-//                "fj",
-//                "+679",
-//                "Fiji",
-//                R.drawable.fj,
-//            ),
-//            Country(
-//                "fk",
-//                "+500",
-//                "Falkland Islands (malvinas)",
-//                R.drawable.fk,
-//            ),
-//            Country(
-//                "fm",
-//                "+691",
-//                "Micronesia, Federated States Of",
-//                R.drawable.fm,
-//            ),
-//            Country(
-//                "fo",
-//                "+298",
-//                "Faroe Islands",
-//                R.drawable.fo,
-//            ),
-//            Country(
-//                "fr",
-//                "+33",
-//                "France",
-//                R.drawable.fr,
-//            ),
-//            Country(
-//                "ga",
-//                "+241",
-//                "Gabon",
-//                R.drawable.ga,
-//            ),
-//            Country(
-//                "gb",
-//                "+44",
-//                "United Kingdom",
-//                R.drawable.gb,
-//            ),
-//            Country(
-//                "gd",
-//                "+1",
-//                "Grenada",
-//                R.drawable.gd,
-//            ),
-//            Country(
-//                "ge",
-//                "+995",
-//                "Georgia",
-//                R.drawable.ge,
-//            ),
-//            Country(
-//                "gf",
-//                "+594",
-//                "French Guyana",
-//                R.drawable.gf,
-//            ),
-//            Country(
-//                "gh",
-//                "+233",
-//                "Ghana",
-//                R.drawable.gh,
-//            ),
-//            Country(
-//                "gi",
-//                "+350",
-//                "Gibraltar",
-//                R.drawable.gi,
-//            ),
-//            Country(
-//                "gl",
-//                "+299",
-//                "Greenland",
-//                R.drawable.gl,
-//            ),
-//            Country(
-//                "gm",
-//                "+220",
-//                "Gambia",
-//                R.drawable.gm,
-//            ),
-//            Country(
-//                "gn",
-//                "+224",
-//                "Guinea",
-//                R.drawable.gn,
-//            ),
-//            Country(
-//                "gp",
-//                "+590",
-//                "Guadeloupe",
-//                R.drawable.gp,
-//            ),
-//            Country(
-//                "gq",
-//                "+240",
-//                "Equatorial Guinea",
-//                R.drawable.gq,
-//            ),
-//            Country(
-//                "gr",
-//                "+30",
-//                "Greece",
-//                R.drawable.gr,
-//            ),
-//            Country(
-//                "gt",
-//                "+502",
-//                "Guatemala",
-//                R.drawable.gt,
-//            ),
-//            Country(
-//                "gu",
-//                "+1",
-//                "Guam",
-//                R.drawable.gu,
-//            ),
-//            Country(
-//                "gw",
-//                "+245",
-//                "Guinea-bissau",
-//                R.drawable.gw,
-//            ),
-//            Country(
-//                "gy",
-//                "+592",
-//                "Guyana",
-//                R.drawable.gy,
-//            ),
-//            Country(
-//                "hk",
-//                "+852",
-//                "Hong Kong",
-//                R.drawable.hk,
-//            ),
-//            Country(
-//                "hn",
-//                "+504",
-//                "Honduras",
-//                R.drawable.hn,
-//            ),
-//            Country(
-//                "hr",
-//                "+385",
-//                "Croatia",
-//                R.drawable.hr,
-//            ),
-//            Country(
-//                "ht",
-//                "+509",
-//                "Haiti",
-//                R.drawable.ht,
-//            ),
-//            Country(
-//                "hu",
-//                "+36",
-//                "Hungary",
-//                R.drawable.hu,
-//            ),
-//            Country(
-//                "id",
-//                "+62",
-//                "Indonesia",
-//                R.drawable.id,
-//            ),
-//            Country(
-//                "ie",
-//                "+353",
-//                "Ireland",
-//                R.drawable.ie,
-//            ),
-//            Country(
-//                "il",
-//                "+972",
-//                "Israel",
-//                R.drawable.il,
-//            ),
-//            Country(
-//                "im",
-//                "+44",
-//                "Isle Of Man",
-//                R.drawable.im,
-//            ),
-//            Country(
-//                "is",
-//                "+354",
-//                "Iceland",
-//                R.drawable.`is`,
-//            ),
-//            Country(
-//                "in",
-//                "+91",
-//                "India",
-//                R.drawable.`in`,
-//            ),
-//            Country(
-//                "io",
-//                "+246",
-//                "British Indian Ocean Territory",
-//                R.drawable.io,
-//            ),
-//            Country(
-//                "iq",
-//                "+964",
-//                "Iraq",
-//                R.drawable.iq,
-//            ),
-//            Country(
-//                "ir",
-//                "+98",
-//                "Iran, Islamic Republic Of",
-//                R.drawable.ir,
-//            ),
-//            Country(
-//                "it",
-//                "+39",
-//                "Italy",
-//                R.drawable.it,
-//            ),
-//            Country(
-//                "je",
-//                "+44",
-//                "Jersey ",
-//                R.drawable.je,
-//            ),
-//            Country(
-//                "jm",
-//                "+1",
-//                "Jamaica",
-//                R.drawable.jm,
-//            ),
-//            Country(
-//                "jo",
-//                "+962",
-//                "Jordan",
-//                R.drawable.jo,
-//            ),
-//            Country(
-//                "jp",
-//                "+81",
-//                "Japan",
-//                R.drawable.jp,
-//            ),
-//            Country(
-//                "ke",
-//                "+254",
-//                "Kenya",
-//                R.drawable.ke,
-//            ),
-//            Country(
-//                "kg",
-//                "+996",
-//                "Kyrgyzstan",
-//                R.drawable.kg,
-//            ),
-//            Country(
-//                "kh",
-//                "+855",
-//                "Cambodia",
-//                R.drawable.kh,
-//            ),
-//            Country(
-//                "ki",
-//                "+686",
-//                "Kiribati",
-//                R.drawable.ki,
-//            ),
-//            Country(
-//                "km",
-//                "+269",
-//                "Comoros",
-//                R.drawable.km,
-//            ),
-//            Country(
-//                "kn",
-//                "+1",
-//                "Saint Kitts and Nevis",
-//                R.drawable.kn,
-//            ),
-//            Country(
-//                "kp",
-//                "+850",
-//                "North Korea",
-//                R.drawable.kp,
-//            ),
-//            Country(
-//                "kr",
-//                "+82",
-//                "South Korea",
-//                R.drawable.kr,
-//            ),
-//            Country(
-//                "kw",
-//                "+965",
-//                "Kuwait",
-//                R.drawable.kw,
-//            ),
-//            Country(
-//                "ky",
-//                "+1",
-//                "Cayman Islands",
-//                R.drawable.ky,
-//            ),
-//            Country(
-//                "kz",
-//                "+7",
-//                "Kazakhstan",
-//                R.drawable.kz,
-//            ),
-//            Country(
-//                "la",
-//                "+856",
-//                "Lao People's Democratic Republic",
-//                R.drawable.la,
-//            ),
-//            Country(
-//                "lb",
-//                "+961",
-//                "Lebanon",
-//                R.drawable.lb,
-//            ),
-//            Country(
-//                "lc",
-//                "+1",
-//                "Saint Lucia",
-//                R.drawable.lc,
-//            ),
-//            Country(
-//                "li",
-//                "+423",
-//                "Liechtenstein",
-//                R.drawable.li,
-//            ),
-//            Country(
-//                "lk",
-//                "+94",
-//                "Sri Lanka",
-//                R.drawable.lk,
-//            ),
-//            Country(
-//                "lr",
-//                "+231",
-//                "Liberia",
-//                R.drawable.lr,
-//            ),
-//            Country(
-//                "ls",
-//                "+266",
-//                "Lesotho",
-//                R.drawable.ls,
-//            ),
-//            Country(
-//                "lt",
-//                "+370",
-//                "Lithuania",
-//                R.drawable.lt,
-//            ),
-//            Country(
-//                "lu",
-//                "+352",
-//                "Luxembourg",
-//                R.drawable.lu,
-//            ),
-//            Country(
-//                "lv",
-//                "+371",
-//                "Latvia",
-//                R.drawable.lv,
-//            ),
-//            Country(
-//                "ly",
-//                "+218",
-//                "Libya",
-//                R.drawable.ly,
-//            ),
-//            Country(
-//                "ma",
-//                "+212",
-//                "Morocco",
-//                R.drawable.ma,
-//            ),
-//            Country(
-//                "mc",
-//                "+377",
-//                "Monaco",
-//                R.drawable.mc,
-//            ),
-//            Country(
-//                "md",
-//                "+373",
-//                "Moldova, Republic Of",
-//                R.drawable.md,
-//            ),
-//            Country(
-//                "me",
-//                "+382",
-//                "Montenegro",
-//                R.drawable.me,
-//            ),
-//            Country(
-//                "mf",
-//                "+590",
-//                "Saint Martin",
-//                R.drawable.mf,
-//            ),
-//            Country(
-//                "mg",
-//                "+261",
-//                "Madagascar",
-//                R.drawable.mg,
-//            ),
-//            Country(
-//                "mh",
-//                "+692",
-//                "Marshall Islands",
-//                R.drawable.mh,
-//            ),
-//            Country(
-//                "mk",
-//                "+389",
-//                "Macedonia (FYROM)",
-//                R.drawable.mk,
-//            ),
-//            Country(
-//                "ml",
-//                "+223",
-//                "Mali",
-//                R.drawable.ml,
-//            ),
-//            Country(
-//                "mm",
-//                "+95",
-//                "Myanmar",
-//                R.drawable.mm,
-//            ),
-//            Country(
-//                "mn",
-//                "+976",
-//                "Mongolia",
-//                R.drawable.mn,
-//            ),
-//            Country(
-//                "mo",
-//                "+853",
-//                "Macau",
-//                R.drawable.mo,
-//            ),
-//            Country(
-//                "mp",
-//                "+1",
-//                "Northern Mariana Islands",
-//                R.drawable.mp,
-//            ),
-//            Country(
-//                "mq",
-//                "+596",
-//                "Martinique",
-//                R.drawable.mq,
-//            ),
-//            Country(
-//                "mr",
-//                "+222",
-//                "Mauritania",
-//                R.drawable.mr,
-//            ),
-//            Country(
-//                "ms",
-//                "+1",
-//                "Montserrat",
-//                R.drawable.ms,
-//            ),
-//            Country(
-//                "mt",
-//                "+356",
-//                "Malta",
-//                R.drawable.mt,
-//            ),
-//            Country(
-//                "mu",
-//                "+230",
-//                "Mauritius",
-//                R.drawable.mu,
-//            ),
-//            Country(
-//                "mv",
-//                "+960",
-//                "Maldives",
-//                R.drawable.mv,
-//            ),
-//            Country(
-//                "mw",
-//                "+265",
-//                "Malawi",
-//                R.drawable.mw,
-//            ),
-//            Country(
-//                "mx",
-//                "+52",
-//                "Mexico",
-//                R.drawable.mx,
-//            ),
-//            Country(
-//                "my",
-//                "+60",
-//                "Malaysia",
-//                R.drawable.my,
-//            ),
-//            Country(
-//                "mz",
-//                "+258",
-//                "Mozambique",
-//                R.drawable.mz,
-//            ),
-//            Country(
-//                "na",
-//                "+264",
-//                "Namibia",
-//                R.drawable.na,
-//            ),
-//            Country(
-//                "nc",
-//                "+687",
-//                "New Caledonia",
-//                R.drawable.nc,
-//            ),
-//            Country(
-//                "ne",
-//                "+227",
-//                "Niger",
-//                R.drawable.ne,
-//            ),
-//            Country(
-//                "nf",
-//                "+672",
-//                "Norfolk Islands",
-//                R.drawable.nf,
-//            ),
-//            Country(
-//                "ng",
-//                "+234",
-//                "Nigeria",
-//                R.drawable.ng,
-//            ),
-//            Country(
-//                "ni",
-//                "+505",
-//                "Nicaragua",
-//                R.drawable.ni,
-//            ),
-//            Country(
-//                "nl",
-//                "+31",
-//                "Netherlands",
-//                R.drawable.nl,
-//            ),
-//            Country(
-//                "no",
-//                "+47",
-//                "Norway",
-//                R.drawable.no,
-//            ),
-//            Country(
-//                "np",
-//                "+977",
-//                "Nepal",
-//                R.drawable.np,
-//            ),
-//            Country(
-//                "nr",
-//                "+674",
-//                "Nauru",
-//                R.drawable.nr,
-//            ),
-//            Country(
-//                "nu",
-//                "+683",
-//                "Niue",
-//                R.drawable.nu,
-//            ),
-//            Country(
-//                "nz",
-//                "+64",
-//                "New Zealand",
-//                R.drawable.nz,
-//            ),
-//            Country(
-//                "om",
-//                "+968",
-//                "Oman",
-//                R.drawable.om,
-//            ),
-//            Country(
-//                "pa",
-//                "+507",
-//                "Panama",
-//                R.drawable.pa,
-//            ),
-//            Country(
-//                "pe",
-//                "+51",
-//                "Peru",
-//                R.drawable.pe,
-//            ),
-//            Country(
-//                "pf",
-//                "+689",
-//                "French Polynesia",
-//                R.drawable.pf,
-//            ),
-//            Country(
-//                "pg",
-//                "+675",
-//                "Papua New Guinea",
-//                R.drawable.pg,
-//            ),
-//            Country(
-//                "ph",
-//                "+63",
-//                "Philippines",
-//                R.drawable.ph,
-//            ),
-//            Country(
-//                "pk",
-//                "+92",
-//                "Pakistan",
-//                R.drawable.pk,
-//            ),
-//            Country(
-//                "pl",
-//                "+48",
-//                "Poland",
-//                R.drawable.pl,
-//            ),
-//            Country(
-//                "pm",
-//                "+508",
-//                "Saint Pierre And Miquelon",
-//                R.drawable.pm,
-//            ),
-//            Country(
-//                "pn",
-//                "+870",
-//                "Pitcairn Islands",
-//                R.drawable.pn,
-//            ),
-//            Country(
-//                "pr",
-//                "+1",
-//                "Puerto Rico",
-//                R.drawable.pr,
-//            ),
-//            Country(
-//                "ps",
-//                "+970",
-//                "Palestine",
-//                R.drawable.ps,
-//            ),
-//            Country(
-//                "pt",
-//                "+351",
-//                "Portugal",
-//                R.drawable.pt,
-//            ),
-//            Country(
-//                "pw",
-//                "+680",
-//                "Palau",
-//                R.drawable.pw,
-//            ),
-//            Country(
-//                "py",
-//                "+595",
-//                "Paraguay",
-//                R.drawable.py,
-//            ),
-//            Country(
-//                "qa",
-//                "+974",
-//                "Qatar",
-//                R.drawable.qa,
-//            ),
-//            Country(
-//                "re",
-//                "+262",
-//                "Réunion",
-//                R.drawable.re,
-//            ),
-//            Country(
-//                "ro",
-//                "+40",
-//                "Romania",
-//                R.drawable.ro,
-//            ),
-//            Country(
-//                "rs",
-//                "+381",
-//                "Serbia",
-//                R.drawable.rs,
-//            ),
-//            Country(
-//                "ru",
-//                "+7",
-//                "Russian Federation",
-//                R.drawable.ru,
-//            ),
-//            Country(
-//                "rw",
-//                "+250",
-//                "Rwanda",
-//                R.drawable.rw,
-//            ),
-//            Country(
-//                "sa",
-//                "+966",
-//                "Saudi Arabia",
-//                R.drawable.sa,
-//            ),
-//            Country(
-//                "sb",
-//                "+677",
-//                "Solomon Islands",
-//                R.drawable.sb,
-//            ),
-//            Country(
-//                "sc",
-//                "+248",
-//                "Seychelles",
-//                R.drawable.sc,
-//            ),
-//            Country(
-//                "sd",
-//                "+249",
-//                "Sudan",
-//                R.drawable.sd,
-//            ),
-//            Country(
-//                "se",
-//                "+46",
-//                "Sweden",
-//                R.drawable.se,
-//            ),
-//            Country(
-//                "sg",
-//                "+65",
-//                "Singapore",
-//                R.drawable.sg,
-//            ),
-//            Country(
-//                "sh",
-//                "+290",
-//                "Saint Helena, Ascension And Tristan Da Cunha",
-//                R.drawable.sh,
-//            ),
-//            Country(
-//                "si",
-//                "+386",
-//                "Slovenia",
-//                R.drawable.si,
-//            ),
-//            Country(
-//                "sk",
-//                "+421",
-//                "Slovakia",
-//                R.drawable.sk,
-//            ),
-//            Country(
-//                "sl",
-//                "+232",
-//                "Sierra Leone",
-//                R.drawable.sl,
-//            ),
-//            Country(
-//                "sm",
-//                "+378",
-//                "San Marino",
-//                R.drawable.sm,
-//            ),
-//            Country(
-//                "sn",
-//                "+221",
-//                "Senegal",
-//                R.drawable.sn,
-//            ),
-//            Country(
-//                "so",
-//                "+252",
-//                "Somalia",
-//                R.drawable.so,
-//            ),
-//            Country(
-//                "sr",
-//                "+597",
-//                "Suriname",
-//                R.drawable.sr,
-//            ),
-//            Country(
-//                "ss",
-//                "+211",
-//                "South Sudan",
-//                R.drawable.ss,
-//            ),
-//            Country(
-//                "st",
-//                "+239",
-//                "Sao Tome And Principe",
-//                R.drawable.st,
-//            ),
-//            Country(
-//                "sv",
-//                "+503",
-//                "El Salvador",
-//                R.drawable.sv,
-//            ),
-//            Country(
-//                "sx",
-//                "+1",
-//                "Sint Maarten",
-//                R.drawable.sx,
-//            ),
-//            Country(
-//                "sy",
-//                "+963",
-//                "Syrian Arab Republic",
-//                R.drawable.sy,
-//            ),
-//            Country(
-//                "sz",
-//                "+268",
-//                "Swaziland",
-//                R.drawable.sz,
-//            ),
-//            Country(
-//                "tc",
-//                "+1",
-//                "Turks and Caicos Islands",
-//                R.drawable.tc,
-//            ),
-//            Country(
-//                "td",
-//                "+235",
-//                "Chad",
-//                R.drawable.td,
-//            ),
-//            Country(
-//                "tg",
-//                "+228",
-//                "Togo",
-//                R.drawable.tg,
-//            ),
-//            Country(
-//                "th",
-//                "+66",
-//                "Thailand",
-//                R.drawable.th,
-//            ),
-//            Country(
-//                "tj",
-//                "+992",
-//                "Tajikistan",
-//                R.drawable.tj,
-//            ),
-//            Country(
-//                "tk",
-//                "+690",
-//                "Tokelau",
-//                R.drawable.tk,
-//            ),
-//            Country(
-//                "tl",
-//                "+670",
-//                "Timor-leste",
-//                R.drawable.tl,
-//            ),
-//            Country(
-//                "tm",
-//                "+993",
-//                "Turkmenistan",
-//                R.drawable.tm,
-//            ),
-//            Country(
-//                "tn",
-//                "+216",
-//                "Tunisia",
-//                R.drawable.tn,
-//            ),
-//            Country(
-//                "to",
-//                "+676",
-//                "Tonga",
-//                R.drawable.to,
-//            ),
-//            Country(
-//                "tr",
-//                "+90",
-//                "Turkey",
-//                R.drawable.tr,
-//            ),
-//            Country(
-//                "tt",
-//                "+1",
-//                "Trinidad &amp; Tobago",
-//                R.drawable.tt,
-//            ),
-//            Country(
-//                "tv",
-//                "+688",
-//                "Tuvalu",
-//                R.drawable.tv,
-//            ),
-//            Country(
-//                "tw",
-//                "+886",
-//                "Taiwan",
-//                R.drawable.tw,
-//            ),
-//            Country(
-//                "tz",
-//                "+255",
-//                "Tanzania, United Republic Of",
-//                R.drawable.tz,
-//            ),
-//            Country(
-//                "ua",
-//                "+380",
-//                "Ukraine",
-//                R.drawable.ua,
-//            ),
-//            Country(
-//                "ug",
-//                "+256",
-//                "Uganda",
-//                R.drawable.ug,
-//            ),
-//            Country(
-//                "us",
-//                "+1",
-//                "United States",
-//                R.drawable.us,
-//            ),
-//            Country(
-//                "uy",
-//                "+598",
-//                "Uruguay",
-//                R.drawable.uy,
-//            ),
-//            Country(
-//                "uz",
-//                "+998",
-//                "Uzbekistan",
-//                R.drawable.uz,
-//            ),
-//            Country(
-//                "va",
-//                "+379",
-//                "Holy See (vatican City State)",
-//                R.drawable.va,
-//            ),
-//            Country(
-//                "vc",
-//                "+1",
-//                "Saint Vincent &amp; The Grenadines",
-//                R.drawable.vc,
-//            ),
-//            Country(
-//                "ve",
-//                "+58",
-//                "Venezuela, Bolivarian Republic Of",
-//                R.drawable.ve,
-//            ),
-//            Country(
-//                "vg",
-//                "+1",
-//                "British Virgin Islands",
-//                R.drawable.vg,
-//            ),
-//            Country(
-//                "vi",
-//                "+1",
-//                "US Virgin Islands",
-//                R.drawable.vi,
-//            ),
-//            Country(
-//                "vn",
-//                "+84",
-//                "Vietnam",
-//                R.drawable.vn,
-//            ),
-//            Country(
-//                "vu",
-//                "+678",
-//                "Vanuatu",
-//                R.drawable.vu,
-//            ),
-//            Country(
-//                "wf",
-//                "+681",
-//                "Wallis And Futuna",
-//                R.drawable.wf,
-//            ),
-//            Country(
-//                "ws",
-//                "4685",
-//                "Samoa",
-//                R.drawable.ws,
-//            ),
-//            Country(
-//                "xk",
-//                "+383",
-//                "Kosovo",
-//                R.drawable.xk,
-//            ),
-//            Country(
-//                "ye",
-//                "+967",
-//                "Yemen",
-//                R.drawable.ye,
-//            ),
-//            Country(
-//                "yt",
-//                "+262",
-//                "Mayotte",
-//                R.drawable.yt,
-//            ),
-//            Country(
-//                "za",
-//                "+27",
-//                "South Africa",
-//                R.drawable.za,
-//            ),
-//            Country(
-//                "zm",
-//                "+260",
-//                "Zambia",
-//                R.drawable.zm,
-//            ),
-//            Country(
-//                "zw",
-//                "+263",
-//                "Zimbabwe",
-//                R.drawable.zw,
-//            ),
-//        ).sortedBy { it.name }
-//
-//    /**
-//     * [getNumberHint] Returns the hint of the country. [countryName] The name
-//     * of the country.
-//     *
-//     * @param countryName The name of the country.
-//     */
-//    fun getNumberHint(countryName: String): Int = when (countryName) {
-//        "ad" -> R.string.andorra_hint
-//        "ae" -> R.string.united_arab_emirates_hint
-//        "af" -> R.string.afganistan_hint
-//        "ag" -> R.string.antigua_and_barbuda_hint
-//        "ai" -> R.string.anguilla_hint
-//        "al" -> R.string.albania_hint
-//        "am" -> R.string.armenia_hint
-//        "ao" -> R.string.angola_hint
-//        "aq" -> R.string.antarctica_hint
-//        "ar" -> R.string.argentina_hint
-//        "as" -> R.string.american_samoa_hint
-//        "at" -> R.string.austria_hint
-//        "au" -> R.string.australia_hint
-//        "aw" -> R.string.aruba_hint
-//        "ax" -> R.string.aland_islands_hint
-//        "az" -> R.string.azerbaijan_hint
-//        "ba" -> R.string.bosnia_hint
-//        "bb" -> R.string.barbados_hint
-//        "bd" -> R.string.bangladesh_hint
-//        "be" -> R.string.belgium_hint
-//        "bf" -> R.string.burkina_faso_hint
-//        "bg" -> R.string.bulgaria_hint
-//        "bh" -> R.string.bahrain_hint
-//        "bi" -> R.string.burundi_hint
-//        "bj" -> R.string.benin_hint
-//        "bl" -> R.string.saint_barhelemy_hint
-//        "bm" -> R.string.bermuda_hint
-//        "bn" -> R.string.brunei_darussalam_hint
-//        "bo" -> R.string.bolivia_hint
-//        "br" -> R.string.brazil_hint
-//        "bs" -> R.string.bahamas_hint
-//        "bt" -> R.string.bhutan_hint
-//        "bw" -> R.string.botswana_hint
-//        "by" -> R.string.belarus_hint
-//        "bz" -> R.string.belize_hint
-//        "ca" -> R.string.canada_hint
-//        "cc" -> R.string.cocos_hint
-//        "cd" -> R.string.congo_democratic_hint
-//        "cf" -> R.string.central_african_hint
-//        "cg" -> R.string.congo_hint
-//        "ch" -> R.string.switzerland_hint
-//        "ci" -> R.string.cote_dlvoire_hint
-//        "ck" -> R.string.cook_islands_hint
-//        "cl" -> R.string.chile_hint
-//        "cm" -> R.string.cameroon_hint
-//        "cn" -> R.string.china_hint
-//        "co" -> R.string.colombia_hint
-//        "cr" -> R.string.costa_rica_hint
-//        "cu" -> R.string.cuba_hint
-//        "cv" -> R.string.cape_verde_hint
-//        "cw" -> R.string.curacao_hint
-//        "cx" -> R.string.christmas_island_hint
-//        "cy" -> R.string.cyprus_hint
-//        "cz" -> R.string.czech_republic_hint
-//        "de" -> R.string.germany_hint
-//        "dj" -> R.string.djibouti_hint
-//        "dk" -> R.string.denmark_hint
-//        "dm" -> R.string.dominica_hint
-//        "do" -> R.string.dominician_republic_hint
-//        "dz" -> R.string.algeria_hint
-//        "ec" -> R.string.ecuador_hint
-//        "ee" -> R.string.estonia_hint
-//        "eg" -> R.string.egypt_hint
-//        "er" -> R.string.eritrea_hint
-//        "es" -> R.string.spain_hint
-//        "et" -> R.string.ethiopia_hint
-//        "fi" -> R.string.finland_hint
-//        "fj" -> R.string.fiji_hint
-//        "fk" -> R.string.falkland_islands_hint
-//        "fm" -> R.string.micro_hint
-//        "fo" -> R.string.faroe_islands_hint
-//        "fr" -> R.string.france_hint
-//        "ga" -> R.string.gabon_hint
-//        "gb" -> R.string.united_kingdom_hint
-//        "gd" -> R.string.grenada_hint
-//        "ge" -> R.string.georgia_hint
-//        "gf" -> R.string.french_guyana_hint
-//        "gg" -> R.string.guernsey_hint
-//        "gh" -> R.string.ghana_hint
-//        "gi" -> R.string.unknown
-//        "gl" -> R.string.greenland_hint
-//        "gm" -> R.string.gambia_hint
-//        "gn" -> R.string.guinea_hint
-//        "gp" -> R.string.guadeloupe_hint
-//        "gq" -> R.string.equatorial_guinea_hint
-//        "gr" -> R.string.greece_hint
-//        "gt" -> R.string.guatemala_hint
-//        "gu" -> R.string.guam_hint
-//        "gw" -> R.string.guinea_bissau_hint
-//        "gy" -> R.string.guyana_hint
-//        "hk" -> R.string.hong_kong_hint
-//        "hn" -> R.string.honduras_hint
-//        "hr" -> R.string.croatia_hint
-//        "ht" -> R.string.haiti_hint
-//        "hu" -> R.string.hungary_hint
-//        "id" -> R.string.indonesia_hint
-//        "ie" -> R.string.ireland_hint
-//        "il" -> R.string.israil_hint
-//        "im" -> R.string.isle_of_man
-//        "is" -> R.string.iceland
-//        "in" -> R.string.india_hint
-//        "io" -> R.string.british_indian_ocean
-//        "iq" -> R.string.iraq_hint
-//        "ir" -> R.string.iran_hint
-//        "it" -> R.string.italia_hint
-//        "je" -> R.string.jersey_hint
-//        "jm" -> R.string.jamaica_hint
-//        "jo" -> R.string.jordan_hint
-//        "jp" -> R.string.japan_hint
-//        "ke" -> R.string.kenya_hint
-//        "kg" -> R.string.kyrgyzstan_hint
-//        "kh" -> R.string.cambodia_hint
-//        "ki" -> R.string.kiribati
-//        "km" -> R.string.comoros_hint
-//        "kn" -> R.string.saint_kitts_hint
-//        "kp" -> R.string.north_korea_hint
-//        "kr" -> R.string.south_korea_hint
-//        "kw" -> R.string.kuwait_hint
-//        "ky" -> R.string.cayman_islands_hint
-//        "kz" -> R.string.kazakhstan_hint
-//        "la" -> R.string.laos_hint
-//        "lb" -> R.string.lebanon_hint
-//        "lc" -> R.string.saint_lucia_hint
-//        "li" -> R.string.liechtenstein
-//        "lk" -> R.string.siri_lanka_hint
-//        "lr" -> R.string.liberia_hint
-//        "ls" -> R.string.lesotho_hint
-//        "lt" -> R.string.lithuania_hint
-//        "lu" -> R.string.luxembourg_hint
-//        "lv" -> R.string.latvia_hint
-//        "ly" -> R.string.libya_hint
-//        "ma" -> R.string.marocco_hint
-//        "mc" -> R.string.monaco_hint
-//        "md" -> R.string.moldova_hint
-//        "me" -> R.string.montenegro_hint
-//        "mf" -> R.string.saint_martin_hint
-//        "mg" -> R.string.madagascar_hint
-//        "mh" -> R.string.marshall_islands_hint
-//        "mk" -> R.string.north_macedonia_hint
-//        "ml" -> R.string.mali_hint
-//        "mm" -> R.string.myanmar_hint
-//        "mn" -> R.string.mongolia_hint
-//        "mo" -> R.string.macau_hint
-//        "mp" -> R.string.northern_mariana_hint
-//        "mq" -> R.string.martinique_hint
-//        "mr" -> R.string.mauriatana_hint
-//        "ms" -> R.string.montserrat_hint
-//        "mt" -> R.string.malta_hint
-//        "mu" -> R.string.mauritius_hint
-//        "mv" -> R.string.maldives_hint
-//        "mw" -> R.string.malawi_hint
-//        "mx" -> R.string.mexico_hint
-//        "my" -> R.string.malaysia_hint
-//        "mz" -> R.string.mozambique_hint
-//        "na" -> R.string.namibia_hint
-//        "nc" -> R.string.new_caledonia_hint
-//        "ne" -> R.string.niger_hint
-//        "nf" -> R.string.norfolk_hint
-//        "ng" -> R.string.nigeria_hint
-//        "ni" -> R.string.nicaragua
-//        "nl" -> R.string.netherlands_hint
-//        "no" -> R.string.norway_hint
-//        "np" -> R.string.nepal_hint
-//        "nr" -> R.string.nauru_hint
-//        "nu" -> R.string.niue_hint
-//        "nz" -> R.string.new_zealand_hint
-//        "om" -> R.string.oman_hint
-//        "pa" -> R.string.panama_hint
-//        "pe" -> R.string.peru_hint
-//        "pf" -> R.string.french_polynesia_hint
-//        "pg" -> R.string.papua_new_guinea_hint
-//        "ph" -> R.string.philippinies_hint
-//        "pk" -> R.string.pakistan_hint
-//        "pl" -> R.string.poland_hint
-//        "pm" -> R.string.saint_pierre_hint
-//        "pn" -> R.string.pitcairn
-//        "pr" -> R.string.puerto_rico_hint
-//        "ps" -> R.string.state_of_palestine_hint
-//        "pt" -> R.string.portugal_hint
-//        "pw" -> R.string.palau_hint
-//        "py" -> R.string.paraguay_hint
-//        "qa" -> R.string.qatar_hint
-//        "re" -> R.string.reunion_hint
-//        "ro" -> R.string.romania_hint
-//        "rs" -> R.string.serbia_hint
-//        "ru" -> R.string.russia_hint
-//        "rw" -> R.string.rwanda_hint
-//        "sa" -> R.string.saudi_arabia_hint
-//        "sb" -> R.string.solomon_islands_hint
-//        "sc" -> R.string.seychelles_hint
-//        "sd" -> R.string.sudan_hint
-//        "se" -> R.string.sweden_hint
-//        "sg" -> R.string.singapore_hint
-//        "sh" -> R.string.saint_helena_hint
-//        "si" -> R.string.slovenia_hint
-//        "sk" -> R.string.slovakia_hint
-//        "sl" -> R.string.sierra_leone_hint
-//        "sm" -> R.string.san_marino_hint
-//        "sn" -> R.string.senegal_hint
-//        "so" -> R.string.somali_hint
-//        "sr" -> R.string.suriname_hint
-//        "ss" -> R.string.south_sudan_hint
-//        "st" -> R.string.sao_tome_hint
-//        "sv" -> R.string.el_salvador_hint
-//        "sx" -> R.string.sint_maarten_hint
-//        "sy" -> R.string.syrian_hint
-//        "sz" -> R.string.swaziland_hint
-//        "tc" -> R.string.turks_and_caicos_hint
-//        "td" -> R.string.chad_hint
-//        "tg" -> R.string.togo_hint
-//        "th" -> R.string.thailand_hint
-//        "tj" -> R.string.taijikistan_hint
-//        "tk" -> R.string.tokelau_hint
-//        "tl" -> R.string.timor_leste_hint
-//        "tm" -> R.string.turkmenistan_hint
-//        "tn" -> R.string.tunisia_hint
-//        "to" -> R.string.tonga_hint
-//        "tr" -> R.string.turkey_hint
-//        "tt" -> R.string.trinidad_and_tobago_hint
-//        "tv" -> R.string.tuvalu_hint
-//        "tw" -> R.string.taiwan_hint
-//        "tz" -> R.string.tazmania_hint
-//        "ua" -> R.string.ukraina_hint
-//        "ug" -> R.string.uganda_hint
-//        "us" -> R.string.united_states_america_hint
-//        "uy" -> R.string.uruguay_hint
-//        "uz" -> R.string.uzbekistan_hint
-//        "va" -> R.string.holy_see
-//        "vc" -> R.string.saint_vincent_hint
-//        "ve" -> R.string.venezuela_hint
-//        "vg" -> R.string.virgin_islands_hint
-//        "vi" -> R.string.virgin_island_us
-//        "vn" -> R.string.vietnam_hint
-//        "vu" -> R.string.vanuatu_hint
-//        "wf" -> R.string.walli_and_fatuna_hint
-//        "ws" -> R.string.samoa_hint
-//        "xk" -> R.string.kosovo_hint
-//        "ye" -> R.string.yemen_hint
-//        "yt" -> R.string.mayotte_hint
-//        "za" -> R.string.south_africa_hint
-//        "zm" -> R.string.zambia_hint
-//        "zw" -> R.string.zimbabwe_hint
-//        else -> R.string.unknown
-//    }
-//}
+internal object PickerUtils {
+    /**
+     * [getCountry] Returns the country of the supplied country code. if the
+     * country code is empty, the default country is the United States.
+     */
+    fun String.getCountry(): Country {
+        val default = allCountries.first { it.code.lowercase() == "us" }
+        return if (this.isNotEmpty()) {
+            allCountries.find { it.code.lowercase() == this.lowercase() } ?: default
+        } else {
+            default
+        }
+    }
+
+    /**
+     * [getLimitedCountries] Returns a list of countries that match the search
+     * @param limitedCountries The list of countries strings.
+     */
+    fun getLimitedCountries(limitedCountries: List<String>): List<Country> {
+        val cleanedCountries =
+            limitedCountries.map { it.removeSpecialCharacters().trim().lowercase() }
+
+        val digits = cleanedCountries.filter { it.all { char -> char.isDigit() } }
+        val shortCodes =
+            cleanedCountries.filter { it.all { char -> char.isLetter() } && it.length <= 2 }
+        val names = cleanedCountries.filter { it.all { char -> char.isLetter() } && it.length > 2 }
+
+        return (
+            digits.flatMap { digit ->
+                allCountries.filter { it.phoneNoCode.contains(digit) }
+            } + shortCodes.flatMap { code ->
+                allCountries.filter { it.code.lowercase() == code }
+            } + names.flatMap { name ->
+                allCountries.filter { it.name.lowercase().contains(name) }
+            }
+            ).distinct().sortedBy { it.name }
+    }
+
+    /**
+     * [sortCountriesWithPriority] Sorts the countries list with the priority
+     * countries at the top.
+     *
+     * @param countries The list of countries to be sorted.
+     * @param priorityCountries The list of country codes that should be prioritized.
+     * @return A sorted list of countries with the priority countries at the top.
+     *
+     * Please dont alter the order of the priority countries.
+     */
+    fun sortCountriesWithPriority(
+        countries: List<Country>,
+        priorityCountries: List<String>,
+    ): List<Country> {
+        val priorityCodesLower = priorityCountries.map { it.lowercase() }
+
+        val priorityMap = priorityCodesLower.withIndex().associate { it.value to it.index }
+
+        val (priority, nonPriority) = countries.partition { it.code.lowercase() in priorityMap }
+
+        val sortedPriority = priority.sortedBy { priorityMap[it.code.lowercase()] }
+        val sortedNonPriority = nonPriority.sortedBy { it.name.lowercase() }
+
+        return sortedPriority + sortedNonPriority
+    }
+
+    /**
+     * [isValid] Returns true if the phone number is valid.
+     *
+     * @param phoneNumberStr The phone number to be checked.
+     */
+    fun isValid(phoneNumberStr: String): Boolean = isPhoneNumberValid(phoneNumberStr)
+
+    /**
+     * [removeSpecialCharacters] Returns the string without special
+     * characters.
+     */
+    fun String.removeSpecialCharacters(): String = this.replace("[^a-zA-Z0-9]".toRegex(), "")
+
+    /**
+     * [searchForAnItem] Returns a list of items that match the search string.
+     *
+     * @param searchStr The search string.
+     */
+    fun List<Country>.searchForAnItem(
+        searchStr: String,
+    ): List<Country> {
+        val filteredItems = filter {
+            it.name.unaccent().contains(
+                searchStr,
+                ignoreCase = true,
+            ) ||
+                it.phoneNoCode.contains(
+                    searchStr,
+                    ignoreCase = true,
+                ) ||
+                it.code.contains(
+                    searchStr,
+                    ignoreCase = true,
+                )
+        }
+        return filteredItems.toList()
+    }
+
+    /**
+     * Map of shared phone codes to their preferred/primary country code.
+     * When multiple countries share the same dialling code, this map determines
+     * which country is returned by [extractCountryCodeAndPhoneNumber].
+     */
+    private val preferredCountryForSharedCode: Map<String, String> = mapOf(
+        "+1" to "us", // NANP: 22 countries share +1
+        "+7" to "ru", // Russia & Kazakhstan
+        "+44" to "gb", // UK, Guernsey, Isle of Man, Jersey
+        "+61" to "au", // Australia, Christmas Island, Cocos Islands
+        "+47" to "no", // Norway & Svalbard
+        "+262" to "re", // Réunion & Mayotte
+        "+590" to "gp", // Guadeloupe, Saint Barthélemy, Saint Martin
+    )
+
+    /**
+     * [extractCountryCodeAndPhoneNumber] Returns the country code and the
+     * phone e.g +254712345678 -> Pair("ke", "712345678")
+     *
+     * @param wholePhoneNumber The phone number to be extracted.
+     */
+    fun extractCountryCodeAndPhoneNumber(wholePhoneNumber: String): Pair<String?, String> {
+        // Find all countries whose phone code matches the start of the number
+        val candidates = allCountries.filter { wholePhoneNumber.startsWith(it.phoneNoCode) }
+        if (candidates.isEmpty()) return null to wholePhoneNumber
+
+        // Pick the best match: prefer the longest phone code first (e.g. +254 over +2),
+        // then prefer the "primary" country for shared codes (e.g. US for +1)
+        val country = candidates
+            .sortedByDescending { it.phoneNoCode.length }
+            .let { sorted ->
+                val longestCode = sorted.first().phoneNoCode
+                val topCandidates = sorted.filter { it.phoneNoCode == longestCode }
+                if (topCandidates.size == 1) {
+                    topCandidates.first()
+                } else {
+                    val preferred = preferredCountryForSharedCode[longestCode]
+                    topCandidates.find { it.code == preferred } ?: topCandidates.first()
+                }
+            }
+
+        return country.code to stripPhoneCode(
+            phoneCode = country.phoneNoCode,
+            phoneNo = wholePhoneNumber,
+        )
+    }
+
+    /**
+     * [stripPhoneCode] Returns the phone number without the phone code.
+     *
+     * @param phoneCode The phone code.
+     * @param phoneNo The phone number.
+     */
+    private fun stripPhoneCode(
+        phoneCode: String,
+        phoneNo: String,
+    ): String = phoneNo.replaceFirst(phoneCode, "")
+
+    /**
+     * [getFlags] Returns the flag of the country. [countryName] The name of
+     * the country.
+     *
+     * @param countryName The name of the country.
+     */
+    fun getFlags(countryName: String): DrawableResource = when (countryName) {
+        "ad" -> Res.drawable.ad
+        "ae" -> Res.drawable.ae
+        "af" -> Res.drawable.af
+        "ag" -> Res.drawable.ag
+        "ai" -> Res.drawable.ai
+        "al" -> Res.drawable.al
+        "am" -> Res.drawable.am
+        "ao" -> Res.drawable.ao
+        "aq" -> Res.drawable.aq
+        "ar" -> Res.drawable.ar
+        "as" -> Res.drawable.`as`
+        "at" -> Res.drawable.at
+        "au" -> Res.drawable.au
+        "aw" -> Res.drawable.aw
+        "ax" -> Res.drawable.ax
+        "az" -> Res.drawable.az
+        "ba" -> Res.drawable.ba
+        "bb" -> Res.drawable.bb
+        "bd" -> Res.drawable.bd
+        "be" -> Res.drawable.be
+        "bf" -> Res.drawable.bf
+        "bg" -> Res.drawable.bg
+        "bh" -> Res.drawable.bh
+        "bi" -> Res.drawable.bi
+        "bj" -> Res.drawable.bj
+        "bl" -> Res.drawable.bl
+        "bm" -> Res.drawable.bm
+        "bn" -> Res.drawable.bn
+        "bo" -> Res.drawable.bo
+        "br" -> Res.drawable.br
+        "bs" -> Res.drawable.bs
+        "bt" -> Res.drawable.bt
+        "bw" -> Res.drawable.bw
+        "by" -> Res.drawable.by
+        "bz" -> Res.drawable.bz
+        "ca" -> Res.drawable.ca
+        "cc" -> Res.drawable.cc
+        "cd" -> Res.drawable.cd
+        "cf" -> Res.drawable.cf
+        "cg" -> Res.drawable.cg
+        "ch" -> Res.drawable.ch
+        "ci" -> Res.drawable.ci
+        "ck" -> Res.drawable.ck
+        "cl" -> Res.drawable.cl
+        "cm" -> Res.drawable.cm
+        "cn" -> Res.drawable.cn
+        "co" -> Res.drawable.co
+        "cr" -> Res.drawable.cr
+        "cu" -> Res.drawable.cu
+        "cv" -> Res.drawable.cv
+        "cw" -> Res.drawable.cw
+        "cx" -> Res.drawable.cx
+        "cy" -> Res.drawable.cy
+        "cz" -> Res.drawable.cz
+        "de" -> Res.drawable.de
+        "dj" -> Res.drawable.dj
+        "dk" -> Res.drawable.dk
+        "dm" -> Res.drawable.dm
+        "do" -> Res.drawable.ic_do
+        "dz" -> Res.drawable.dz
+        "ec" -> Res.drawable.ec
+        "ee" -> Res.drawable.ee
+        "eg" -> Res.drawable.eg
+        "er" -> Res.drawable.er
+        "es" -> Res.drawable.es
+        "et" -> Res.drawable.et
+        "fi" -> Res.drawable.fi
+        "fj" -> Res.drawable.fj
+        "fk" -> Res.drawable.fk
+        "fm" -> Res.drawable.fm
+        "fo" -> Res.drawable.fo
+        "fr" -> Res.drawable.fr
+        "ga" -> Res.drawable.ga
+        "gb" -> Res.drawable.gb
+        "gd" -> Res.drawable.gd
+        "ge" -> Res.drawable.ge
+        "gf" -> Res.drawable.gf
+        "gg" -> Res.drawable.gg
+        "gh" -> Res.drawable.gh
+        "gi" -> Res.drawable.gi
+        "gl" -> Res.drawable.gl
+        "gm" -> Res.drawable.gm
+        "gn" -> Res.drawable.gn
+        "gp" -> Res.drawable.gp
+        "gq" -> Res.drawable.gq
+        "gr" -> Res.drawable.gr
+        "gt" -> Res.drawable.gt
+        "gu" -> Res.drawable.gu
+        "gw" -> Res.drawable.gw
+        "gy" -> Res.drawable.gy
+        "hk" -> Res.drawable.hk
+        "hn" -> Res.drawable.hn
+        "hr" -> Res.drawable.hr
+        "ht" -> Res.drawable.ht
+        "hu" -> Res.drawable.hu
+        "id" -> Res.drawable.id
+        "ie" -> Res.drawable.ie
+        "il" -> Res.drawable.il
+        "im" -> Res.drawable.im
+        "is" -> Res.drawable.`is`
+        "in" -> Res.drawable.`in`
+        "io" -> Res.drawable.io
+        "iq" -> Res.drawable.iq
+        "ir" -> Res.drawable.ir
+        "it" -> Res.drawable.it
+        "je" -> Res.drawable.je
+        "jm" -> Res.drawable.jm
+        "jo" -> Res.drawable.jo
+        "jp" -> Res.drawable.jp
+        "ke" -> Res.drawable.ke
+        "kg" -> Res.drawable.kg
+        "kh" -> Res.drawable.kh
+        "ki" -> Res.drawable.ki
+        "km" -> Res.drawable.km
+        "kn" -> Res.drawable.kn
+        "kp" -> Res.drawable.kp
+        "kr" -> Res.drawable.kr
+        "kw" -> Res.drawable.kw
+        "ky" -> Res.drawable.ky
+        "kz" -> Res.drawable.kz
+        "la" -> Res.drawable.la
+        "lb" -> Res.drawable.lb
+        "lc" -> Res.drawable.lc
+        "li" -> Res.drawable.li
+        "lk" -> Res.drawable.lk
+        "lr" -> Res.drawable.lr
+        "ls" -> Res.drawable.ls
+        "lt" -> Res.drawable.lt
+        "lu" -> Res.drawable.lu
+        "lv" -> Res.drawable.lv
+        "ly" -> Res.drawable.ly
+        "ma" -> Res.drawable.ma
+        "mc" -> Res.drawable.mc
+        "md" -> Res.drawable.md
+        "me" -> Res.drawable.me
+        "mf" -> Res.drawable.mf
+        "mg" -> Res.drawable.mg
+        "mh" -> Res.drawable.mh
+        "mk" -> Res.drawable.mk
+        "ml" -> Res.drawable.ml
+        "mm" -> Res.drawable.mm
+        "mn" -> Res.drawable.mn
+        "mo" -> Res.drawable.mo
+        "mp" -> Res.drawable.mp
+        "mq" -> Res.drawable.mq
+        "mr" -> Res.drawable.mr
+        "ms" -> Res.drawable.ms
+        "mt" -> Res.drawable.mt
+        "mu" -> Res.drawable.mu
+        "mv" -> Res.drawable.mv
+        "mw" -> Res.drawable.mw
+        "mx" -> Res.drawable.mx
+        "my" -> Res.drawable.my
+        "mz" -> Res.drawable.mz
+        "na" -> Res.drawable.na
+        "nc" -> Res.drawable.nc
+        "ne" -> Res.drawable.ne
+        "nf" -> Res.drawable.nf
+        "ng" -> Res.drawable.ng
+        "ni" -> Res.drawable.ni
+        "nl" -> Res.drawable.nl
+        "no" -> Res.drawable.no
+        "np" -> Res.drawable.np
+        "nr" -> Res.drawable.nr
+        "nu" -> Res.drawable.nu
+        "nz" -> Res.drawable.nz
+        "om" -> Res.drawable.om
+        "pa" -> Res.drawable.pa
+        "pe" -> Res.drawable.pe
+        "pf" -> Res.drawable.pf
+        "pg" -> Res.drawable.pg
+        "ph" -> Res.drawable.ph
+        "pk" -> Res.drawable.pk
+        "pl" -> Res.drawable.pl
+        "pm" -> Res.drawable.pm
+        "pn" -> Res.drawable.pn
+        "pr" -> Res.drawable.pr
+        "ps" -> Res.drawable.ps
+        "pt" -> Res.drawable.pt
+        "pw" -> Res.drawable.pw
+        "py" -> Res.drawable.py
+        "qa" -> Res.drawable.qa
+        "re" -> Res.drawable.re
+        "ro" -> Res.drawable.ro
+        "rs" -> Res.drawable.rs
+        "ru" -> Res.drawable.ru
+        "rw" -> Res.drawable.rw
+        "sa" -> Res.drawable.sa
+        "sb" -> Res.drawable.sb
+        "sc" -> Res.drawable.sc
+        "sd" -> Res.drawable.sd
+        "se" -> Res.drawable.se
+        "sg" -> Res.drawable.sg
+        "sh" -> Res.drawable.sh
+        "si" -> Res.drawable.si
+        "sk" -> Res.drawable.sk
+        "sl" -> Res.drawable.sl
+        "sm" -> Res.drawable.sm
+        "sn" -> Res.drawable.sn
+        "so" -> Res.drawable.so
+        "sr" -> Res.drawable.sr
+        "ss" -> Res.drawable.ss
+        "st" -> Res.drawable.st
+        "sv" -> Res.drawable.sv
+        "sx" -> Res.drawable.sx
+        "sy" -> Res.drawable.sy
+        "sz" -> Res.drawable.sz
+        "tc" -> Res.drawable.tc
+        "td" -> Res.drawable.td
+        "tg" -> Res.drawable.tg
+        "th" -> Res.drawable.th
+        "tj" -> Res.drawable.tj
+        "tk" -> Res.drawable.tk
+        "tl" -> Res.drawable.tl
+        "tm" -> Res.drawable.tm
+        "tn" -> Res.drawable.tn
+        "to" -> Res.drawable.to
+        "tr" -> Res.drawable.tr
+        "tt" -> Res.drawable.tt
+        "tv" -> Res.drawable.tv
+        "tw" -> Res.drawable.tw
+        "tz" -> Res.drawable.tz
+        "ua" -> Res.drawable.ua
+        "ug" -> Res.drawable.ug
+        "us" -> Res.drawable.us
+        "uy" -> Res.drawable.uy
+        "uz" -> Res.drawable.uz
+        "va" -> Res.drawable.va
+        "vc" -> Res.drawable.vc
+        "ve" -> Res.drawable.ve
+        "vg" -> Res.drawable.vg
+        "vi" -> Res.drawable.vi
+        "vn" -> Res.drawable.vn
+        "vu" -> Res.drawable.vu
+        "wf" -> Res.drawable.wf
+        "ws" -> Res.drawable.ws
+        "xk" -> Res.drawable.xk
+        "ye" -> Res.drawable.ye
+        "yt" -> Res.drawable.yt
+        "za" -> Res.drawable.za
+        "zm" -> Res.drawable.zm
+        "zw" -> Res.drawable.zw
+        else -> Res.drawable.tr
+    }
+
+    /**
+     * [getCountryName] Returns the name of the country. [countryName] The name
+     * of the country.
+     *
+     * @param countryName The name of the country.
+     */
+    fun getCountryName(countryName: String): StringResource = when (countryName) {
+        "ad" -> Res.string.andorra
+        "ae" -> Res.string.united_arab_emirates
+        "af" -> Res.string.afghanistan
+        "ag" -> Res.string.antigua_and_barbuda
+        "ai" -> Res.string.anguilla
+        "al" -> Res.string.albania
+        "am" -> Res.string.armenia
+        "ao" -> Res.string.angola
+        "aq" -> Res.string.antarctica
+        "ar" -> Res.string.argentina
+        "as" -> Res.string.american_samoa
+        "at" -> Res.string.austria
+        "au" -> Res.string.australia
+        "aw" -> Res.string.aruba
+        "ax" -> Res.string.aland_islands
+        "az" -> Res.string.azerbaijan
+        "ba" -> Res.string.bosnia
+        "bb" -> Res.string.barbados
+        "bd" -> Res.string.bangladesh
+        "be" -> Res.string.belgium
+        "bf" -> Res.string.burkina_faso
+        "bg" -> Res.string.bulgaria
+        "bh" -> Res.string.bahrain
+        "bi" -> Res.string.burundi
+        "bj" -> Res.string.benin
+        "bl" -> Res.string.saint_barhelemy
+        "bm" -> Res.string.bermuda
+        "bn" -> Res.string.brunei_darussalam
+        "bo" -> Res.string.bolivia
+        "br" -> Res.string.brazil
+        "bs" -> Res.string.bahamas
+        "bt" -> Res.string.bhutan
+        "bw" -> Res.string.botswana
+        "by" -> Res.string.belarus
+        "bz" -> Res.string.belize
+        "ca" -> Res.string.canada
+        "cc" -> Res.string.cocos
+        "cd" -> Res.string.congo_democratic
+        "cf" -> Res.string.central_african
+        "cg" -> Res.string.congo
+        "ch" -> Res.string.switzerland
+        "ci" -> Res.string.cote_dlvoire
+        "ck" -> Res.string.cook_islands
+        "cl" -> Res.string.chile
+        "cm" -> Res.string.cameroon
+        "cn" -> Res.string.china
+        "co" -> Res.string.colombia
+        "cr" -> Res.string.costa_rica
+        "cu" -> Res.string.cuba
+        "cv" -> Res.string.cape_verde
+        "cw" -> Res.string.curacao
+        "cx" -> Res.string.christmas_island
+        "cy" -> Res.string.cyprus
+        "cz" -> Res.string.czech_republic
+        "de" -> Res.string.germany
+        "dj" -> Res.string.djibouti
+        "dk" -> Res.string.denmark
+        "dm" -> Res.string.dominica
+        "do" -> Res.string.dominician_republic
+        "dz" -> Res.string.algeria
+        "ec" -> Res.string.ecuador
+        "ee" -> Res.string.estonia
+        "eg" -> Res.string.egypt
+        "er" -> Res.string.eritrea
+        "es" -> Res.string.spain
+        "et" -> Res.string.ethiopia
+        "fi" -> Res.string.finland
+        "fj" -> Res.string.fiji
+        "fk" -> Res.string.falkland_islands
+        "fm" -> Res.string.micro
+        "fo" -> Res.string.faroe_islands
+        "fr" -> Res.string.france
+        "ga" -> Res.string.gabon
+        "gb" -> Res.string.united_kingdom
+        "gd" -> Res.string.grenada
+        "ge" -> Res.string.georgia
+        "gf" -> Res.string.french_guyana
+        "gg" -> Res.string.guernsey
+        "gh" -> Res.string.ghana
+        "gi" -> Res.string.gibraltar
+        "gl" -> Res.string.greenland
+        "gm" -> Res.string.gambia
+        "gn" -> Res.string.guinea
+        "gp" -> Res.string.guadeloupe
+        "gq" -> Res.string.equatorial_guinea
+        "gr" -> Res.string.greece
+        "gt" -> Res.string.guatemala
+        "gu" -> Res.string.guam
+        "gw" -> Res.string.guinea_bissau
+        "gy" -> Res.string.guyana
+        "hk" -> Res.string.hong_kong
+        "hn" -> Res.string.honduras
+        "hr" -> Res.string.croatia
+        "ht" -> Res.string.haiti
+        "hu" -> Res.string.hungary
+        "id" -> Res.string.indonesia
+        "ie" -> Res.string.ireland
+        "il" -> Res.string.israil
+        "im" -> Res.string.isle_of_man
+        "is" -> Res.string.iceland
+        "in" -> Res.string.india
+        "io" -> Res.string.british_indian_ocean
+        "iq" -> Res.string.iraq
+        "ir" -> Res.string.iran
+        "it" -> Res.string.italia
+        "je" -> Res.string.jersey
+        "jm" -> Res.string.jamaica
+        "jo" -> Res.string.jordan
+        "jp" -> Res.string.japan
+        "ke" -> Res.string.kenya
+        "kg" -> Res.string.kyrgyzstan
+        "kh" -> Res.string.cambodia
+        "ki" -> Res.string.kiribati
+        "km" -> Res.string.comoros
+        "kn" -> Res.string.saint_kitts
+        "kp" -> Res.string.north_korea
+        "kr" -> Res.string.south_korea
+        "kw" -> Res.string.kuwait
+        "ky" -> Res.string.cayman_islands
+        "kz" -> Res.string.kazakhstan
+        "la" -> Res.string.laos
+        "lb" -> Res.string.lebanon
+        "lc" -> Res.string.saint_lucia
+        "li" -> Res.string.liechtenstein
+        "lk" -> Res.string.siri_lanka
+        "lr" -> Res.string.liberia
+        "ls" -> Res.string.lesotho
+        "lt" -> Res.string.lithuania
+        "lu" -> Res.string.luxembourg
+        "lv" -> Res.string.latvia
+        "ly" -> Res.string.libya
+        "ma" -> Res.string.marocco
+        "mc" -> Res.string.monaco
+        "md" -> Res.string.moldova
+        "me" -> Res.string.montenegro
+        "mf" -> Res.string.saint_martin
+        "mg" -> Res.string.madagascar
+        "mh" -> Res.string.marshall_islands
+        "mk" -> Res.string.north_macedonia
+        "ml" -> Res.string.mali
+        "mm" -> Res.string.myanmar
+        "mn" -> Res.string.mongolia
+        "mo" -> Res.string.macau
+        "mp" -> Res.string.northern_mariana
+        "mq" -> Res.string.martinique
+        "mr" -> Res.string.mauriatana
+        "ms" -> Res.string.montserrat
+        "mt" -> Res.string.malta
+        "mu" -> Res.string.mauritius
+        "mv" -> Res.string.maldives
+        "mw" -> Res.string.malawi
+        "mx" -> Res.string.mexico
+        "my" -> Res.string.malaysia
+        "mz" -> Res.string.mozambique
+        "na" -> Res.string.namibia
+        "nc" -> Res.string.new_caledonia
+        "ne" -> Res.string.niger
+        "nf" -> Res.string.norfolk
+        "ng" -> Res.string.nigeria
+        "ni" -> Res.string.nicaragua
+        "nl" -> Res.string.netherlands
+        "no" -> Res.string.norway
+        "np" -> Res.string.nepal
+        "nr" -> Res.string.nauru
+        "nu" -> Res.string.niue
+        "nz" -> Res.string.new_zealand
+        "om" -> Res.string.oman
+        "pa" -> Res.string.panama
+        "pe" -> Res.string.peru
+        "pf" -> Res.string.french_polynesia
+        "pg" -> Res.string.papua_new_guinea
+        "ph" -> Res.string.philippinies
+        "pk" -> Res.string.pakistan
+        "pl" -> Res.string.poland
+        "pm" -> Res.string.saint_pierre
+        "pn" -> Res.string.pitcairn
+        "pr" -> Res.string.puerto_rico
+        "ps" -> Res.string.state_of_palestine
+        "pt" -> Res.string.portugal
+        "pw" -> Res.string.palau
+        "py" -> Res.string.paraguay
+        "qa" -> Res.string.qatar
+        "re" -> Res.string.reunion
+        "ro" -> Res.string.romania
+        "rs" -> Res.string.serbia
+        "ru" -> Res.string.russia
+        "rw" -> Res.string.rwanda
+        "sa" -> Res.string.saudi_arabia
+        "sb" -> Res.string.solomon_islands
+        "sc" -> Res.string.seychelles
+        "sd" -> Res.string.sudan
+        "se" -> Res.string.sweden
+        "sg" -> Res.string.singapore
+        "sh" -> Res.string.saint_helena
+        "si" -> Res.string.slovenia
+        "sk" -> Res.string.slovakia
+        "sl" -> Res.string.sierra_leone
+        "sm" -> Res.string.san_marino
+        "sn" -> Res.string.senegal
+        "so" -> Res.string.somali
+        "sr" -> Res.string.suriname
+        "ss" -> Res.string.south_sudan
+        "st" -> Res.string.sao_tome
+        "sv" -> Res.string.el_salvador
+        "sx" -> Res.string.sint_maarten
+        "sy" -> Res.string.syrian
+        "sz" -> Res.string.swaziland
+        "tc" -> Res.string.turks_and_caicos
+        "td" -> Res.string.chad
+        "tg" -> Res.string.togo
+        "th" -> Res.string.thailand
+        "tj" -> Res.string.taijikistan
+        "tk" -> Res.string.tokelau
+        "tl" -> Res.string.timor_leste
+        "tm" -> Res.string.turkmenistan
+        "tn" -> Res.string.tunisia
+        "to" -> Res.string.tonga
+        "tr" -> Res.string.turkey
+        "tt" -> Res.string.trinidad_and_tobago
+        "tv" -> Res.string.tuvalu
+        "tw" -> Res.string.taiwan
+        "tz" -> Res.string.tazmania
+        "ua" -> Res.string.ukraina
+        "ug" -> Res.string.uganda
+        "us" -> Res.string.united_states_america
+        "uy" -> Res.string.uruguay
+        "uz" -> Res.string.uzbekistan
+        "va" -> Res.string.holy_see
+        "vc" -> Res.string.saint_vincent
+        "ve" -> Res.string.venezuela
+        "vg" -> Res.string.virgin_islands
+        "vi" -> Res.string.virgin_island_us
+        "vn" -> Res.string.vietnam
+        "vu" -> Res.string.vanuatu
+        "wf" -> Res.string.walli_and_fatuna
+        "ws" -> Res.string.samoa
+        "xk" -> Res.string.kosovo
+        "ye" -> Res.string.yemen
+        "yt" -> Res.string.mayotte
+        "za" -> Res.string.south_africa
+        "zm" -> Res.string.zambia
+        "zw" -> Res.string.zimbabwe
+        else -> Res.string.unknown
+    }
+
+    /**
+     * [allCountries] is a list of all countries in the world sorted
+     * alphabetically.
+     */
+    val allCountries: List<Country> = listOf(
+        Country(
+            code = "ad",
+            phoneNoCode = "+376",
+            name = "Andorra",
+            flag = Res.drawable.ad,
+        ),
+        Country(
+            code = "ae",
+            phoneNoCode = "+971",
+            name = "United Arab Emirates (UAE)",
+            flag = Res.drawable.ae,
+        ),
+        Country(
+            code = "af",
+            phoneNoCode = "+93",
+            name = "Afghanistan",
+            flag = Res.drawable.af,
+        ),
+        Country(
+            code = "ag",
+            phoneNoCode = "+1",
+            name = "Antigua and Barbuda",
+            flag = Res.drawable.ag,
+        ),
+        Country(
+            code = "ai",
+            phoneNoCode = "+1",
+            name = "Anguilla",
+            flag = Res.drawable.ai,
+        ),
+        Country(
+            "al",
+            "+355",
+            "Albania",
+            Res.drawable.al,
+        ),
+        Country(
+            "am",
+            "+374",
+            "Armenia",
+            Res.drawable.am,
+        ),
+        Country(
+            "ao",
+            "+244",
+            "Angola",
+            Res.drawable.ao,
+        ),
+        Country(
+            "aq",
+            "+672",
+            "Antarctica",
+            Res.drawable.aq,
+        ),
+        Country(
+            "ar",
+            "+54",
+            "Argentina",
+            Res.drawable.ar,
+        ),
+        Country(
+            "as",
+            "+1",
+            "American Samoa",
+            Res.drawable.`as`,
+        ),
+        Country(
+            "at",
+            "+43",
+            "Austria",
+            Res.drawable.at,
+        ),
+        Country(
+            "au",
+            "+61",
+            "Australia",
+            Res.drawable.au,
+        ),
+        Country(
+            "aw",
+            "+297",
+            "Aruba",
+            Res.drawable.aw,
+        ),
+        Country(
+            "ax",
+            "+358",
+            "\u00C5land Islands",
+            Res.drawable.ax,
+        ),
+        Country(
+            "az",
+            "+994",
+            "Azerbaijan",
+            Res.drawable.az,
+        ),
+        Country(
+            "ba",
+            "+387",
+            "Bosnia And Herzegovina",
+            Res.drawable.ba,
+        ),
+        Country(
+            "bb",
+            "+1",
+            "Barbados",
+            Res.drawable.bb,
+        ),
+        Country(
+            "bd",
+            "+880",
+            "Bangladesh",
+            Res.drawable.bd,
+        ),
+        Country(
+            "be",
+            "+32",
+            "Belgium",
+            Res.drawable.be,
+        ),
+        Country(
+            "bf",
+            "+226",
+            "Burkina Faso",
+            Res.drawable.bf,
+        ),
+        Country(
+            "bg",
+            "+359",
+            "Bulgaria",
+            Res.drawable.bg,
+        ),
+        Country(
+            "bh",
+            "+973",
+            "Bahrain",
+            Res.drawable.bh,
+        ),
+        Country(
+            "bi",
+            "+257",
+            "Burundi",
+            Res.drawable.bi,
+        ),
+        Country(
+            "bj",
+            "+229",
+            "Benin",
+            Res.drawable.bj,
+        ),
+        Country(
+            "bl",
+            "+590",
+            "Saint Barth\u00E9lemy",
+            Res.drawable.bl,
+        ),
+        Country(
+            "bm",
+            "+1",
+            "Bermuda",
+            Res.drawable.bm,
+        ),
+        Country(
+            "bn",
+            "+673",
+            "Brunei Darussalam",
+            Res.drawable.bn,
+        ),
+        Country(
+            "bo",
+            "+591",
+            "Bolivia, Plurinational State Of",
+            Res.drawable.bo,
+        ),
+        Country(
+            "br",
+            "+55",
+            "Brazil",
+            Res.drawable.br,
+        ),
+        Country(
+            "bs",
+            "+1",
+            "Bahamas",
+            Res.drawable.bs,
+        ),
+        Country(
+            "bt",
+            "+975",
+            "Bhutan",
+            Res.drawable.bt,
+        ),
+        Country(
+            "bw",
+            "+267",
+            "Botswana",
+            Res.drawable.bw,
+        ),
+        Country(
+            "by",
+            "+375",
+            "Belarus",
+            Res.drawable.by,
+        ),
+        Country(
+            "bz",
+            "+501",
+            "Belize",
+            Res.drawable.bz,
+        ),
+        Country(
+            "ca",
+            "+1",
+            "Canada",
+            Res.drawable.ca,
+        ),
+        Country(
+            "cc",
+            "+61",
+            "Cocos (keeling) Islands",
+            Res.drawable.cc,
+        ),
+        Country(
+            "cd",
+            "+243",
+            "Congo, The Democratic Republic Of The",
+            Res.drawable.cd,
+        ),
+        Country(
+            "cf",
+            "+236",
+            "Central African Republic",
+            Res.drawable.cf,
+        ),
+        Country(
+            "cg",
+            "+242",
+            "Congo",
+            Res.drawable.cg,
+        ),
+        Country(
+            "ch",
+            "+41",
+            "Switzerland",
+            Res.drawable.ch,
+        ),
+        Country(
+            "ci",
+            "+225",
+            "C\u00F4te D'ivoire",
+            Res.drawable.ci,
+        ),
+        Country(
+            "ck",
+            "+682",
+            "Cook Islands",
+            Res.drawable.ck,
+        ),
+        Country(
+            "cl",
+            "+56",
+            "Chile",
+            Res.drawable.cl,
+        ),
+        Country(
+            "cm",
+            "+237",
+            "Cameroon",
+            Res.drawable.cm,
+        ),
+        Country(
+            "cn",
+            "+86",
+            "China",
+            Res.drawable.cn,
+        ),
+        Country(
+            "co",
+            "+57",
+            "Colombia",
+            Res.drawable.co,
+        ),
+        Country(
+            "cr",
+            "+506",
+            "Costa Rica",
+            Res.drawable.cr,
+        ),
+        Country(
+            "cu",
+            "+53",
+            "Cuba",
+            Res.drawable.cu,
+        ),
+        Country(
+            "cv",
+            "+238",
+            "Cape Verde",
+            Res.drawable.cv,
+        ),
+        Country(
+            "cw",
+            "+599",
+            "Cura\u00E7ao",
+            Res.drawable.cw,
+        ),
+        Country(
+            "cx",
+            "+61",
+            "Christmas Island",
+            Res.drawable.cx,
+        ),
+        Country(
+            "cy",
+            "+357",
+            "Cyprus",
+            Res.drawable.cy,
+        ),
+        Country(
+            "cz",
+            "+420",
+            "Czech Republic",
+            Res.drawable.cz,
+        ),
+        Country(
+            "de",
+            "+49",
+            "Germany",
+            Res.drawable.de,
+        ),
+        Country(
+            "dj",
+            "+253",
+            "Djibouti",
+            Res.drawable.dj,
+        ),
+        Country(
+            "dk",
+            "+45",
+            "Denmark",
+            Res.drawable.dk,
+        ),
+        Country(
+            "dm",
+            "+1",
+            "Dominica",
+            Res.drawable.dm,
+        ),
+        Country(
+            "do",
+            "+1",
+            "Dominican Republic",
+            Res.drawable.ic_do,
+        ),
+        Country(
+            "dz",
+            "+213",
+            "Algeria",
+            Res.drawable.dz,
+        ),
+        Country(
+            "ec",
+            "+593",
+            "Ecuador",
+            Res.drawable.ec,
+        ),
+        Country(
+            "ee",
+            "+372",
+            "Estonia",
+            Res.drawable.ee,
+        ),
+        Country(
+            "eg",
+            "+20",
+            "Egypt",
+            Res.drawable.eg,
+        ),
+        Country(
+            "er",
+            "+291",
+            "Eritrea",
+            Res.drawable.er,
+        ),
+        Country(
+            "es",
+            "+34",
+            "Spain",
+            Res.drawable.es,
+        ),
+        Country(
+            "et",
+            "+251",
+            "Ethiopia",
+            Res.drawable.et,
+        ),
+        Country(
+            "fi",
+            "+358",
+            "Finland",
+            Res.drawable.fi,
+        ),
+        Country(
+            "fj",
+            "+679",
+            "Fiji",
+            Res.drawable.fj,
+        ),
+        Country(
+            "fk",
+            "+500",
+            "Falkland Islands (malvinas)",
+            Res.drawable.fk,
+        ),
+        Country(
+            "fm",
+            "+691",
+            "Micronesia, Federated States Of",
+            Res.drawable.fm,
+        ),
+        Country(
+            "fo",
+            "+298",
+            "Faroe Islands",
+            Res.drawable.fo,
+        ),
+        Country(
+            "fr",
+            "+33",
+            "France",
+            Res.drawable.fr,
+        ),
+        Country(
+            "ga",
+            "+241",
+            "Gabon",
+            Res.drawable.ga,
+        ),
+        Country(
+            "gb",
+            "+44",
+            "United Kingdom",
+            Res.drawable.gb,
+        ),
+        Country(
+            "gd",
+            "+1",
+            "Grenada",
+            Res.drawable.gd,
+        ),
+        Country(
+            "ge",
+            "+995",
+            "Georgia",
+            Res.drawable.ge,
+        ),
+        Country(
+            "gf",
+            "+594",
+            "French Guyana",
+            Res.drawable.gf,
+        ),
+        Country(
+            "gh",
+            "+233",
+            "Ghana",
+            Res.drawable.gh,
+        ),
+        Country(
+            "gi",
+            "+350",
+            "Gibraltar",
+            Res.drawable.gi,
+        ),
+        Country(
+            "gl",
+            "+299",
+            "Greenland",
+            Res.drawable.gl,
+        ),
+        Country(
+            "gm",
+            "+220",
+            "Gambia",
+            Res.drawable.gm,
+        ),
+        Country(
+            "gn",
+            "+224",
+            "Guinea",
+            Res.drawable.gn,
+        ),
+        Country(
+            "gp",
+            "+590",
+            "Guadeloupe",
+            Res.drawable.gp,
+        ),
+        Country(
+            "gq",
+            "+240",
+            "Equatorial Guinea",
+            Res.drawable.gq,
+        ),
+        Country(
+            "gr",
+            "+30",
+            "Greece",
+            Res.drawable.gr,
+        ),
+        Country(
+            "gt",
+            "+502",
+            "Guatemala",
+            Res.drawable.gt,
+        ),
+        Country(
+            "gu",
+            "+1",
+            "Guam",
+            Res.drawable.gu,
+        ),
+        Country(
+            "gw",
+            "+245",
+            "Guinea-bissau",
+            Res.drawable.gw,
+        ),
+        Country(
+            "gy",
+            "+592",
+            "Guyana",
+            Res.drawable.gy,
+        ),
+        Country(
+            "hk",
+            "+852",
+            "Hong Kong",
+            Res.drawable.hk,
+        ),
+        Country(
+            "hn",
+            "+504",
+            "Honduras",
+            Res.drawable.hn,
+        ),
+        Country(
+            "hr",
+            "+385",
+            "Croatia",
+            Res.drawable.hr,
+        ),
+        Country(
+            "ht",
+            "+509",
+            "Haiti",
+            Res.drawable.ht,
+        ),
+        Country(
+            "hu",
+            "+36",
+            "Hungary",
+            Res.drawable.hu,
+        ),
+        Country(
+            "id",
+            "+62",
+            "Indonesia",
+            Res.drawable.id,
+        ),
+        Country(
+            "ie",
+            "+353",
+            "Ireland",
+            Res.drawable.ie,
+        ),
+        Country(
+            "il",
+            "+972",
+            "Israel",
+            Res.drawable.il,
+        ),
+        Country(
+            "im",
+            "+44",
+            "Isle Of Man",
+            Res.drawable.im,
+        ),
+        Country(
+            "is",
+            "+354",
+            "Iceland",
+            Res.drawable.`is`,
+        ),
+        Country(
+            "in",
+            "+91",
+            "India",
+            Res.drawable.`in`,
+        ),
+        Country(
+            "io",
+            "+246",
+            "British Indian Ocean Territory",
+            Res.drawable.io,
+        ),
+        Country(
+            "iq",
+            "+964",
+            "Iraq",
+            Res.drawable.iq,
+        ),
+        Country(
+            "ir",
+            "+98",
+            "Iran, Islamic Republic Of",
+            Res.drawable.ir,
+        ),
+        Country(
+            "it",
+            "+39",
+            "Italy",
+            Res.drawable.it,
+        ),
+        Country(
+            "je",
+            "+44",
+            "Jersey ",
+            Res.drawable.je,
+        ),
+        Country(
+            "jm",
+            "+1",
+            "Jamaica",
+            Res.drawable.jm,
+        ),
+        Country(
+            "jo",
+            "+962",
+            "Jordan",
+            Res.drawable.jo,
+        ),
+        Country(
+            "jp",
+            "+81",
+            "Japan",
+            Res.drawable.jp,
+        ),
+        Country(
+            "ke",
+            "+254",
+            "Kenya",
+            Res.drawable.ke,
+        ),
+        Country(
+            "kg",
+            "+996",
+            "Kyrgyzstan",
+            Res.drawable.kg,
+        ),
+        Country(
+            "kh",
+            "+855",
+            "Cambodia",
+            Res.drawable.kh,
+        ),
+        Country(
+            "ki",
+            "+686",
+            "Kiribati",
+            Res.drawable.ki,
+        ),
+        Country(
+            "km",
+            "+269",
+            "Comoros",
+            Res.drawable.km,
+        ),
+        Country(
+            "kn",
+            "+1",
+            "Saint Kitts and Nevis",
+            Res.drawable.kn,
+        ),
+        Country(
+            "kp",
+            "+850",
+            "North Korea",
+            Res.drawable.kp,
+        ),
+        Country(
+            "kr",
+            "+82",
+            "South Korea",
+            Res.drawable.kr,
+        ),
+        Country(
+            "kw",
+            "+965",
+            "Kuwait",
+            Res.drawable.kw,
+        ),
+        Country(
+            "ky",
+            "+1",
+            "Cayman Islands",
+            Res.drawable.ky,
+        ),
+        Country(
+            "kz",
+            "+7",
+            "Kazakhstan",
+            Res.drawable.kz,
+        ),
+        Country(
+            "la",
+            "+856",
+            "Lao People's Democratic Republic",
+            Res.drawable.la,
+        ),
+        Country(
+            "lb",
+            "+961",
+            "Lebanon",
+            Res.drawable.lb,
+        ),
+        Country(
+            "lc",
+            "+1",
+            "Saint Lucia",
+            Res.drawable.lc,
+        ),
+        Country(
+            "li",
+            "+423",
+            "Liechtenstein",
+            Res.drawable.li,
+        ),
+        Country(
+            "lk",
+            "+94",
+            "Sri Lanka",
+            Res.drawable.lk,
+        ),
+        Country(
+            "lr",
+            "+231",
+            "Liberia",
+            Res.drawable.lr,
+        ),
+        Country(
+            "ls",
+            "+266",
+            "Lesotho",
+            Res.drawable.ls,
+        ),
+        Country(
+            "lt",
+            "+370",
+            "Lithuania",
+            Res.drawable.lt,
+        ),
+        Country(
+            "lu",
+            "+352",
+            "Luxembourg",
+            Res.drawable.lu,
+        ),
+        Country(
+            "lv",
+            "+371",
+            "Latvia",
+            Res.drawable.lv,
+        ),
+        Country(
+            "ly",
+            "+218",
+            "Libya",
+            Res.drawable.ly,
+        ),
+        Country(
+            "ma",
+            "+212",
+            "Morocco",
+            Res.drawable.ma,
+        ),
+        Country(
+            "mc",
+            "+377",
+            "Monaco",
+            Res.drawable.mc,
+        ),
+        Country(
+            "md",
+            "+373",
+            "Moldova, Republic Of",
+            Res.drawable.md,
+        ),
+        Country(
+            "me",
+            "+382",
+            "Montenegro",
+            Res.drawable.me,
+        ),
+        Country(
+            "mf",
+            "+590",
+            "Saint Martin",
+            Res.drawable.mf,
+        ),
+        Country(
+            "mg",
+            "+261",
+            "Madagascar",
+            Res.drawable.mg,
+        ),
+        Country(
+            "mh",
+            "+692",
+            "Marshall Islands",
+            Res.drawable.mh,
+        ),
+        Country(
+            "mk",
+            "+389",
+            "Macedonia (FYROM)",
+            Res.drawable.mk,
+        ),
+        Country(
+            "ml",
+            "+223",
+            "Mali",
+            Res.drawable.ml,
+        ),
+        Country(
+            "mm",
+            "+95",
+            "Myanmar",
+            Res.drawable.mm,
+        ),
+        Country(
+            "mn",
+            "+976",
+            "Mongolia",
+            Res.drawable.mn,
+        ),
+        Country(
+            "mo",
+            "+853",
+            "Macau",
+            Res.drawable.mo,
+        ),
+        Country(
+            "mp",
+            "+1",
+            "Northern Mariana Islands",
+            Res.drawable.mp,
+        ),
+        Country(
+            "mq",
+            "+596",
+            "Martinique",
+            Res.drawable.mq,
+        ),
+        Country(
+            "mr",
+            "+222",
+            "Mauritania",
+            Res.drawable.mr,
+        ),
+        Country(
+            "ms",
+            "+1",
+            "Montserrat",
+            Res.drawable.ms,
+        ),
+        Country(
+            "mt",
+            "+356",
+            "Malta",
+            Res.drawable.mt,
+        ),
+        Country(
+            "mu",
+            "+230",
+            "Mauritius",
+            Res.drawable.mu,
+        ),
+        Country(
+            "mv",
+            "+960",
+            "Maldives",
+            Res.drawable.mv,
+        ),
+        Country(
+            "mw",
+            "+265",
+            "Malawi",
+            Res.drawable.mw,
+        ),
+        Country(
+            "mx",
+            "+52",
+            "Mexico",
+            Res.drawable.mx,
+        ),
+        Country(
+            "my",
+            "+60",
+            "Malaysia",
+            Res.drawable.my,
+        ),
+        Country(
+            "mz",
+            "+258",
+            "Mozambique",
+            Res.drawable.mz,
+        ),
+        Country(
+            "na",
+            "+264",
+            "Namibia",
+            Res.drawable.na,
+        ),
+        Country(
+            "nc",
+            "+687",
+            "New Caledonia",
+            Res.drawable.nc,
+        ),
+        Country(
+            "ne",
+            "+227",
+            "Niger",
+            Res.drawable.ne,
+        ),
+        Country(
+            "nf",
+            "+672",
+            "Norfolk Islands",
+            Res.drawable.nf,
+        ),
+        Country(
+            "ng",
+            "+234",
+            "Nigeria",
+            Res.drawable.ng,
+        ),
+        Country(
+            "ni",
+            "+505",
+            "Nicaragua",
+            Res.drawable.ni,
+        ),
+        Country(
+            "nl",
+            "+31",
+            "Netherlands",
+            Res.drawable.nl,
+        ),
+        Country(
+            "no",
+            "+47",
+            "Norway",
+            Res.drawable.no,
+        ),
+        Country(
+            "np",
+            "+977",
+            "Nepal",
+            Res.drawable.np,
+        ),
+        Country(
+            "nr",
+            "+674",
+            "Nauru",
+            Res.drawable.nr,
+        ),
+        Country(
+            "nu",
+            "+683",
+            "Niue",
+            Res.drawable.nu,
+        ),
+        Country(
+            "nz",
+            "+64",
+            "New Zealand",
+            Res.drawable.nz,
+        ),
+        Country(
+            "om",
+            "+968",
+            "Oman",
+            Res.drawable.om,
+        ),
+        Country(
+            "pa",
+            "+507",
+            "Panama",
+            Res.drawable.pa,
+        ),
+        Country(
+            "pe",
+            "+51",
+            "Peru",
+            Res.drawable.pe,
+        ),
+        Country(
+            "pf",
+            "+689",
+            "French Polynesia",
+            Res.drawable.pf,
+        ),
+        Country(
+            "pg",
+            "+675",
+            "Papua New Guinea",
+            Res.drawable.pg,
+        ),
+        Country(
+            "ph",
+            "+63",
+            "Philippines",
+            Res.drawable.ph,
+        ),
+        Country(
+            "pk",
+            "+92",
+            "Pakistan",
+            Res.drawable.pk,
+        ),
+        Country(
+            "pl",
+            "+48",
+            "Poland",
+            Res.drawable.pl,
+        ),
+        Country(
+            "pm",
+            "+508",
+            "Saint Pierre And Miquelon",
+            Res.drawable.pm,
+        ),
+        Country(
+            "pn",
+            "+870",
+            "Pitcairn Islands",
+            Res.drawable.pn,
+        ),
+        Country(
+            "pr",
+            "+1",
+            "Puerto Rico",
+            Res.drawable.pr,
+        ),
+        Country(
+            "ps",
+            "+970",
+            "Palestine",
+            Res.drawable.ps,
+        ),
+        Country(
+            "pt",
+            "+351",
+            "Portugal",
+            Res.drawable.pt,
+        ),
+        Country(
+            "pw",
+            "+680",
+            "Palau",
+            Res.drawable.pw,
+        ),
+        Country(
+            "py",
+            "+595",
+            "Paraguay",
+            Res.drawable.py,
+        ),
+        Country(
+            "qa",
+            "+974",
+            "Qatar",
+            Res.drawable.qa,
+        ),
+        Country(
+            "re",
+            "+262",
+            "R\u00E9union",
+            Res.drawable.re,
+        ),
+        Country(
+            "ro",
+            "+40",
+            "Romania",
+            Res.drawable.ro,
+        ),
+        Country(
+            "rs",
+            "+381",
+            "Serbia",
+            Res.drawable.rs,
+        ),
+        Country(
+            "ru",
+            "+7",
+            "Russian Federation",
+            Res.drawable.ru,
+        ),
+        Country(
+            "rw",
+            "+250",
+            "Rwanda",
+            Res.drawable.rw,
+        ),
+        Country(
+            "sa",
+            "+966",
+            "Saudi Arabia",
+            Res.drawable.sa,
+        ),
+        Country(
+            "sb",
+            "+677",
+            "Solomon Islands",
+            Res.drawable.sb,
+        ),
+        Country(
+            "sc",
+            "+248",
+            "Seychelles",
+            Res.drawable.sc,
+        ),
+        Country(
+            "sd",
+            "+249",
+            "Sudan",
+            Res.drawable.sd,
+        ),
+        Country(
+            "se",
+            "+46",
+            "Sweden",
+            Res.drawable.se,
+        ),
+        Country(
+            "sg",
+            "+65",
+            "Singapore",
+            Res.drawable.sg,
+        ),
+        Country(
+            "sh",
+            "+290",
+            "Saint Helena, Ascension And Tristan Da Cunha",
+            Res.drawable.sh,
+        ),
+        Country(
+            "si",
+            "+386",
+            "Slovenia",
+            Res.drawable.si,
+        ),
+        Country(
+            "sk",
+            "+421",
+            "Slovakia",
+            Res.drawable.sk,
+        ),
+        Country(
+            "sl",
+            "+232",
+            "Sierra Leone",
+            Res.drawable.sl,
+        ),
+        Country(
+            "sm",
+            "+378",
+            "San Marino",
+            Res.drawable.sm,
+        ),
+        Country(
+            "sn",
+            "+221",
+            "Senegal",
+            Res.drawable.sn,
+        ),
+        Country(
+            "so",
+            "+252",
+            "Somalia",
+            Res.drawable.so,
+        ),
+        Country(
+            "sr",
+            "+597",
+            "Suriname",
+            Res.drawable.sr,
+        ),
+        Country(
+            "ss",
+            "+211",
+            "South Sudan",
+            Res.drawable.ss,
+        ),
+        Country(
+            "st",
+            "+239",
+            "Sao Tome And Principe",
+            Res.drawable.st,
+        ),
+        Country(
+            "sv",
+            "+503",
+            "El Salvador",
+            Res.drawable.sv,
+        ),
+        Country(
+            "sx",
+            "+1",
+            "Sint Maarten",
+            Res.drawable.sx,
+        ),
+        Country(
+            "sy",
+            "+963",
+            "Syrian Arab Republic",
+            Res.drawable.sy,
+        ),
+        Country(
+            "sz",
+            "+268",
+            "Swaziland",
+            Res.drawable.sz,
+        ),
+        Country(
+            "tc",
+            "+1",
+            "Turks and Caicos Islands",
+            Res.drawable.tc,
+        ),
+        Country(
+            "td",
+            "+235",
+            "Chad",
+            Res.drawable.td,
+        ),
+        Country(
+            "tg",
+            "+228",
+            "Togo",
+            Res.drawable.tg,
+        ),
+        Country(
+            "th",
+            "+66",
+            "Thailand",
+            Res.drawable.th,
+        ),
+        Country(
+            "tj",
+            "+992",
+            "Tajikistan",
+            Res.drawable.tj,
+        ),
+        Country(
+            "tk",
+            "+690",
+            "Tokelau",
+            Res.drawable.tk,
+        ),
+        Country(
+            "tl",
+            "+670",
+            "Timor-leste",
+            Res.drawable.tl,
+        ),
+        Country(
+            "tm",
+            "+993",
+            "Turkmenistan",
+            Res.drawable.tm,
+        ),
+        Country(
+            "tn",
+            "+216",
+            "Tunisia",
+            Res.drawable.tn,
+        ),
+        Country(
+            "to",
+            "+676",
+            "Tonga",
+            Res.drawable.to,
+        ),
+        Country(
+            "tr",
+            "+90",
+            "Turkey",
+            Res.drawable.tr,
+        ),
+        Country(
+            "tt",
+            "+1",
+            "Trinidad & Tobago",
+            Res.drawable.tt,
+        ),
+        Country(
+            "tv",
+            "+688",
+            "Tuvalu",
+            Res.drawable.tv,
+        ),
+        Country(
+            "tw",
+            "+886",
+            "Taiwan",
+            Res.drawable.tw,
+        ),
+        Country(
+            "tz",
+            "+255",
+            "Tanzania, United Republic Of",
+            Res.drawable.tz,
+        ),
+        Country(
+            "ua",
+            "+380",
+            "Ukraine",
+            Res.drawable.ua,
+        ),
+        Country(
+            "ug",
+            "+256",
+            "Uganda",
+            Res.drawable.ug,
+        ),
+        Country(
+            "us",
+            "+1",
+            "United States",
+            Res.drawable.us,
+        ),
+        Country(
+            "uy",
+            "+598",
+            "Uruguay",
+            Res.drawable.uy,
+        ),
+        Country(
+            "uz",
+            "+998",
+            "Uzbekistan",
+            Res.drawable.uz,
+        ),
+        Country(
+            "va",
+            "+379",
+            "Holy See (vatican City State)",
+            Res.drawable.va,
+        ),
+        Country(
+            "vc",
+            "+1",
+            "Saint Vincent & The Grenadines",
+            Res.drawable.vc,
+        ),
+        Country(
+            "ve",
+            "+58",
+            "Venezuela, Bolivarian Republic Of",
+            Res.drawable.ve,
+        ),
+        Country(
+            "vg",
+            "+1",
+            "British Virgin Islands",
+            Res.drawable.vg,
+        ),
+        Country(
+            "vi",
+            "+1",
+            "US Virgin Islands",
+            Res.drawable.vi,
+        ),
+        Country(
+            "vn",
+            "+84",
+            "Vietnam",
+            Res.drawable.vn,
+        ),
+        Country(
+            "vu",
+            "+678",
+            "Vanuatu",
+            Res.drawable.vu,
+        ),
+        Country(
+            "wf",
+            "+681",
+            "Wallis And Futuna",
+            Res.drawable.wf,
+        ),
+        Country(
+            "ws",
+            "+685",
+            "Samoa",
+            Res.drawable.ws,
+        ),
+        Country(
+            "xk",
+            "+383",
+            "Kosovo",
+            Res.drawable.xk,
+        ),
+        Country(
+            "ye",
+            "+967",
+            "Yemen",
+            Res.drawable.ye,
+        ),
+        Country(
+            "yt",
+            "+262",
+            "Mayotte",
+            Res.drawable.yt,
+        ),
+        Country(
+            "za",
+            "+27",
+            "South Africa",
+            Res.drawable.za,
+        ),
+        Country(
+            "zm",
+            "+260",
+            "Zambia",
+            Res.drawable.zm,
+        ),
+        Country(
+            "zw",
+            "+263",
+            "Zimbabwe",
+            Res.drawable.zw,
+        ),
+    ).sortedBy { it.name }
+
+    /**
+     * [getNumberHint] Returns the hint of the country. [countryName] The name
+     * of the country.
+     *
+     * @param countryName The name of the country.
+     */
+    fun getNumberHint(countryName: String): StringResource = when (countryName) {
+        "ad" -> Res.string.andorra_hint
+        "ae" -> Res.string.united_arab_emirates_hint
+        "af" -> Res.string.afganistan_hint
+        "ag" -> Res.string.antigua_and_barbuda_hint
+        "ai" -> Res.string.anguilla_hint
+        "al" -> Res.string.albania_hint
+        "am" -> Res.string.armenia_hint
+        "ao" -> Res.string.angola_hint
+        "aq" -> Res.string.antarctica_hint
+        "ar" -> Res.string.argentina_hint
+        "as" -> Res.string.american_samoa_hint
+        "at" -> Res.string.austria_hint
+        "au" -> Res.string.australia_hint
+        "aw" -> Res.string.aruba_hint
+        "ax" -> Res.string.aland_islands_hint
+        "az" -> Res.string.azerbaijan_hint
+        "ba" -> Res.string.bosnia_hint
+        "bb" -> Res.string.barbados_hint
+        "bd" -> Res.string.bangladesh_hint
+        "be" -> Res.string.belgium_hint
+        "bf" -> Res.string.burkina_faso_hint
+        "bg" -> Res.string.bulgaria_hint
+        "bh" -> Res.string.bahrain_hint
+        "bi" -> Res.string.burundi_hint
+        "bj" -> Res.string.benin_hint
+        "bl" -> Res.string.saint_barhelemy_hint
+        "bm" -> Res.string.bermuda_hint
+        "bn" -> Res.string.brunei_darussalam_hint
+        "bo" -> Res.string.bolivia_hint
+        "br" -> Res.string.brazil_hint
+        "bs" -> Res.string.bahamas_hint
+        "bt" -> Res.string.bhutan_hint
+        "bw" -> Res.string.botswana_hint
+        "by" -> Res.string.belarus_hint
+        "bz" -> Res.string.belize_hint
+        "ca" -> Res.string.canada_hint
+        "cc" -> Res.string.cocos_hint
+        "cd" -> Res.string.congo_democratic_hint
+        "cf" -> Res.string.central_african_hint
+        "cg" -> Res.string.congo_hint
+        "ch" -> Res.string.switzerland_hint
+        "ci" -> Res.string.cote_dlvoire_hint
+        "ck" -> Res.string.cook_islands_hint
+        "cl" -> Res.string.chile_hint
+        "cm" -> Res.string.cameroon_hint
+        "cn" -> Res.string.china_hint
+        "co" -> Res.string.colombia_hint
+        "cr" -> Res.string.costa_rica_hint
+        "cu" -> Res.string.cuba_hint
+        "cv" -> Res.string.cape_verde_hint
+        "cw" -> Res.string.curacao_hint
+        "cx" -> Res.string.christmas_island_hint
+        "cy" -> Res.string.cyprus_hint
+        "cz" -> Res.string.czech_republic_hint
+        "de" -> Res.string.germany_hint
+        "dj" -> Res.string.djibouti_hint
+        "dk" -> Res.string.denmark_hint
+        "dm" -> Res.string.dominica_hint
+        "do" -> Res.string.dominician_republic_hint
+        "dz" -> Res.string.algeria_hint
+        "ec" -> Res.string.ecuador_hint
+        "ee" -> Res.string.estonia_hint
+        "eg" -> Res.string.egypt_hint
+        "er" -> Res.string.eritrea_hint
+        "es" -> Res.string.spain_hint
+        "et" -> Res.string.ethiopia_hint
+        "fi" -> Res.string.finland_hint
+        "fj" -> Res.string.fiji_hint
+        "fk" -> Res.string.falkland_islands_hint
+        "fm" -> Res.string.micro_hint
+        "fo" -> Res.string.faroe_islands_hint
+        "fr" -> Res.string.france_hint
+        "ga" -> Res.string.gabon_hint
+        "gb" -> Res.string.united_kingdom_hint
+        "gd" -> Res.string.grenada_hint
+        "ge" -> Res.string.georgia_hint
+        "gf" -> Res.string.french_guyana_hint
+        "gg" -> Res.string.guernsey_hint
+        "gh" -> Res.string.ghana_hint
+        "gi" -> Res.string.unknown
+        "gl" -> Res.string.greenland_hint
+        "gm" -> Res.string.gambia_hint
+        "gn" -> Res.string.guinea_hint
+        "gp" -> Res.string.guadeloupe_hint
+        "gq" -> Res.string.equatorial_guinea_hint
+        "gr" -> Res.string.greece_hint
+        "gt" -> Res.string.guatemala_hint
+        "gu" -> Res.string.guam_hint
+        "gw" -> Res.string.guinea_bissau_hint
+        "gy" -> Res.string.guyana_hint
+        "hk" -> Res.string.hong_kong_hint
+        "hn" -> Res.string.honduras_hint
+        "hr" -> Res.string.croatia_hint
+        "ht" -> Res.string.haiti_hint
+        "hu" -> Res.string.hungary_hint
+        "id" -> Res.string.indonesia_hint
+        "ie" -> Res.string.ireland_hint
+        "il" -> Res.string.israil_hint
+        "im" -> Res.string.isle_of_man
+        "is" -> Res.string.iceland
+        "in" -> Res.string.india_hint
+        "io" -> Res.string.british_indian_ocean
+        "iq" -> Res.string.iraq_hint
+        "ir" -> Res.string.iran_hint
+        "it" -> Res.string.italia_hint
+        "je" -> Res.string.jersey_hint
+        "jm" -> Res.string.jamaica_hint
+        "jo" -> Res.string.jordan_hint
+        "jp" -> Res.string.japan_hint
+        "ke" -> Res.string.kenya_hint
+        "kg" -> Res.string.kyrgyzstan_hint
+        "kh" -> Res.string.cambodia_hint
+        "ki" -> Res.string.kiribati
+        "km" -> Res.string.comoros_hint
+        "kn" -> Res.string.saint_kitts_hint
+        "kp" -> Res.string.north_korea_hint
+        "kr" -> Res.string.south_korea_hint
+        "kw" -> Res.string.kuwait_hint
+        "ky" -> Res.string.cayman_islands_hint
+        "kz" -> Res.string.kazakhstan_hint
+        "la" -> Res.string.laos_hint
+        "lb" -> Res.string.lebanon_hint
+        "lc" -> Res.string.saint_lucia_hint
+        "li" -> Res.string.liechtenstein
+        "lk" -> Res.string.siri_lanka_hint
+        "lr" -> Res.string.liberia_hint
+        "ls" -> Res.string.lesotho_hint
+        "lt" -> Res.string.lithuania_hint
+        "lu" -> Res.string.luxembourg_hint
+        "lv" -> Res.string.latvia_hint
+        "ly" -> Res.string.libya_hint
+        "ma" -> Res.string.marocco_hint
+        "mc" -> Res.string.monaco_hint
+        "md" -> Res.string.moldova_hint
+        "me" -> Res.string.montenegro_hint
+        "mf" -> Res.string.saint_martin_hint
+        "mg" -> Res.string.madagascar_hint
+        "mh" -> Res.string.marshall_islands_hint
+        "mk" -> Res.string.north_macedonia_hint
+        "ml" -> Res.string.mali_hint
+        "mm" -> Res.string.myanmar_hint
+        "mn" -> Res.string.mongolia_hint
+        "mo" -> Res.string.macau_hint
+        "mp" -> Res.string.northern_mariana_hint
+        "mq" -> Res.string.martinique_hint
+        "mr" -> Res.string.mauriatana_hint
+        "ms" -> Res.string.montserrat_hint
+        "mt" -> Res.string.malta_hint
+        "mu" -> Res.string.mauritius_hint
+        "mv" -> Res.string.maldives_hint
+        "mw" -> Res.string.malawi_hint
+        "mx" -> Res.string.mexico_hint
+        "my" -> Res.string.malaysia_hint
+        "mz" -> Res.string.mozambique_hint
+        "na" -> Res.string.namibia_hint
+        "nc" -> Res.string.new_caledonia_hint
+        "ne" -> Res.string.niger_hint
+        "nf" -> Res.string.norfolk_hint
+        "ng" -> Res.string.nigeria_hint
+        "ni" -> Res.string.nicaragua
+        "nl" -> Res.string.netherlands_hint
+        "no" -> Res.string.norway_hint
+        "np" -> Res.string.nepal_hint
+        "nr" -> Res.string.nauru_hint
+        "nu" -> Res.string.niue_hint
+        "nz" -> Res.string.new_zealand_hint
+        "om" -> Res.string.oman_hint
+        "pa" -> Res.string.panama_hint
+        "pe" -> Res.string.peru_hint
+        "pf" -> Res.string.french_polynesia_hint
+        "pg" -> Res.string.papua_new_guinea_hint
+        "ph" -> Res.string.philippinies_hint
+        "pk" -> Res.string.pakistan_hint
+        "pl" -> Res.string.poland_hint
+        "pm" -> Res.string.saint_pierre_hint
+        "pn" -> Res.string.pitcairn
+        "pr" -> Res.string.puerto_rico_hint
+        "ps" -> Res.string.state_of_palestine_hint
+        "pt" -> Res.string.portugal_hint
+        "pw" -> Res.string.palau_hint
+        "py" -> Res.string.paraguay_hint
+        "qa" -> Res.string.qatar_hint
+        "re" -> Res.string.reunion_hint
+        "ro" -> Res.string.romania_hint
+        "rs" -> Res.string.serbia_hint
+        "ru" -> Res.string.russia_hint
+        "rw" -> Res.string.rwanda_hint
+        "sa" -> Res.string.saudi_arabia_hint
+        "sb" -> Res.string.solomon_islands_hint
+        "sc" -> Res.string.seychelles_hint
+        "sd" -> Res.string.sudan_hint
+        "se" -> Res.string.sweden_hint
+        "sg" -> Res.string.singapore_hint
+        "sh" -> Res.string.saint_helena_hint
+        "si" -> Res.string.slovenia_hint
+        "sk" -> Res.string.slovakia_hint
+        "sl" -> Res.string.sierra_leone_hint
+        "sm" -> Res.string.san_marino_hint
+        "sn" -> Res.string.senegal_hint
+        "so" -> Res.string.somali_hint
+        "sr" -> Res.string.suriname_hint
+        "ss" -> Res.string.south_sudan_hint
+        "st" -> Res.string.sao_tome_hint
+        "sv" -> Res.string.el_salvador_hint
+        "sx" -> Res.string.sint_maarten_hint
+        "sy" -> Res.string.syrian_hint
+        "sz" -> Res.string.swaziland_hint
+        "tc" -> Res.string.turks_and_caicos_hint
+        "td" -> Res.string.chad_hint
+        "tg" -> Res.string.togo_hint
+        "th" -> Res.string.thailand_hint
+        "tj" -> Res.string.taijikistan_hint
+        "tk" -> Res.string.tokelau_hint
+        "tl" -> Res.string.timor_leste_hint
+        "tm" -> Res.string.turkmenistan_hint
+        "tn" -> Res.string.tunisia_hint
+        "to" -> Res.string.tonga_hint
+        "tr" -> Res.string.turkey_hint
+        "tt" -> Res.string.trinidad_and_tobago_hint
+        "tv" -> Res.string.tuvalu_hint
+        "tw" -> Res.string.taiwan_hint
+        "tz" -> Res.string.tazmania_hint
+        "ua" -> Res.string.ukraina_hint
+        "ug" -> Res.string.uganda_hint
+        "us" -> Res.string.united_states_america_hint
+        "uy" -> Res.string.uruguay_hint
+        "uz" -> Res.string.uzbekistan_hint
+        "va" -> Res.string.holy_see
+        "vc" -> Res.string.saint_vincent_hint
+        "ve" -> Res.string.venezuela_hint
+        "vg" -> Res.string.virgin_islands_hint
+        "vi" -> Res.string.virgin_island_us
+        "vn" -> Res.string.vietnam_hint
+        "vu" -> Res.string.vanuatu_hint
+        "wf" -> Res.string.walli_and_fatuna_hint
+        "ws" -> Res.string.samoa_hint
+        "xk" -> Res.string.kosovo_hint
+        "ye" -> Res.string.yemen_hint
+        "yt" -> Res.string.mayotte_hint
+        "za" -> Res.string.south_africa_hint
+        "zm" -> Res.string.zambia_hint
+        "zw" -> Res.string.zimbabwe_hint
+        else -> Res.string.unknown
+    }
+}

@@ -14,8 +14,8 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+    runs-on: macos-latest
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v6
@@ -26,6 +26,9 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
+
       - name: Extract version from tag
         run: |
           VERSION_NAME="${GITHUB_REF#refs/tags/}"  # Remove "refs/tags/"
@@ -34,7 +37,7 @@ jobs:
 
       - name: Update version in gradle.properties
         run: |
-          sed -i "s/^version=.*/version=${{ env.VERSION_NAME }}/" gradle.properties
+          sed -i '' "s/^version=.*/version=${{ env.VERSION_NAME }}/" gradle.properties
 
       - name: Commit and push version change to main branch
         run: |
@@ -50,11 +53,6 @@ jobs:
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-
-      - name: Make gradle executable
-        run: chmod +x ./gradlew
-
-      - uses: gradle/gradle-build-action@v3
 
       - name: Deploy to Maven Central
         run: ./gradlew publishAggregationToCentralPortal --no-configuration-cache --stacktrace

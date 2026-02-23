@@ -27,14 +27,8 @@ class FakeCountryCodePicker(
     override var phoneNumber: String = phone
     override var countryCode: String = code
     override var countryList: List<Country> = countries
-    override val showCountryCode: Boolean
-        get() {
-            TODO()
-        }
-    override val showCountryFlag: Boolean
-        get() {
-            TODO()
-        }
+    override val showCountryCode: Boolean = true
+    override val showCountryFlag: Boolean = true
 
     override fun getCountryName(): String = countryList.first().name
 
@@ -57,11 +51,11 @@ class FakeCountryCodePicker(
 
     @RestrictedApi
     override fun setPhoneNo(phoneNumber: String) {
-        TODO("Not yet implemented")
+        this.phoneNumber = phoneNumber
     }
 
     @RestrictedApi
     override fun setCode(countryCode: String) {
-        TODO("Not yet implemented")
+        this.countryCode = countryCode
     }
 }

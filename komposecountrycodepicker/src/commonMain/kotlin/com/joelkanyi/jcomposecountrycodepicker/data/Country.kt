@@ -15,17 +15,41 @@
  */
 package com.joelkanyi.jcomposecountrycodepicker.data
 
+import org.jetbrains.compose.resources.DrawableResource
+
 /**
- * [Country] is a data class that holds the data of a country.
+ * [Country] holds the data of a country.
  *
- * @param code The code of the country.
- * @param phoneNoCode The phone number code of the country.
- * @param name The name of the country.
- * @param flag The flag of the country.
+ * This class is intentionally not a `data class` to preserve binary
+ * compatibility when properties are added or reordered in future versions.
+ *
+ * @param code The ISO 3166-1 alpha-2 code of the country (e.g. "ke").
+ * @param phoneNoCode The phone number code of the country (e.g. "+254").
+ * @param name The display name of the country (e.g. "Kenya").
+ * @param flag The flag drawable resource of the country.
  */
-public data class Country(
-    val code: String,
-    val phoneNoCode: String,
-    val name: String,
-    val flag: Int,
-)
+public class Country(
+    public val code: String,
+    public val phoneNoCode: String,
+    public val name: String,
+    public val flag: DrawableResource,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Country) return false
+        return code == other.code &&
+            phoneNoCode == other.phoneNoCode &&
+            name == other.name &&
+            flag == other.flag
+    }
+
+    override fun hashCode(): Int {
+        var result = code.hashCode()
+        result = 31 * result + phoneNoCode.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + flag.hashCode()
+        return result
+    }
+
+    override fun toString(): String = "Country(code=$code, phoneNoCode=$phoneNoCode, name=$name)"
+}

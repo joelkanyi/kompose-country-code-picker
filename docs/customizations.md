@@ -1,77 +1,92 @@
-## KomposeCountryCodePickerState
+# Customizations
 
-`val state = rememberKomposeCountryCodePickerState()`
+## State Configuration
 
-The `state` parameter is used to set and access different variables and methods available in the `KomposeCountryCodePicker` composable.
+Use `rememberKomposeCountryCodePickerState()` to create and configure the picker state:
 
 ```kotlin
 val state = rememberKomposeCountryCodePickerState(
-    limitedCountries = listOf("KE", "UG", "TZ", "RW", "SS", "Togo", "+260", "250", "+211", "Mali", "Malawi"),
+    defaultCountryCode = "KE",
+    limitedCountries = listOf("KE", "UG", "TZ", "RW"),
     priorityCountries = listOf("KE", "UG", "TZ"),
     showCountryCode = true,
     showCountryFlag = true,
-    defaultCountryCode = "TZ",
 )
-
 ```
 
-## KomposeCountryCodePickerState Customizations
-| Customization          | Description                                                                                                                                                                                                                                                                                      |
-|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **showCountryCode**    | If `true`, the country code will be displayed in the country code picker `TextField`.                                                                                                                                                                                                            |
-| **showCountryFlag**    | If `true`, the country flag will be displayed in the country code picker `TextField`.                                                                                                                                                                                                            |
-| **defaultCountryCode** | Sets the default country code to be displayed in the country code picker.                                                                                                                                                                                                                        |
-| **limitedCountries**   | Limits the list of countries to be displayed in the country code picker by specifying country codes, country names, or country phone codes, e.g., `listOf("KE", "UG", "TZ")`, `listOf("Kenya", "Uganda", "Tanzania")` or `listOf("+254", "+256", "+255")`.                                       |
-| **priorityCountries**   | Specifies the priority countries to be displayed at the top of the list in the country code picker. This can be ONLY a list of country codes e.g., `listOf("KE", "UG", "TZ")`. |
+### State Parameters
 
-## Available methods/variables accessible from the state
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `defaultCountryCode` | `String?` | Auto-detected | The default country code (ISO 3166-1 alpha-2). When `null`, the library auto-detects the user's country on all platforms. |
+| `limitedCountries` | `List<String>` | `emptyList()` | Limits which countries appear in the picker. Accepts country codes (`"KE"`), country names (`"Kenya"`), or phone codes (`"+254"`). An empty list shows all countries. |
+| `priorityCountries` | `List<String>` | `emptyList()` | Country codes to display at the top of the list (e.g. `listOf("KE", "UG", "TZ")`). Must be ISO country codes. |
+| `showCountryCode` | `Boolean` | `true` | Whether to display the dialling code (e.g. `+254`) next to the flag. |
+| `showCountryFlag` | `Boolean` | `true` | Whether to display the country flag. |
 
-Use the state you defined (`val state = rememberKomposeCountryCodePickerState()`) to access the following methods and variables:
+!!! tip
+    Default country detection works on all platforms: it uses `Locale` on Android/JVM, `NSLocale` on iOS, and browser language/timezone on JS/WasmJS.
 
-```markdown
-| Description                                   | Method                                     | Example                   |
-|-----------------------------------------------|--------------------------------------------|---------------------------|
-| **Country Code**                              | `state.getCountryCode()`                   | `KE`                      |
-| **Phone Number**                              | `state.getPhoneNumber()`                   | `0712345678`              |
-| **Country Phone No Code Without Prefix**      | `state.getCountryPhoneCodeWithoutPrefix()` | `254`                     |
-| **Country Phone No Code**                     | `state.getCountryPhoneCode()`              | `+254`                    |
-| **Country Name**                              | `state.getCountryName()`                   | `Kenya`                   |
-| **Phone Number Without Prefix**               | `state.getPhoneNumberWithoutPrefix()`      | `712345678`               |
-| **Full Phone Number**                         | `state.getFullPhoneNumber()`               | `+254712345678`           |
-| **Full Phone Number Without Prefix**          | `state.getFullPhoneNumberWithoutPrefix()`  | `254712345678`            |
-| **Fully Formatted Phone Number**              | `state.getFullyFormattedPhoneNumber()`     | `+254 712 345678`         |
-| **Is Phone Number Valid**                     | `state.isPhoneNumberValid()`               | `true` / `false`          |
+## TextField Customizations
+
+The `KomposeCountryCodePicker` composable accepts the following parameters:
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `state` | `CountryCodePicker` | — | The state object from `rememberKomposeCountryCodePickerState()`. **Required.** |
+| `text` | `String` | — | The current phone number text. **Required.** |
+| `modifier` | `Modifier` | `Modifier` | Modifier applied to the text field layout. |
+| `onValueChange` | `(String) -> Unit` | `{}` | Called when the text field value changes. |
+| `error` | `Boolean` | `false` | Whether to display the text field in an error state. |
+| `showOnlyCountryCodePicker` | `Boolean` | `false` | If `true`, renders only the country picker without the text field. |
+| `shape` | `Shape` | `MaterialTheme.shapes.medium` | The shape of the text field outline. |
+| `placeholder` | `@Composable (String) -> Unit` | Default hint | A composable to display as the placeholder. Receives the current country code. |
+| `colors` | `TextFieldColors` | `TextFieldDefaults.colors()` | Colors for the text field. |
+| `trailingIcon` | `@Composable (() -> Unit)?` | `null` | An optional trailing icon composable. |
+| `interactionSource` | `MutableInteractionSource` | `MutableInteractionSource()` | The interaction source for the text field. |
+| `selectedCountryFlagSize` | `FlagSize` | `FlagSize(28.dp, 18.dp)` | The width and height of the selected country flag. |
+| `textStyle` | `TextStyle` | `LocalTextStyle.current` | The text style for the text field and selected country display. |
+| `enabled` | `Boolean` | `true` | Whether the text field and country picker are enabled. |
+| `keyboardOptions` | `KeyboardOptions` | Phone / Next | Keyboard options for the text field. Defaults to phone keyboard with `ImeAction.Next`. |
+| `keyboardActions` | `KeyboardActions` | `KeyboardActions.Default` | Keyboard actions for the text field. |
+
+## Dialog Customizations
+
+The country selection dialog can be customized through additional parameters on `KomposeCountryCodePicker`:
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `countrySelectionDialogContainerColor` | `Color` | `MaterialTheme.colorScheme.background` | Background color of the dialog. |
+| `countrySelectionDialogContentColor` | `Color` | `MaterialTheme.colorScheme.onBackground` | Content/text color of the dialog. |
+| `countrySelectionDialogTitle` | `@Composable () -> Unit` | "Select Country" | A composable for the dialog title. |
+| `countrySelectionDialogBackIcon` | `@Composable () -> Unit` | Back arrow icon | A composable for the back/dismiss button icon. |
+| `countrySelectionDialogSearchIcon` | `@Composable () -> Unit` | Search icon | A composable for the search toggle icon. |
+
+The dialog is **responsive**: it displays full-screen on compact screens (width < 600dp) and as a popup on larger screens.
+
+## CountrySelectionDialog (Standalone)
+
+The `CountrySelectionDialog` composable is part of the public API and can be used independently if you need full control over when the dialog is shown:
+
+```kotlin
+CountrySelectionDialog(
+    countryList = state.countryList,
+    containerColor = MaterialTheme.colorScheme.background,
+    contentColor = MaterialTheme.colorScheme.onBackground,
+    onDismissRequest = { /* handle dismiss */ },
+    onSelect = { country -> /* handle selection */ },
+)
 ```
 
-### Explanation:
-
-- **Country Code**: Returns the country code for the selected country, e.g., `KE`.
-- **Phone Number**: Returns the phone number entered by the user, e.g., `0712345678`.
-- **Country Phone No Code Without Prefix**: Returns the country phone code without the prefix, e.g., `254`.
-- **Country Phone No Code**: Returns the country phone code with the prefix, e.g., `+254`.
-- **Country Name**: Returns the name of the country, e.g., `Kenya`.
-- **Phone Number Without Prefix**: Returns the phone number without the prefix, e.g., `712345678`.
-- **Full Phone Number**: Returns the full phone number with the prefix, e.g., `+254712345678`.
-- **Full Phone Number Without Prefix**: Returns the full phone number without the prefix, e.g., `254712345678`.
-- **Fully Formatted Phone Number**: Returns the fully formatted phone number, e.g., `+254 712 345678`.
-- **Is Phone Number Valid**: Checks if the phone number is valid, returns `true` or `false`.
-
-
-## KomposeCountryCodePicker Textfield Composable customizations
-| Customization                            | Description                                                                                |
-|------------------------------------------|--------------------------------------------------------------------------------------------|
-| **placeholder**                          | Sets the placeholder `Composable` for the country code picker.                             |
-| **shape**                                | Sets the shape of the country code picker `TextField`.                                     |
-| **error**                                | Sets the error state on the `TextField` for the country code picker.                       |
-| **colors**                               | Sets the colors for the country code picker `TextField`.                                   |
-| **showOnlyCountryCodePicker**            | Shows only the country code picker without the `TextField`.                                |
-| **state**                                | The state of the country code picker.                                                      |
-| **countrySelectionDialogContainerColor** | The color of the country selection dialog container.                                       |
-| **countrySelectionDialogContentColor**   | The color of the country selection dialog content.                                         |
-| **countrySelectionDialogTitle**   | The title of the country selection dialog.                                         |
-| **countrySelectionDialogSearchIcon**   | The icon to be used for the search field in the country selection dialog. |
-| **countrySelectionDialogBackIcon**   | The icon to be used for the back button in the country selection dialog. |
-| **textStyle**                            | The style to be used for displaying text on the `TextField` and the selected country.       |
-| **interactionSource**                    | The `MutableInteractionSource` representing the stream of Interactions for this text field. |
-| **selectedCountryFlagSize**              | The size of the selected country flag (width and height in `.dp`).                         |
-| **enabled**                              | Controls the enabled state of the country code picker.                                     |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `countryList` | `List<Country>` | — | The list of countries to display. **Required.** |
+| `containerColor` | `Color` | — | Background color of the dialog. **Required.** |
+| `contentColor` | `Color` | — | Content/text color of the dialog. **Required.** |
+| `onDismissRequest` | `() -> Unit` | — | Called when the user dismisses the dialog. **Required.** |
+| `onSelect` | `(Country) -> Unit` | — | Called when a country is selected. **Required.** |
+| `modifier` | `Modifier` | `Modifier` | Modifier applied to the dialog layout. |
+| `properties` | `DialogProperties` | Full-width | Dialog window properties. |
+| `title` | `@Composable () -> Unit` | "Select Country" | A composable for the dialog title. |
+| `backIcon` | `@Composable () -> Unit` | Back arrow icon | A composable for the back button icon. |
+| `searchIcon` | `@Composable () -> Unit` | Search icon | A composable for the search icon. |

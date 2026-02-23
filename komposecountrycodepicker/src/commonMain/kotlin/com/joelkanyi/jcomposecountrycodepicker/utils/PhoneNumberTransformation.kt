@@ -15,13 +15,10 @@
  */
 package com.joelkanyi.jcomposecountrycodepicker.utils
 
-import android.telephony.PhoneNumberUtils
-import android.text.Selection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
-import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.joelkanyi.jcomposecountrycodepicker.data.Transformation
 
 /**
@@ -34,8 +31,7 @@ internal class PhoneNumberTransformation(
     private val countryCode: String,
 ) : VisualTransformation {
 
-    private val phoneNumberFormatter =
-        PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode)
+    private val phoneNumberFormatter = createAsYouTypeFormatter(countryCode)
 
     /**
      * [filter] Returns the formatted phone number.
@@ -44,19 +40,15 @@ internal class PhoneNumberTransformation(
      */
     override fun filter(text: AnnotatedString): TransformedText {
         val transformation = try {
-            reformat(text, Selection.getSelectionEnd(text))
+            reformat(text, text.length)
         } catch (e: Exception) {
-            // Fallback to the original text if reformatting fails
             Transformation(text.text, List(text.length) { it }, List(text.length) { it })
         }
 
         return TransformedText(
             AnnotatedString(transformation.formatted ?: text.text),
             object : OffsetMapping {
-                override fun originalToTransformed(offset: Int): Int {
-                    // Return the original offset if out of bounds
-                    return transformation.originalToTransformed[offset.coerceIn(transformation.originalToTransformed.indices)]
-                }
+                override fun originalToTransformed(offset: Int): Int = transformation.originalToTransformed[offset.coerceIn(transformation.originalToTransformed.indices)]
 
                 override fun transformedToOriginal(offset: Int): Int = transformation.transformedToOriginal[offset.coerceIn(transformation.transformedToOriginal.indices)]
             },
@@ -78,7 +70,7 @@ internal class PhoneNumberTransformation(
         var hasCursor = false
 
         s.forEachIndexed { index, char ->
-            if (PhoneNumberUtils.isNonSeparator(char)) {
+            if (isNonSeparator(char)) {
                 if (lastNonSeparator.code != 0) {
                     formatted = getFormattedNumber(lastNonSeparator, hasCursor)
                     hasCursor = false
@@ -99,7 +91,7 @@ internal class PhoneNumberTransformation(
         var specialCharsCount = 0
 
         formatted?.forEachIndexed { index, char ->
-            if (!PhoneNumberUtils.isNonSeparator(char)) {
+            if (!isNonSeparator(char)) {
                 specialCharsCount++
             } else {
                 originalToTransformed.add(index)
@@ -107,7 +99,6 @@ internal class PhoneNumberTransformation(
             transformedToOriginal.add(maxOf(index - specialCharsCount, 0))
         }
 
-        // Ensure both lists have a proper end boundary offset
         val lastOriginalOffset = s.length
         val lastTransformedOffset = formatted?.length ?: 0
 
@@ -116,7 +107,6 @@ internal class PhoneNumberTransformation(
 
         Transformation(formatted, originalToTransformed, transformedToOriginal)
     } catch (e: Exception) {
-        // Fallback to the original text if reformatting fails
         Transformation(s.toString(), List(s.length) { it }, List(s.length) { it })
     }
 

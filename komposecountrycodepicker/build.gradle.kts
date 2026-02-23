@@ -32,13 +32,7 @@ plugins {
 kotlin {
     applyDefaultHierarchyTemplate()
 
-    explicitApi() // https://kotlinlang.org/docs/whatsnew14.html#explicit-api-mode-for-library-authors
-
-    // for strict mode
     explicitApi = ExplicitApiMode.Strict
-
-    // for warning mode
-    explicitApi = ExplicitApiMode.Warning
 
     androidTarget {
         compilerOptions {
@@ -48,11 +42,6 @@ kotlin {
 
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-
-        dependencies {
-            androidTestImplementation(libs.androidx.ui.test.junit4.android)
-            debugImplementation(libs.androidx.ui.test.manifest)
-        }
     }
 
     jvm()
@@ -76,9 +65,18 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.foundation)
             implementation(compose.material3)
+            implementation(compose.components.resources)
         }
 
-        // Adds common test dependencies
+        androidMain.dependencies {
+            implementation(libs.libphonenumber)
+            implementation(libs.core.ktx)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.libphonenumber)
+        }
+
         commonTest.dependencies {
             implementation(kotlin("test"))
 
@@ -86,19 +84,16 @@ kotlin {
             implementation(compose.uiTest)
         }
 
-        // Adds the desktop test dependency
         jvmTest.dependencies {
             implementation(compose.desktop.currentOs)
         }
     }
 }
 
-dependencies {
-    implementation(libs.material3)
-    implementation(libs.libphonenumber)
-    implementation(libs.core.ktx)
-    testImplementation(libs.junit)
-    testImplementation(libs.truth)
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.joelkanyi.jcomposecountrycodepicker.resources"
+    generateResClass = auto
 }
 
 android {
@@ -130,7 +125,7 @@ mavenPublishing {
 
     pom {
         name.set("KomposeCountryCodePicker")
-        description.set("Kompose Country Code Picker is a Jetpack Compose library based on Material 3 (M3) that provides a country code picker for Android apps.")
+        description.set("Kompose Country Code Picker is a Compose Multiplatform library based on Material 3 (M3) that provides a country code picker for Android, iOS, JVM, JS, and WasmJS.")
         url.set("https://github.com/joelkanyi/KomposeCountryCodePicker")
 
         licenses {

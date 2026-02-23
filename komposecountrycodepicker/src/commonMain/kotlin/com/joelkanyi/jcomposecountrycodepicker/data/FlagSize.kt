@@ -18,9 +18,29 @@ package com.joelkanyi.jcomposecountrycodepicker.data
 import androidx.compose.ui.unit.Dp
 
 /**
- * Data class to hold the size of the flag
+ * Holds the size of a country flag image.
  *
- * @param width the width of the flag
- * @param height the height of the flag
+ * This class is intentionally not a `data class` to preserve binary
+ * compatibility when properties are added or reordered in future versions.
+ *
+ * @param width The width of the flag in [Dp].
+ * @param height The height of the flag in [Dp].
  */
-public data class FlagSize(val width: Dp, val height: Dp)
+public class FlagSize(
+    public val width: Dp,
+    public val height: Dp,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is FlagSize) return false
+        return width == other.width && height == other.height
+    }
+
+    override fun hashCode(): Int {
+        var result = width.hashCode()
+        result = 31 * result + height.hashCode()
+        return result
+    }
+
+    override fun toString(): String = "FlagSize(width=$width, height=$height)"
+}

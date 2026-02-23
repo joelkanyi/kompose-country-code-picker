@@ -1,51 +1,74 @@
-Kompose Country Code Picker is a Jetpack Compose library based on Material 3 (M3) that provides a
-country code picker for Android apps.
+# Kompose Country Code Picker
+
+A Compose Multiplatform country code picker built with Material 3 for **Android**, **iOS**, **Desktop (JVM)**, **JS Browser**, and **WasmJS Browser**.
 
 ## Preview
 
- Picker                                                       | Dialog                                                        
---------------------------------------------------------------|---------------------------------------------
- ![](./assets/picker.png){: style="height:350px;width:250px"} | ![](./assets/dialog.png){: style="height:350px;width:250px"}       
+<div class="grid" markdown>
 
-## Including it in your project:
+| Android Picker | Android Dialog |
+|:--------------:|:--------------:|
+| ![Android Picker](./assets/android-picker.png){: style="height:350px;width:250px"} | ![Android Dialog](./assets/android-dialog.png){: style="height:350px;width:250px"} |
 
-#### Add the Maven Central repository if it is not already there:
-```gradle
-repositories {
-    mavenCentral()
-}
-```
+| iOS Picker | iOS Dialog |
+|:----------:|:----------:|
+| ![iOS Picker](./assets/ios-picker.png){: style="height:350px;width:250px"} | ![iOS Dialog](./assets/ios-dialog.png){: style="height:350px;width:250px"} |
 
-#### Add the dependency to your dependencies block in your app's build.gradle file:
-```kotlin
-dependencies {
-    implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
-}
-```
+| Desktop Picker | Desktop Dialog |
+|:--------------:|:--------------:|
+| ![Desktop Picker](./assets/desktop-picker.png){: style="max-height:350px"} | ![Desktop Dialog](./assets/desktop-dialog.png){: style="max-height:350px"} |
 
-#### For those using Gradle Version Catalog, you can add the dependency as follows:
-```libs.version.toml
-[versions]
-komposecountrycodepicker = "<latest-version>"
+| Web Picker | Web Dialog |
+|:----------:|:----------:|
+| ![Web Picker](./assets/web-picker.png){: style="max-height:350px"} | ![Web Dialog](./assets/web-dialog.png){: style="max-height:350px"} |
 
-[libraries]
-komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
-```
+</div>
 
-## License
+## Features
 
-```
-Copyright 2023 Joel Kanyi
+- **250+ countries** with flags, dialling codes, and localized names
+- **Phone number validation & formatting** — powered by libphonenumber on Android/JVM, built-in rules on iOS/JS/WasmJS
+- **Accent-normalized search** — find countries regardless of diacritics
+- **Responsive dialog** — full-screen on compact screens, popup on expanded screens
+- **13 language translations** — Arabic, German, Spanish, French, Hindi, Indonesian, Italian, Japanese, Dutch, Russian, Swahili, Turkish, Vietnamese
+- **Fully customizable** — colors, shapes, icons, text styles, and flag sizes
+- **Keyboard navigation** — Arrow keys, Enter, and Escape support on desktop and web
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+## Quick Start
 
- http://www.apache.org/licenses/LICENSE-2.0
+Add the dependency to your `commonMain` source set:
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
+=== "Kotlin DSL"
+
+    ```kotlin
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+                implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+            }
+        }
+    }
+    ```
+
+=== "Version Catalog"
+
+    ```toml title="libs.versions.toml"
+    [versions]
+    komposecountrycodepicker = "<latest-version>"
+
+    [libraries]
+    komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
+    ```
+
+    Then in your `build.gradle.kts`:
+
+    ```kotlin
+    commonMain.dependencies {
+        implementation(libs.komposecountrycodepicker)
+    }
+    ```
+
+---
+
+[Get Started :material-arrow-right:](get-started.md){ .md-button .md-button--primary }
+[View on GitHub :material-github:](https://github.com/joelkanyi/kompose-country-code-picker){ .md-button }
