@@ -122,9 +122,10 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
 
-      - name: Build iOS frameworks
+      - name: Build iOS targets
         run: >-
           ./gradlew
-          :komposecountrycodepicker:linkDebugFrameworkIosArm64
-          :komposecountrycodepicker:linkDebugFrameworkIosSimulatorArm64
+          :komposecountrycodepicker:compileKotlinIosArm64
+          :komposecountrycodepicker:compileKotlinIosSimulatorArm64
+          :komposecountrycodepicker:compileKotlinIosX64
           --stacktrace
