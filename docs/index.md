@@ -34,7 +34,17 @@ A Compose Multiplatform country code picker built with Material 3 for **Android*
 - **Fully customizable** — colors, shapes, icons, text styles, and flag sizes
 - **Keyboard navigation** — Arrow keys, Enter, and Escape support on desktop and web
 
-## Quick Start
+## Installation
+
+Add the Maven Central repository if it is not already there:
+
+```kotlin
+repositories {
+    mavenCentral()
+}
+```
+
+### Multiplatform Projects
 
 Add the dependency to your `commonMain` source set:
 
@@ -43,8 +53,10 @@ Add the dependency to your `commonMain` source set:
     ```kotlin
     kotlin {
         sourceSets {
-            commonMain.dependencies {
-                implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+            commonMain {
+                dependencies {
+                    implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+                }
             }
         }
     }
@@ -63,7 +75,43 @@ Add the dependency to your `commonMain` source set:
     Then in your `build.gradle.kts`:
 
     ```kotlin
-    commonMain.dependencies {
+    kotlin {
+        sourceSets {
+            commonMain {
+                dependencies {
+                    implementation(libs.komposecountrycodepicker)
+                }
+            }
+        }
+    }
+    ```
+
+### Android Projects
+
+Add the dependency to your app's `build.gradle.kts`:
+
+=== "Kotlin DSL"
+
+    ```kotlin
+    dependencies {
+        implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+    }
+    ```
+
+=== "Version Catalog"
+
+    ```toml title="libs.versions.toml"
+    [versions]
+    komposecountrycodepicker = "<latest-version>"
+
+    [libraries]
+    komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
+    ```
+
+    Then in your `build.gradle.kts`:
+
+    ```kotlin
+    dependencies {
         implementation(libs.komposecountrycodepicker)
     }
     ```

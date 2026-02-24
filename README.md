@@ -12,36 +12,73 @@ A Compose Multiplatform country code picker built with Material 3.
 
 See the [project's website](https://joelkanyi.github.io/kompose-country-code-picker/) for full documentation.
 
-## Preview
-
-| Android | iOS | Desktop | Web |
-|:-------:|:---:|:-------:|:---:|
-| <img src="docs/assets/android-picker.png" width="200"/> | <img src="docs/assets/ios-picker.png" width="200"/> | <img src="docs/assets/desktop-picker.png" width="280"/> | <img src="docs/assets/web-picker.png" width="280"/> |
-| <img src="docs/assets/android-dialog.png" width="200"/> | <img src="docs/assets/ios-dialog.png" width="200"/> | <img src="docs/assets/desktop-dialog.png" width="280"/> | <img src="docs/assets/web-dialog.png" width="280"/> |
-
 ## Features
 
 - 250+ countries with flags, dialling codes, and localized names
 - Built-in phone number validation and formatting
 - Search with accent-normalized matching
-- Responsive dialog — full-screen on mobile, popup on desktop/web
+- Responsive dialog - full-screen on mobile, popup on desktop/web
 - 13 language translations
 - Customizable colors, shapes, and icons
 - Keyboard navigation support (Arrow keys, Enter, Escape) on desktop and web
 
-## Quick Start
+## Installation
+
+Add the Maven Central repository if it is not already there:
+
+```kotlin
+repositories {
+    mavenCentral()
+}
+```
+
+### Multiplatform Projects
 
 Add the dependency to your `commonMain` source set:
 
 ```kotlin
 kotlin {
     sourceSets {
-        commonMain.dependencies {
-            implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+        commonMain {
+            dependencies {
+                implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+            }
         }
     }
 }
 ```
+
+### Android Projects
+
+Add the dependency to your app's `build.gradle.kts`:
+
+```kotlin
+dependencies {
+    implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+}
+```
+
+### Gradle Version Catalog
+
+Add the following to your `libs.versions.toml`:
+
+```toml
+[versions]
+komposecountrycodepicker = "<latest-version>"
+
+[libraries]
+komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
+```
+
+Then add the dependency in your `build.gradle.kts`:
+
+```kotlin
+dependencies {
+    implementation(libs.komposecountrycodepicker)
+}
+```
+
+## Quick Start
 
 Use the picker in your Composable:
 
@@ -59,6 +96,13 @@ KomposeCountryCodePicker(
     state = state,
 )
 ```
+
+## Preview
+
+| Android | iOS | Desktop | Web |
+|:-------:|:---:|:-------:|:---:|
+| <img src="docs/assets/android-picker.png" width="200"/> | <img src="docs/assets/ios-picker.png" width="200"/> | <img src="docs/assets/desktop-picker.png" width="280"/> | <img src="docs/assets/web-picker.png" width="280"/> |
+| <img src="docs/assets/android-dialog.png" width="200"/> | <img src="docs/assets/ios-dialog.png" width="200"/> | <img src="docs/assets/desktop-dialog.png" width="280"/> | <img src="docs/assets/web-dialog.png" width="280"/> |
 
 ## Translations
 

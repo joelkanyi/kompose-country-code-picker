@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- A **Kotlin Multiplatform** project with the **Compose Multiplatform** plugin applied
+- A **Kotlin Multiplatform** or **Android** project with the **Compose Multiplatform** plugin applied
 - **Material 3** dependency (`compose.material3`)
 
 ## Add Repository
@@ -17,13 +17,19 @@ repositories {
 
 ## Add Dependency
 
+### Multiplatform Projects
+
+Add the dependency to your `commonMain` source set dependencies:
+
 === "Kotlin DSL"
 
     ```kotlin
     kotlin {
         sourceSets {
-            commonMain.dependencies {
-                implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+            commonMain {
+                dependencies {
+                    implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+                }
             }
         }
     }
@@ -44,7 +50,45 @@ repositories {
     Then in your `build.gradle.kts`:
 
     ```kotlin
-    commonMain.dependencies {
+    kotlin {
+        sourceSets {
+            commonMain {
+                dependencies {
+                    implementation(libs.komposecountrycodepicker)
+                }
+            }
+        }
+    }
+    ```
+
+### Android Projects
+
+If you are working on an Android-only project, add the dependency directly to your app's `build.gradle.kts`:
+
+=== "Kotlin DSL"
+
+    ```kotlin
+    dependencies {
+        implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+    }
+    ```
+
+=== "Version Catalog"
+
+    Add to your `libs.versions.toml`:
+
+    ```toml
+    [versions]
+    komposecountrycodepicker = "<latest-version>"
+
+    [libraries]
+    komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
+    ```
+
+    Then in your `build.gradle.kts`:
+
+    ```kotlin
+    dependencies {
         implementation(libs.komposecountrycodepicker)
     }
     ```
