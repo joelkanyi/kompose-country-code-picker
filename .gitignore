@@ -1,93 +1,71 @@
-# Gradle build directory and local Gradle settings
-.gradle
+# Gradle
+.gradle/
 build/
+captures/
 
-# Directory for test captures
-captures
+# Local properties (machine-specific)
+local.properties
 
-# Local properties file, typically contains machine-specific configurations
-/local.properties
-
-# IntelliJ IDEA specific files and directories
+# IntelliJ IDEA / Android Studio
 .idea/
 *.iml
-.fleet
+.fleet/
 
-# General OS and build system specific files
+# Kotlin
+.kotlin/
+kotlin-js-store/
+
+# OS files
 .DS_Store
-.externalNativeBuild
+Thumbs.db
 
-# Security: Do not commit plain-text release keys
-app-release.jks
-play-account.p12
+# Native build
+.externalNativeBuild/
+.cxx/
+
+# Security - keys and credentials
+*.jks
+*.p12
+*.keystore
 play-account.json
-
-# Security: Do not commit Firebase configuration
 google-services.json
+*.env*
 
-# VS Code project-specific settings and build outputs
-org.eclipse.buildship.core.prefs
+# Eclipse / VS Code
 .classpath
 .project
+.settings/
+org.eclipse.buildship.core.prefs
 bin/
 
-# Documentation and cache directories
+# Documentation build output
 site/
 .cache/
 docs/kdoc/
 
-# Ignore baseline profile files in sample projects
-sample/**/generated
+# Generated files
+sample/**/generated/
 
-##########################################################################################
-# Imported from https://github.com/github/gitignore/blob/main/Swift.gitignore
-##########################################################################################
-
-# Xcode specific files and directories
-
-## User settings
+# Xcode
 xcuserdata/
-
-## Obj-C/Swift specific generated files
+*.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
 *.hmap
-
-## App packaging artifacts
 *.ipa
 *.dSYM.zip
 *.dSYM
-
-## Swift playground files
 timeline.xctimeline
 playground.xcworkspace
 
 # Swift Package Manager
-#
-# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
-# Packages/        # Uncomment to ignore package sources
-# Package.pins     # Uncomment to ignore package pin file
-# Package.resolved # Uncomment to ignore resolved package versions
-# *.xcodeproj      # Uncomment to ignore Xcode project files
-#
-# Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
-# hence it is not needed unless you have added a package configuration file to your project
-# .swiftpm        # Uncomment to ignore SwiftPM configuration files
+.build/
+.swiftpm/
 
-.build/           # Directory for build artifacts
+# fastlane
+report.xml
+Preview.html
+screenshots/**/*.png
+test_output/
 
-# fastlane specific files
-#
-# It is recommended to not store the screenshots in the git repo.
-# Instead, use fastlane to re-generate the screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/#source-control
-
-report.xml        # Fastlane report files
-Preview.html      # Fastlane preview HTML files
-screenshots/**/*.png  # Fastlane screenshots
-test_output       # Fastlane test output directory
-
-# Environment configuration files
-*.env*
-
-# Kotlin specific build and cache directories - Kotlin 2.0
-.kotlin
+# Claude Code
+.claude/
