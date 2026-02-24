@@ -24,7 +24,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compatibility)
     alias(libs.plugins.dokka)
-    alias(libs.plugins.nmcp.aggregation)
     alias(libs.plugins.gradleMavenPublish)
     alias(libs.plugins.compose.compiler)
 }
