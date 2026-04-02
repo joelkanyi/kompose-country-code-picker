@@ -29,7 +29,7 @@ jobs:
           distribution: 'zulu'
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Spotless check
         run: ./gradlew spotlessCheck --stacktrace
@@ -48,7 +48,7 @@ jobs:
           distribution: 'zulu'
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: API check
         run: ./gradlew apiCheck --stacktrace
@@ -67,7 +67,7 @@ jobs:
           distribution: 'zulu'
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Run tests
         run: ./gradlew :komposecountrycodepicker:jvmTest :komposecountrycodepicker:testDebugUnitTest --stacktrace
@@ -86,7 +86,7 @@ jobs:
           distribution: 'zulu'
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Build library
         run: >-
@@ -120,7 +120,7 @@ jobs:
           distribution: 'zulu'
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Build iOS targets
         run: >-
