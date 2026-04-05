@@ -1,6 +1,6 @@
 [versions]
 agp = "8.13.2"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 compose-multipatform = "1.8.2"
 activityCompose = "1.12.4"
 libphonenumber = "9.0.24"
