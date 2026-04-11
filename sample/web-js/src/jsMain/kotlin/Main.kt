@@ -15,12 +15,13 @@
  */
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.window.CanvasBasedWindow
+import androidx.compose.ui.window.ComposeViewport
 import com.joelkanyi.jcomposecountrycodepicker.sample.Sample
+import kotlinx.browser.document
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-    CanvasBasedWindow(canvasElementId = "ComposeTarget") {
+    ComposeViewport(document.getElementById("ComposeTarget")!!) {
         MaterialTheme {
             Sample()
         }

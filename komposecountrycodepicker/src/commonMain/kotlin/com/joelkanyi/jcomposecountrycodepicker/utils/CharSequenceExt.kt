@@ -15,7 +15,8 @@
  */
 package com.joelkanyi.jcomposecountrycodepicker.utils
 
-private val REGEX_UNACCENT = "\\p{InCombiningDiacriticalMarks}+".toRegex()
+// Use an explicit combining-mark range for JS compatibility.
+private val REGEX_UNACCENT = "[\\u0300-\\u036f]+".toRegex()
 
 internal fun CharSequence.unaccent(): String {
     val temp = this.toString().normalizeUnicode()

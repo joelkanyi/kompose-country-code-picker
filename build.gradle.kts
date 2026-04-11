@@ -3,15 +3,14 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 
 plugins {
     alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.android.kotlin) apply false
+    alias(libs.plugins.android.kmp.library) apply false
     alias(libs.plugins.multiplatform) apply false
     alias(libs.plugins.jvm) apply false
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.spotless)
     alias(libs.plugins.kotlin.compatibility) apply false
     alias(libs.plugins.dokka)
-    alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.nmcp.aggregation)
 }
 
