@@ -73,6 +73,7 @@ import com.joelkanyi.jcomposecountrycodepicker.resources.ic_arrow_back
 import com.joelkanyi.jcomposecountrycodepicker.resources.ic_search
 import com.joelkanyi.jcomposecountrycodepicker.resources.search_country
 import com.joelkanyi.jcomposecountrycodepicker.resources.select_country
+import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountryName
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
@@ -348,7 +349,7 @@ public fun CountrySelectionDialog(
                                         modifier = Modifier
                                             .weight(1f)
                                             .qaAutomationTestTag("countryName"),
-                                        text = countryItem.name,
+                                        text = stringResource(getCountryName(countryItem.code.lowercase())),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = contentColor,
                                     )
