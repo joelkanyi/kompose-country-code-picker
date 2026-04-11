@@ -37,6 +37,21 @@ class CountrySearchTest {
     }
 
     @Test
+    fun searchByLocalizedCountryName() {
+        val testData = listOf(
+            Country("ke", "+254", "Kenya", Res.drawable.ke),
+            Country("ug", "+256", "Uganda", Res.drawable.ug),
+        )
+        val localizedNamesByCode = mapOf("ke" to "Kenia")
+        val searchIndex = testData.buildCountrySearchIndex(localizedNamesByCode = localizedNamesByCode)
+
+        val expected = listOf(Country("ke", "+254", "Kenya", Res.drawable.ke))
+        val result = testData.searchCountries("kenia", searchIndex = searchIndex)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
     fun searchByPhoneCode() {
         val countries = PickerUtils.allCountries
         val results = countries.searchCountries("+254")
