@@ -20,7 +20,6 @@ import com.joelkanyi.jcomposecountrycodepicker.resources.*
 import com.joelkanyi.jcomposecountrycodepicker.resources.Res
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.getString
 
 internal object PickerUtils {
     /**
