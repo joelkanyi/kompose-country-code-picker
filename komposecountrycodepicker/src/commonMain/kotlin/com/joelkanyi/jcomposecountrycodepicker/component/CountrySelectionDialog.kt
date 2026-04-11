@@ -50,6 +50,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -73,9 +74,10 @@ import com.joelkanyi.jcomposecountrycodepicker.resources.ic_arrow_back
 import com.joelkanyi.jcomposecountrycodepicker.resources.ic_search
 import com.joelkanyi.jcomposecountrycodepicker.resources.search_country
 import com.joelkanyi.jcomposecountrycodepicker.resources.select_country
+import com.joelkanyi.jcomposecountrycodepicker.utils.buildCountrySearchIndex
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountryName
-import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -148,6 +150,17 @@ public fun CountrySelectionDialog(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val listFocusRequester = remember { FocusRequester() }
+    val localizedCountryNamesByCode by produceState(
+        initialValue = emptyMap(),
+        key1 = countryList,
+    ) {
+        value = countryList.associate { country ->
+            country.code.lowercase() to getString(getCountryName(country.code.lowercase()))
+        }
+    }
+    val countrySearchIndex = remember(countryList, localizedCountryNamesByCode) {
+        countryList.buildCountrySearchIndex(localizedCountryNamesByCode)
+    }
 
     val countriesData = if (searchValue.isEmpty()) countryList else filteredItems
 
@@ -204,8 +217,7 @@ public fun CountrySelectionDialog(
                                         value = searchValue,
                                         onValueChange = { searchStr ->
                                             searchValue = searchStr
-                                            filteredItems =
-                                                countryList.searchForAnItem(searchStr)
+                                            filteredItems = countrySearchIndex.search(searchStr)
                                         },
                                         placeholder = {
                                             Text(
