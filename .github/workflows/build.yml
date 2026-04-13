@@ -70,7 +70,11 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Run tests
-        run: ./gradlew :komposecountrycodepicker:jvmTest :komposecountrycodepicker:testDebugUnitTest --stacktrace
+        run: >-
+          ./gradlew
+          :komposecountrycodepicker:allTests
+          :sample:android:testDebugUnitTest
+          --stacktrace
 
   build:
     name: 🔨 Build
@@ -91,7 +95,7 @@ jobs:
       - name: Build library
         run: >-
           ./gradlew
-          :komposecountrycodepicker:assembleRelease
+          :komposecountrycodepicker:assemble
           :komposecountrycodepicker:jvmJar
           :komposecountrycodepicker:compileKotlinJs
           :komposecountrycodepicker:compileKotlinWasmJs
