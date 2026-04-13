@@ -99,31 +99,6 @@ internal object PickerUtils {
     fun String.removeSpecialCharacters(): String = this.replace("[^a-zA-Z0-9]".toRegex(), "")
 
     /**
-     * [searchForAnItem] Returns a list of items that match the search string.
-     *
-     * @param searchStr The search string.
-     */
-    fun List<Country>.searchForAnItem(
-        searchStr: String,
-    ): List<Country> {
-        val filteredItems = filter {
-            it.name.unaccent().contains(
-                searchStr,
-                ignoreCase = true,
-            ) ||
-                it.phoneNoCode.contains(
-                    searchStr,
-                    ignoreCase = true,
-                ) ||
-                it.code.contains(
-                    searchStr,
-                    ignoreCase = true,
-                )
-        }
-        return filteredItems.toList()
-    }
-
-    /**
      * Map of shared phone codes to their preferred/primary country code.
      * When multiple countries share the same dialling code, this map determines
      * which country is returned by [extractCountryCodeAndPhoneNumber].

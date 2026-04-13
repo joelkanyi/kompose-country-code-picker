@@ -21,7 +21,6 @@ import com.joelkanyi.jcomposecountrycodepicker.resources.ke
 import com.joelkanyi.jcomposecountrycodepicker.resources.ug
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountry
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.removeSpecialCharacters
-import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.searchForAnItem
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -59,17 +58,6 @@ class PickerUtilsTest {
         val testData = "+-,`˜@/.!#%^&*()254712345678_+$"
         val result = testData.removeSpecialCharacters()
         assertEquals("254712345678", result)
-    }
-
-    @Test
-    fun testSearchForAnItem() {
-        val testData = listOf(
-            Country("ke", "+254", "Kenya", Res.drawable.ke),
-            Country("ug", "+256", "Uganda", Res.drawable.ug),
-        )
-        val correctResult = listOf(Country("ke", "+254", "Kenya", Res.drawable.ke))
-        val result = testData.searchForAnItem("kEnYa")
-        assertEquals(correctResult, result)
     }
 
     @Test
@@ -153,35 +141,6 @@ class PickerUtilsTest {
         val (code, phone) = PickerUtils.extractCountryCodeAndPhoneNumber("")
         assertNull(code)
         assertEquals("", phone)
-    }
-
-    @Test
-    fun searchByPhoneCode() {
-        val countries = PickerUtils.allCountries
-        val results = countries.searchForAnItem("+254")
-        assertTrue(results.any { it.code == "ke" }, "Search by +254 should find Kenya")
-    }
-
-    @Test
-    fun searchByCountryCode() {
-        val countries = PickerUtils.allCountries
-        val results = countries.searchForAnItem("ke")
-        assertTrue(results.any { it.code == "ke" }, "Search by 'ke' should find Kenya")
-    }
-
-    @Test
-    fun searchReturnsEmptyForNonexistentQuery() {
-        val countries = PickerUtils.allCountries
-        val results = countries.searchForAnItem("zzzzzzzzzzz")
-        assertTrue(results.isEmpty())
-    }
-
-    @Test
-    fun searchIsCaseInsensitive() {
-        val countries = PickerUtils.allCountries
-        val lower = countries.searchForAnItem("kenya")
-        val upper = countries.searchForAnItem("KENYA")
-        assertEquals(lower.size, upper.size)
     }
 
     @Test
