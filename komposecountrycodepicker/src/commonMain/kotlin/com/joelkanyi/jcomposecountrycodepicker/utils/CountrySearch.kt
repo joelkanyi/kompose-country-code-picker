@@ -64,5 +64,4 @@ internal fun List<Country>.buildCountrySearchIndex(
     return CountrySearchIndex(searchableCountries)
 }
 
-internal fun List<Country>.searchCountries(searchStr: String): List<Country> =
-    buildCountrySearchIndex().search(searchStr)
+internal fun List<Country>.searchCountries(searchStr: String): List<Country> = buildCountrySearchIndex().search(searchStr)

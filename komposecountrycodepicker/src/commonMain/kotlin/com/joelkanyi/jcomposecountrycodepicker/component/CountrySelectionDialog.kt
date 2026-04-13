@@ -74,8 +74,8 @@ import com.joelkanyi.jcomposecountrycodepicker.resources.ic_arrow_back
 import com.joelkanyi.jcomposecountrycodepicker.resources.ic_search
 import com.joelkanyi.jcomposecountrycodepicker.resources.search_country
 import com.joelkanyi.jcomposecountrycodepicker.resources.select_country
-import com.joelkanyi.jcomposecountrycodepicker.utils.buildCountrySearchIndex
 import com.joelkanyi.jcomposecountrycodepicker.utils.PickerUtils.getCountryName
+import com.joelkanyi.jcomposecountrycodepicker.utils.buildCountrySearchIndex
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource

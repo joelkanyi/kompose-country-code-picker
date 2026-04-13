@@ -46,7 +46,7 @@ class CountrySearchTest {
         val searchIndex = testData.buildCountrySearchIndex(localizedNamesByCode = localizedNamesByCode)
 
         val expected = listOf(Country("ke", "+254", "Kenya", Res.drawable.ke))
-        val result = testData.searchCountries("kenia", searchIndex = searchIndex)
+        val result = searchIndex.search("kenia")
 
         assertEquals(expected, result)
     }
