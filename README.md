@@ -116,9 +116,11 @@ This project includes translations for the following languages:
 - Indonesian (in-rID)
 - Italian (it-IT)
 - Japanese (ja)
+- Marathi (mr)
 - Dutch (nl)
 - Russian (ru-RU)
 - Swahili (sw)
+- Tamil (ta)
 - Turkish (tr-TR)
 - Vietnamese (vi)
 

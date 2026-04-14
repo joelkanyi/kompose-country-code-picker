@@ -30,7 +30,7 @@ A Compose Multiplatform country code picker built with Material 3 for **Android*
 - **Phone number validation & formatting** — powered by libphonenumber on Android/JVM, built-in rules on iOS/JS/WasmJS
 - **Accent-normalized search** — find countries regardless of diacritics
 - **Responsive dialog** — full-screen on compact screens, popup on expanded screens
-- **13 language translations** — Arabic, German, Spanish, French, Hindi, Indonesian, Italian, Japanese, Dutch, Russian, Swahili, Turkish, Vietnamese
+- **15 language translations** — Arabic, German, Spanish, French, Hindi, Indonesian, Italian, Japanese, Marathi, Dutch, Russian, Swahili, Tamil, Turkish, Vietnamese
 - **Fully customizable** — colors, shapes, icons, text styles, and flag sizes
 - **Keyboard navigation** — Arrow keys, Enter, and Escape support on desktop and web
 
