@@ -61,6 +61,7 @@ The country selection dialog can be customized through additional parameters on 
 | `countrySelectionDialogTitle` | `@Composable () -> Unit` | "Select Country" | A composable for the dialog title. |
 | `countrySelectionDialogBackIcon` | `@Composable () -> Unit` | Back arrow icon | A composable for the back/dismiss button icon. |
 | `countrySelectionDialogSearchIcon` | `@Composable () -> Unit` | Search icon | A composable for the search toggle icon. |
+| `dropDownIcon` | `@Composable () -> Unit` | Down arrow icon | A composable for the dropdown indicator next to the selected country. Tinted by `LocalContentColor` by default. |
 
 The dialog is **responsive**: it displays full-screen on compact screens (width < 600dp) and as a popup on larger screens.
 

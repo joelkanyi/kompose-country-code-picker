@@ -350,6 +350,9 @@ public fun rememberKomposeCountryCodePickerState(
  *    the back icon in the country selection dialog.
  * @param countrySelectionDialogSearchIcon A composable lambda to display
  *    the search icon in the country selection dialog.
+ * @param dropDownIcon A composable lambda to display the dropdown icon
+ *    next to the selected country. Defaults to a down arrow icon tinted
+ *    with [LocalContentColor].
  * @param interactionSource The [MutableInteractionSource] representing the
  *    stream of Interactions for this text field.
  * @param selectedCountryFlagSize The size of the selected country flag
@@ -401,6 +404,12 @@ public fun KomposeCountryCodePicker(
             painter = painterResource(Res.drawable.ic_search),
             contentDescription = "Search",
             tint = countrySelectionDialogContentColor,
+        )
+    },
+    dropDownIcon: @Composable () -> Unit = {
+        Icon(
+            painter = painterResource(Res.drawable.ic_arrow_drop_down),
+            contentDescription = "Select country",
         )
     },
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
@@ -458,6 +467,7 @@ public fun KomposeCountryCodePicker(
             },
             selectedCountryFlagSize = selectedCountryFlagSize,
             textStyle = textStyle,
+            dropDownIcon = dropDownIcon,
         )
     } else {
         OutlinedTextField(
@@ -493,6 +503,7 @@ public fun KomposeCountryCodePicker(
                     },
                     selectedCountryFlagSize = selectedCountryFlagSize,
                     textStyle = textStyle,
+                    dropDownIcon = dropDownIcon,
                 )
             },
             trailingIcon = trailingIcon,
@@ -538,6 +549,7 @@ private fun DefaultPlaceholder(
  * @param showCountryCode If true, the country code will be shown.
  * @param showFlag] If true, the country flag will be shown.
  * @param showCountryName If true, the country name will be shown.
+ * @param dropDownIcon A composable lambda to display the dropdown icon.
  */
 @Composable
 private fun SelectedCountryComponent(
@@ -545,6 +557,7 @@ private fun SelectedCountryComponent(
     selectedCountryFlagSize: FlagSize,
     textStyle: TextStyle,
     onClickSelectedCountry: () -> Unit,
+    dropDownIcon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     selectedCountryPadding: Dp = 8.dp,
     showCountryCode: Boolean = true,
@@ -594,11 +607,7 @@ private fun SelectedCountryComponent(
                 style = textStyle,
             )
         }
-        Icon(
-            painter = painterResource(Res.drawable.ic_arrow_drop_down),
-            contentDescription = "Select country",
-            modifier = Modifier.qaAutomationTestTag("countryDropDown"),
-        )
+        dropDownIcon()
     }
 }
 
