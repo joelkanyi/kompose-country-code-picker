@@ -16,6 +16,7 @@
 package com.joelkanyi.jcomposecountrycodepicker.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
@@ -45,8 +47,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextStyle
@@ -353,6 +360,9 @@ public fun rememberKomposeCountryCodePickerState(
  * @param dropDownIcon A composable lambda to display the dropdown icon
  *    next to the selected country. Defaults to a down arrow icon tinted
  *    with [LocalContentColor].
+ * @param leadingIconContainerColor The background color of the country
+ *    selector area. When [Color.Unspecified] (the default), no background
+ *    is drawn.
  * @param interactionSource The [MutableInteractionSource] representing the
  *    stream of Interactions for this text field.
  * @param selectedCountryFlagSize The size of the selected country flag
@@ -412,6 +422,7 @@ public fun KomposeCountryCodePicker(
             contentDescription = "Select country",
         )
     },
+    leadingIconContainerColor: Color = Color.Unspecified,
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     selectedCountryFlagSize: FlagSize = FlagSize(28.dp, 18.dp),
     textStyle: TextStyle = LocalTextStyle.current,
@@ -468,11 +479,45 @@ public fun KomposeCountryCodePicker(
             selectedCountryFlagSize = selectedCountryFlagSize,
             textStyle = textStyle,
             dropDownIcon = dropDownIcon,
+            containerColor = leadingIconContainerColor,
         )
     } else {
+        val hasContainerColor = leadingIconContainerColor != Color.Unspecified
+        var leadingIconCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+        var leadingIconEndX by remember { mutableFloatStateOf(0f) }
+
         OutlinedTextField(
             modifier = modifier
-                .qaAutomationTestTag("countryCodePickerTextField"),
+                .qaAutomationTestTag("countryCodePickerTextField")
+                .then(
+                    if (hasContainerColor) {
+                        Modifier
+                            .clip(shape)
+                            .onGloballyPositioned { tfCoords ->
+                                leadingIconCoordinates?.let { iconCoords ->
+                                    if (iconCoords.isAttached) {
+                                        val pos = tfCoords.localPositionOf(
+                                            iconCoords,
+                                            androidx.compose.ui.geometry.Offset.Zero,
+                                        )
+                                        leadingIconEndX =
+                                            pos.x + iconCoords.size.width.toFloat()
+                                    }
+                                }
+                            }
+                            .drawWithContent {
+                                if (leadingIconEndX > 0f) {
+                                    drawRect(
+                                        color = leadingIconContainerColor,
+                                        size = Size(leadingIconEndX, size.height),
+                                    )
+                                }
+                                drawContent()
+                            }
+                    } else {
+                        Modifier
+                    },
+                ),
             shape = shape,
             value = phoneNo,
             onValueChange = {
@@ -493,6 +538,11 @@ public fun KomposeCountryCodePicker(
             keyboardActions = keyboardActions,
             leadingIcon = {
                 SelectedCountryComponent(
+                    modifier = if (hasContainerColor) {
+                        Modifier.onGloballyPositioned { leadingIconCoordinates = it }
+                    } else {
+                        Modifier
+                    },
                     selectedCountry = state.countryCode.getCountry(),
                     showCountryCode = state.showCountryCode,
                     showFlag = state.showCountryFlag,
@@ -550,9 +600,11 @@ private fun DefaultPlaceholder(
  * @param showFlag] If true, the country flag will be shown.
  * @param showCountryName If true, the country name will be shown.
  * @param dropDownIcon A composable lambda to display the dropdown icon.
+ * @param containerColor The background color of the country selector
+ *    area. When [Color.Unspecified], no background is drawn.
  */
 @Composable
-private fun SelectedCountryComponent(
+public fun SelectedCountryComponent(
     selectedCountry: Country,
     selectedCountryFlagSize: FlagSize,
     textStyle: TextStyle,
@@ -563,9 +615,17 @@ private fun SelectedCountryComponent(
     showCountryCode: Boolean = true,
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
+    containerColor: Color = Color.Unspecified,
 ) {
     Row(
         modifier = modifier
+            .then(
+                if (containerColor != Color.Unspecified) {
+                    Modifier.background(containerColor)
+                } else {
+                    Modifier
+                },
+            )
             .padding(selectedCountryPadding)
             .qaAutomationTestTag("selectedCountryComponent")
             .clickable(

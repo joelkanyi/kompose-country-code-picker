@@ -43,6 +43,7 @@ The `KomposeCountryCodePicker` composable accepts the following parameters:
 | `placeholder` | `@Composable (String) -> Unit` | Default hint | A composable to display as the placeholder. Receives the current country code. |
 | `colors` | `TextFieldColors` | `TextFieldDefaults.colors()` | Colors for the text field. |
 | `trailingIcon` | `@Composable (() -> Unit)?` | `null` | An optional trailing icon composable. |
+| `leadingIconContainerColor` | `Color` | `Color.Unspecified` | Background color of the country selector area. When `Color.Unspecified`, no background is drawn. |
 | `interactionSource` | `MutableInteractionSource` | `MutableInteractionSource()` | The interaction source for the text field. |
 | `selectedCountryFlagSize` | `FlagSize` | `FlagSize(28.dp, 18.dp)` | The width and height of the selected country flag. |
 | `textStyle` | `TextStyle` | `LocalTextStyle.current` | The text style for the text field and selected country display. |
