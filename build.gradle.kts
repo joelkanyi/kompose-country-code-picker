@@ -30,7 +30,7 @@ subprojects {
                 "1.8.0"
             ).customRuleSets(
                 listOf(
-                    "io.nlopez.compose.rules:ktlint:0.5.7",
+                    "io.nlopez.compose.rules:ktlint:0.5.8",
                 ),
             ).editorConfigOverride(
                 mapOf(
