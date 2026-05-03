@@ -46,7 +46,8 @@ The `KomposeCountryCodePicker` composable accepts the following parameters:
 | `leadingIconContainerColor` | `Color` | `Color.Unspecified` | Background color of the country selector area. When `Color.Unspecified`, no background is drawn. |
 | `interactionSource` | `MutableInteractionSource` | `MutableInteractionSource()` | The interaction source for the text field. |
 | `selectedCountryFlagSize` | `FlagSize` | `FlagSize(28.dp, 18.dp)` | The width and height of the selected country flag. |
-| `textStyle` | `TextStyle` | `LocalTextStyle.current` | The text style for the text field and selected country display. |
+| `textStyle` | `TextStyle` | `LocalTextStyle.current` | The text style for the phone number text field. Also used for the country code when `countryCodeTextStyle` is not set. |
+| `countryCodeTextStyle` | `TextStyle?` | `null` | The text style for the country code text (e.g. "+254"). When `null`, falls back to `textStyle`. |
 | `enabled` | `Boolean` | `true` | Whether the text field and country picker are enabled. |
 | `keyboardOptions` | `KeyboardOptions` | Phone / Next | Keyboard options for the text field. Defaults to phone keyboard with `ImeAction.Next`. |
 | `selectedCountryPadding` | `Dp` | `8.dp` | Padding around the selected country component. Useful for removing extra spacing when embedding the picker inside a custom text field's decorator box. |

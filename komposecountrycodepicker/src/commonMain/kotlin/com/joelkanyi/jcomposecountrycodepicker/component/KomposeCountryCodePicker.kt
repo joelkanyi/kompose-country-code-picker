@@ -374,7 +374,11 @@ public fun rememberKomposeCountryCodePickerState(
  * @param selectedCountryFlagSize The size of the selected country flag
  *    (width and height in [Dp][androidx.compose.ui.unit.Dp]).
  * @param textStyle The style to be used for displaying text on the
- *    `TextField` and the selected country.
+ *    `TextField` and the selected country (when [countryCodeTextStyle]
+ *    is not set).
+ * @param countryCodeTextStyle The style to be used for the country code
+ *    text inside the selected country component. When `null`, falls back
+ *    to [textStyle].
  * @param enabled Controls the enabled state of the text field.
  * @param keyboardOptions The keyboard options to be used for the
  *    text field.
@@ -434,6 +438,7 @@ public fun KomposeCountryCodePicker(
     interactionSource: MutableInteractionSource = MutableInteractionSource(),
     selectedCountryFlagSize: FlagSize = FlagSize(28.dp, 18.dp),
     textStyle: TextStyle = LocalTextStyle.current,
+    countryCodeTextStyle: TextStyle? = null,
     enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
         keyboardType = KeyboardType.Phone,
@@ -442,6 +447,8 @@ public fun KomposeCountryCodePicker(
     selectedCountryPadding: Dp = 8.dp,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
+    val resolvedCountryCodeTextStyle = countryCodeTextStyle ?: textStyle
+
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
 
     val phoneTextPair = extractCountryCodeAndPhoneNumber(text)
@@ -487,7 +494,7 @@ public fun KomposeCountryCodePicker(
             },
             selectedCountryFlagSize = selectedCountryFlagSize,
             selectedCountryPadding = selectedCountryPadding,
-            textStyle = textStyle,
+            textStyle = resolvedCountryCodeTextStyle,
             dropDownIcon = dropDownIcon,
             containerColor = leadingIconContainerColor,
         )
@@ -563,7 +570,7 @@ public fun KomposeCountryCodePicker(
                     },
                     selectedCountryFlagSize = selectedCountryFlagSize,
                     selectedCountryPadding = selectedCountryPadding,
-                    textStyle = textStyle,
+                    textStyle = resolvedCountryCodeTextStyle,
                     dropDownIcon = dropDownIcon,
                 )
             },
