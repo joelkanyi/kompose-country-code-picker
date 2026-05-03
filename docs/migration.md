@@ -62,6 +62,9 @@ The `isPhoneNumberValid()` API is unchanged. The underlying engine differs by pl
 - **Keyboard navigation** — Arrow keys, Enter, and Escape in the country selection dialog
 - **Per-country phone validation and formatting** on all platforms
 - **Improved search** with accent/diacritic normalization
+- **`state.selectedCountry`** — exposes the full `Country` object (flag, name, code, phoneNoCode) so you can build fully custom phone inputs with your own text field
+- **`CountrySelectionDialog` as standalone API** — use it independently with your own text field; pass `state.countryList` for the data and call `state.setCode(country.code)` on selection
+- **`selectedCountryPadding`** — new parameter to control padding around the country selector, useful when embedding inside a custom text field's decorator box
 - **New parameters**: `trailingIcon`, `keyboardOptions`, `keyboardActions`, `enabled`
 
 ## Breaking Changes

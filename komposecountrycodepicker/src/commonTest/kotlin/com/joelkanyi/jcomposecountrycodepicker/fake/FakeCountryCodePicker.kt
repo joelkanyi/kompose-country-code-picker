@@ -29,6 +29,9 @@ class FakeCountryCodePicker(
     override var countryList: List<Country> = countries
     override val showCountryCode: Boolean = true
     override val showCountryFlag: Boolean = true
+    override val selectedCountry: Country
+        get() = countryList.firstOrNull { it.code.equals(countryCode, ignoreCase = true) }
+            ?: countryList.first()
 
     override fun getCountryName(): String = countryList.first().name
 

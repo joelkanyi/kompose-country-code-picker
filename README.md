@@ -18,6 +18,7 @@ See the [project's website](https://joelkanyi.github.io/kompose-country-code-pic
 - Built-in phone number validation and formatting
 - Search with accent-normalized matching
 - Responsive dialog - full-screen on mobile, popup on desktop/web
+- Custom text field support - use `CountrySelectionDialog` + `state.selectedCountry` for fully custom layouts
 - 13 language translations
 - Customizable colors, shapes, and icons
 - Keyboard navigation support (Arrow keys, Enter, Escape) on desktop and web
@@ -96,6 +97,59 @@ KomposeCountryCodePicker(
     state = state,
 )
 ```
+
+### Fully Custom Text Field
+
+If you have your own design system and want to use your own text field, use `CountrySelectionDialog` and `state.selectedCountry` directly:
+
+```kotlin
+@OptIn(RestrictedApi::class)
+@Composable
+fun PhoneNumberField() {
+    var phoneNumber by rememberSaveable { mutableStateOf("") }
+    var showCountryPicker by rememberSaveable { mutableStateOf(false) }
+    val state = rememberKomposeCountryCodePickerState()
+
+    if (showCountryPicker) {
+        CountrySelectionDialog(
+            countryList = state.countryList,
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            onDismissRequest = { showCountryPicker = false },
+            onSelect = { country ->
+                state.setCode(country.code)
+                showCountryPicker = false
+            },
+        )
+    }
+
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = phoneNumber,
+        onValueChange = { phoneNumber = it },
+        placeholder = { Text("Phone Number") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+        leadingIcon = {
+            Row(
+                modifier = Modifier
+                    .clickable { showCountryPicker = true }
+                    .padding(start = 12.dp, end = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Image(
+                    modifier = Modifier.width(28.dp).height(18.dp),
+                    painter = painterResource(state.selectedCountry.flag),
+                    contentDescription = state.selectedCountry.name,
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(text = state.selectedCountry.phoneNoCode)
+            }
+        },
+    )
+}
+```
+
+See the [full documentation](https://joelkanyi.github.io/kompose-country-code-picker/usage/#fully-custom-phone-input) for more details and a `BasicTextField` variant.
 
 ## Preview
 

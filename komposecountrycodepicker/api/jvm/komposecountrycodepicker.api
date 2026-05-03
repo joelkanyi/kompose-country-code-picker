@@ -4,8 +4,8 @@ public abstract interface annotation class com/joelkanyi/jcomposecountrycodepick
 public final class com/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$KomposeCountryCodePickerKt {
 	public static final field INSTANCE Lcom/joelkanyi/jcomposecountrycodepicker/component/ComposableSingletons$KomposeCountryCodePickerKt;
 	public fun <init> ()V
-	public final fun getLambda$-797883394$komposecountrycodepicker ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda$-887531264$komposecountrycodepicker ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-415359874$komposecountrycodepicker ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$354603068$komposecountrycodepicker ()Lkotlin/jvm/functions/Function3;
 }
 
 public abstract interface class com/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker {
@@ -19,6 +19,7 @@ public abstract interface class com/joelkanyi/jcomposecountrycodepicker/componen
 	public abstract fun getFullyFormattedPhoneNumber ()Ljava/lang/String;
 	public abstract fun getPhoneNumber ()Ljava/lang/String;
 	public abstract fun getPhoneNumberWithoutPrefix ()Ljava/lang/String;
+	public abstract fun getSelectedCountry ()Lcom/joelkanyi/jcomposecountrycodepicker/data/Country;
 	public abstract fun getShowCountryCode ()Z
 	public abstract fun getShowCountryFlag ()Z
 	public abstract fun isPhoneNumberValid (Ljava/lang/String;)Z
@@ -36,7 +37,7 @@ public final class com/joelkanyi/jcomposecountrycodepicker/component/CountrySele
 }
 
 public final class com/joelkanyi/jcomposecountrycodepicker/component/KomposeCountryCodePickerKt {
-	public static final fun KomposeCountryCodePicker-3lkZ96c (Lcom/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;ZZLandroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function3;Landroidx/compose/material3/TextFieldColors;Lkotlin/jvm/functions/Function2;JJLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;JLandroidx/compose/foundation/interaction/MutableInteractionSource;Lcom/joelkanyi/jcomposecountrycodepicker/data/FlagSize;Landroidx/compose/ui/text/TextStyle;ZLandroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;Landroidx/compose/runtime/Composer;IIII)V
+	public static final fun KomposeCountryCodePicker-9udWUoQ (Lcom/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;ZZLandroidx/compose/ui/graphics/Shape;Lkotlin/jvm/functions/Function3;Landroidx/compose/material3/TextFieldColors;Lkotlin/jvm/functions/Function2;JJLkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;JLandroidx/compose/foundation/interaction/MutableInteractionSource;Lcom/joelkanyi/jcomposecountrycodepicker/data/FlagSize;Landroidx/compose/ui/text/TextStyle;ZLandroidx/compose/foundation/text/KeyboardOptions;FLandroidx/compose/foundation/text/KeyboardActions;Landroidx/compose/runtime/Composer;IIII)V
 	public static final fun SelectedCountryComponent-VG7Fs9s (Lcom/joelkanyi/jcomposecountrycodepicker/data/Country;Lcom/joelkanyi/jcomposecountrycodepicker/data/FlagSize;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;FZZZJLandroidx/compose/runtime/Composer;III)V
 	public static final fun rememberKomposeCountryCodePickerState (Ljava/lang/String;Ljava/util/List;Ljava/util/List;ZZLandroidx/compose/runtime/Composer;II)Lcom/joelkanyi/jcomposecountrycodepicker/component/CountryCodePicker;
 }

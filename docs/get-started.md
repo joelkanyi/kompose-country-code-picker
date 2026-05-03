@@ -107,4 +107,4 @@ For platform-specific details (validation engines, default country detection, ru
 
 ## Next Steps
 
-Head over to the [Usage](usage.md) page to learn how to use the country code picker in your app.
+Head over to the [Usage](usage.md) page to learn how to use the country code picker in your app, including how to build a [fully custom phone input](usage.md#fully-custom-phone-input) with your own text field using `CountrySelectionDialog` and `state.selectedCountry`.

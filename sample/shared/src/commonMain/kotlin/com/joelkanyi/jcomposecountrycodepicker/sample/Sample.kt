@@ -66,6 +66,11 @@ fun Sample(modifier: Modifier = Modifier) {
                     onClick = { selectedTab = 1 },
                     text = { Text("Login") },
                 )
+                Tab(
+                    selected = selectedTab == 2,
+                    onClick = { selectedTab = 2 },
+                    text = { Text("Custom") },
+                )
             }
         },
     ) { paddingValues ->
@@ -78,6 +83,7 @@ fun Sample(modifier: Modifier = Modifier) {
             when (selectedTab) {
                 0 -> PickerSample()
                 1 -> LoginSample()
+                2 -> CustomTextFieldSample()
             }
         }
     }
