@@ -34,6 +34,24 @@ KomposeCountryCodePicker(
 
 The `state` object holds all the phone number data. Use `text` to provide the current input and `onValueChange` to update it — the same controlled-text pattern used by standard Compose text fields.
 
+### Independent Text Styles
+
+By default, `textStyle` applies to both the phone number input and the country code. To style them independently, use `countryCodeTextStyle`:
+
+```kotlin
+KomposeCountryCodePicker(
+    modifier = Modifier.fillMaxWidth(),
+    text = phoneNumber,
+    onValueChange = { phoneNumber = it },
+    state = state,
+    textStyle = MaterialTheme.typography.bodyLarge, // phone number input
+    countryCodeTextStyle = MaterialTheme.typography.labelMedium.copy(
+        fontWeight = FontWeight.Medium,
+        color = MaterialTheme.colorScheme.primary,
+    ), // country code only
+)
+```
+
 ## Country Code Picker Only
 
 Set `showOnlyCountryCodePicker = true` to display just the country selector without a text field. This is useful when embedding the picker into a custom layout.
