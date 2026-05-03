@@ -61,6 +61,7 @@ kotlin {
             api(compose.ui)
             api(compose.foundation)
             api(compose.material3)
+            implementation(compose.components.resources)
             implementation(project(":komposecountrycodepicker"))
         }
     }

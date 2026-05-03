@@ -104,6 +104,9 @@ public interface CountryCodePicker {
      */
     public val countryList: List<Country>
 
+    /** Returns the currently selected [Country]. */
+    public val selectedCountry: Country
+
     /** Returns the country name. i.e Kenya. */
     public fun getCountryName(): String
 
@@ -215,6 +218,9 @@ internal class CountryCodePickerImpl(
     )
     override val countryList: List<Country>
         get() = _countryList.value
+
+    override val selectedCountry: Country
+        get() = countryCode.getCountry()
 
     override fun getCountryName(): String = countryCode.getCountry().name.replaceFirstChar {
         it.uppercase()
@@ -372,6 +378,8 @@ public fun rememberKomposeCountryCodePickerState(
  * @param enabled Controls the enabled state of the text field.
  * @param keyboardOptions The keyboard options to be used for the
  *    text field.
+ * @param selectedCountryPadding The padding around the selected country
+ *    component. Defaults to 8.dp.
  * @param keyboardActions The keyboard actions to be used for the
  *    text field.
  */
@@ -431,6 +439,7 @@ public fun KomposeCountryCodePicker(
         keyboardType = KeyboardType.Phone,
         imeAction = ImeAction.Next,
     ),
+    selectedCountryPadding: Dp = 8.dp,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
     var openCountrySelectionDialog by rememberSaveable { mutableStateOf(false) }
@@ -477,6 +486,7 @@ public fun KomposeCountryCodePicker(
                 }
             },
             selectedCountryFlagSize = selectedCountryFlagSize,
+            selectedCountryPadding = selectedCountryPadding,
             textStyle = textStyle,
             dropDownIcon = dropDownIcon,
             containerColor = leadingIconContainerColor,
@@ -552,6 +562,7 @@ public fun KomposeCountryCodePicker(
                         }
                     },
                     selectedCountryFlagSize = selectedCountryFlagSize,
+                    selectedCountryPadding = selectedCountryPadding,
                     textStyle = textStyle,
                     dropDownIcon = dropDownIcon,
                 )

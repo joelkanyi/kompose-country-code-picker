@@ -49,6 +49,7 @@ The `KomposeCountryCodePicker` composable accepts the following parameters:
 | `textStyle` | `TextStyle` | `LocalTextStyle.current` | The text style for the text field and selected country display. |
 | `enabled` | `Boolean` | `true` | Whether the text field and country picker are enabled. |
 | `keyboardOptions` | `KeyboardOptions` | Phone / Next | Keyboard options for the text field. Defaults to phone keyboard with `ImeAction.Next`. |
+| `selectedCountryPadding` | `Dp` | `8.dp` | Padding around the selected country component. Useful for removing extra spacing when embedding the picker inside a custom text field's decorator box. |
 | `keyboardActions` | `KeyboardActions` | `KeyboardActions.Default` | Keyboard actions for the text field. |
 
 ## Dialog Customizations
@@ -68,7 +69,9 @@ The dialog is **responsive**: it displays full-screen on compact screens (width 
 
 ## CountrySelectionDialog (Standalone)
 
-The `CountrySelectionDialog` composable is part of the public API and can be used independently if you need full control over when the dialog is shown:
+The `CountrySelectionDialog` composable is part of the public API and can be used independently. This is useful when you have your own text field component and want to use the library only for the searchable country list and flag assets — without the built-in `OutlinedTextField` that `KomposeCountryCodePicker` provides.
+
+When a country is selected, call `state.setCode(country.code)` to update the state, then use `state.selectedCountry` to access the selected country's `flag`, `name`, and `phoneNoCode` in your own layout. See the [Fully Custom Phone Input](usage.md#fully-custom-phone-input) section for a complete example.
 
 ```kotlin
 CountrySelectionDialog(
@@ -76,7 +79,9 @@ CountrySelectionDialog(
     containerColor = MaterialTheme.colorScheme.background,
     contentColor = MaterialTheme.colorScheme.onBackground,
     onDismissRequest = { /* handle dismiss */ },
-    onSelect = { country -> /* handle selection */ },
+    onSelect = { country ->
+        state.setCode(country.code) // updates state.selectedCountry
+    },
 )
 ```
 
