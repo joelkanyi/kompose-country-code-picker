@@ -15,12 +15,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: 🧹 Lint
+  # Four separate jobs (lint / api-check / test / build) each paid a cold Gradle
+  # start. One job with a warm daemon does the same work for fewer minutes.
+  verify:
+    name: 🔎 Verify (JVM/Android/JS/Wasm)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
+      - uses: actions/checkout@v7
 
       - name: Set up JDK 17
         uses: actions/setup-java@v5
@@ -31,91 +33,40 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Spotless check
-        run: ./gradlew spotlessCheck --stacktrace
-
-  api-check:
-    name: 🕵️ API Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v5
-        with:
-          java-version: '17'
-          distribution: 'zulu'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-
-      - name: API check
-        run: ./gradlew apiCheck --stacktrace
-
-  test:
-    name: 🧪 Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v5
-        with:
-          java-version: '17'
-          distribution: 'zulu'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-
-      - name: Run tests
+      - name: Spotless + API + tests
         run: >-
           ./gradlew
+          spotlessCheck apiCheck
           :komposecountrycodepicker:allTests
           :sample:android:testDebugUnitTest
           --stacktrace
 
-  build:
-    name: 🔨 Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v5
-        with:
-          java-version: '17'
-          distribution: 'zulu'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-
-      - name: Build library
+      - name: Build library + samples
         run: >-
           ./gradlew
           :komposecountrycodepicker:assemble
           :komposecountrycodepicker:jvmJar
           :komposecountrycodepicker:compileKotlinJs
           :komposecountrycodepicker:compileKotlinWasmJs
-          --stacktrace
-
-      - name: Build samples
-        run: >-
-          ./gradlew
           :sample:android:assembleDebug
           :sample:desktop:jar
           :sample:web-js:jsBrowserDevelopmentWebpack
           :sample:web-wasm:wasmJsBrowserDevelopmentWebpack
           --stacktrace
 
+  # macOS is the metered runner. Cost cuts:
+  #  1. Runs ONLY on push to main, never on PRs. iOS breakage is caught at merge,
+  #     not per PR push. This is the single biggest macOS saver.
+  #  2. Cache ~/.konan so the Kotlin/Native toolchain is not re-downloaded each run.
+  #  3. Compile ONE target (iosSimulatorArm64), not arm64 device + simulator.
+  #     Device-target linking is validated at publish/tag time.
   build-ios:
     name: 🍎 Build iOS
+    if: github.event_name != 'pull_request'
     runs-on: macos-latest
+    timeout-minutes: 20
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
+      - uses: actions/checkout@v7
 
       - name: Set up JDK 17
         uses: actions/setup-java@v5
@@ -123,12 +74,15 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
 
+      - name: Cache Konan
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml') }}
+          restore-keys: konan-${{ runner.os }}-
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Build iOS targets
-        run: >-
-          ./gradlew
-          :komposecountrycodepicker:compileKotlinIosArm64
-          :komposecountrycodepicker:compileKotlinIosSimulatorArm64
-          --stacktrace
+      - name: Build iOS target
+        run: ./gradlew :komposecountrycodepicker:compileKotlinIosSimulatorArm64 --stacktrace
