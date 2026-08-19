@@ -283,8 +283,8 @@ internal object PhoneValidation {
         val trimmed = phoneNumber.trim()
         if (!trimmed.startsWith("+")) return false
 
-        val digits = trimmed.filter { it.isDigit() }
-        if (digits.isEmpty()) return false
+        val digits = trimmed.substring(1)
+        if (digits.isEmpty() || digits.any { !it.isDigit() }) return false
 
         // Try to match the phone number against known country codes
         val countries = PickerUtils.allCountries

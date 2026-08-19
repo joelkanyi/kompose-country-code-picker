@@ -138,4 +138,14 @@ class PhoneValidationTest {
         // Samoa: +685 XXXXXXX to XXXXXXXXX (10-12 digits total)
         assertTrue(PhoneValidation.isValidPhoneNumber("+6857212345"))
     }
+
+    @Test
+    fun invalidHasCharacter() {
+        assertFalse(PhoneValidation.isValidPhoneNumber("+91#6295729429"))
+    }
+
+    @Test
+    fun invalidAsteriskCharacter() {
+        assertFalse(PhoneValidation.isValidPhoneNumber("+91*6295729429"))
+    }
 }
